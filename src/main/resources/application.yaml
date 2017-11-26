@@ -1,4 +1,6 @@
+#spring
 spring:
+#数据库连接
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://47.93.99.237:3306/crawler?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&autoReconnect=true
@@ -8,14 +10,18 @@ spring:
       maximum-pool-size: 15
       max-lifetime: 1765000
       connection-timeout: 6000
+#mvc
   mvc:
       view:
         prefix: classpath:templates/
         suffix: .html
+#server
 server:
   port: 8081
-
+#mybatis
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   check-config-location: true
   type-aliases-package: cn.edu.zzti.bibased.pojo
+
+

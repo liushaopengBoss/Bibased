@@ -12,7 +12,7 @@ public class DaoTest extends BaseApplicationTests {
     private JdbcTemplate jdbcTemplate;
     @Test
     public void t1(){
-        jdbcTemplate.execute("INSERT INTO `test1` VALUES ('13545k64', '你好！！')");
+        jdbcTemplate.execute("INSERT INTO `test1` VALUES ('13545kfgrtsd64', '你好！！')");
     }
     @Test
     public void findAll() {

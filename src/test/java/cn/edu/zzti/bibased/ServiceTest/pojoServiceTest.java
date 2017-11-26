@@ -11,11 +11,12 @@ import java.util.List;
 public class pojoServiceTest  extends BaseApplicationTests{
 
     @Resource
-    TestMapper TestMapper;
-    @Test
-    public void t1(){
+    TestMapper testMapper;
 
-        TestMapper.insert(new PojoTest("34534345","456456456"));
+    @Test
+    public void insertTest(){
+        List<PojoTest> pojoTests = testMapper.get();
+        testMapper.insert(new PojoTest("344jjh345","456456456"));
 
     }
 }

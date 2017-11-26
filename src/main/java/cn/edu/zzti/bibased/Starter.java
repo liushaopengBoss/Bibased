@@ -11,8 +11,8 @@ import org.springframework.context.annotation.ImportResource;
  * spring-boot启动类
  */
 //@ImportResource("classpath:*.xml")
-@MapperScan("cn.edu.zzti.bibased.dao")
 @SpringBootApplication()
+@MapperScan("cn.edu.zzti.bibased.dao")
 public class Starter {
     private static ConfigurableApplicationContext applicationContext;
 
