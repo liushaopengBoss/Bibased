@@ -8,7 +8,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import java.net.URI;
 import java.util.Map;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
@@ -31,8 +30,6 @@ public class HttpClientService {
     @Autowired
     private CloseableHttpClient httpClient;
 
-    @Resource
-    private RequestConfig requestConfig;
 
     public String doGet(String url,Map<String, String> parapms) throws Exception {
         URI uri = null;
@@ -61,7 +58,6 @@ public class HttpClientService {
             // 读取超时
             httpClient.getParams().setParameter(
                     CoreConnectionPNames. SO_TIMEOUT, 5000);
-            request.setConfig(requestConfig);
             response = httpClient.execute(request);
             if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
                 HttpEntity entity = response.getEntity();

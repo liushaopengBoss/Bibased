@@ -6,9 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.junit4.SpringRunner;
-@ImportResource("classpath:*.xml")
+@ComponentScan("cn.edu.zzti.bibased")
+@ImportResource("classpath:applicationContext-httpclient.xml")
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ComponentScan("cn.edu.zzti.bibased")
 public  class BaseApplicationTests {
 }
