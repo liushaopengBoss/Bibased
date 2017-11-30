@@ -25,3 +25,4 @@ mybatis:
   type-aliases-package: cn.edu.zzti.bibased.pojo
 
 
+
