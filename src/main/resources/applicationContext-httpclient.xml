@@ -9,7 +9,7 @@
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
-	
+	<context:property-placeholder location="classpath:httpclient.properties"/>
 	<!-- 定义httpclient连接池 -->
 	<bean id="httpClientConnectionManager" class="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" destroy-method="close">
 		<!-- 设置连接总数 -->
@@ -23,9 +23,11 @@
 		factory-method="create">
 		<property name="connectionManager" ref="httpClientConnectionManager"></property>
 	</bean>
-
-	<!-- 得到httpClient的实例 -->
-	<bean id="httpClient" factory-bean="httpClientBuilder" factory-method="build"/>
+	<!-- 2.创建httpClient -->
+	<!-- 通过httpClientBulider得到httpClient对象，并且设置httpClient为多利模式 -->
+	<!-- 要保证httpClient为多利，以为每次都是新的http请求 -->
+	<bean id="httpClient" class="org.apache.http.impl.client.CloseableHttpClient"
+		  factory-bean="httpClientBuilder" factory-method="build" scope="prototype" />
 	
 	<!-- 定期清理无效的连接 -->
 	<bean class="cn.edu.zzti.bibased.utils.IdleConnectionEvictor" destroy-method="shutdown">
@@ -47,6 +49,7 @@
 	</bean>	
 	
 	<!-- 得到requestConfig实例 -->
-	<bean id="requestConfig" factory-bean="requestConfigBuilder" factory-method="build" />
+	<bean id="requestConfig" class="org.apache.http.client.config.RequestConfig"
+		  factory-bean="requestConfigBuilder" factory-method="build" />
 
 </beans>

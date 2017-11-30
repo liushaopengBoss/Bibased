@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ImportResource;
 /**
  * spring-boot启动类
  */
-//@ImportResource("classpath:*.xml")
+@ImportResource("classpath:*.xml")
 @SpringBootApplication()
 @MapperScan("cn.edu.zzti.bibased.dao")
 public class Starter {
