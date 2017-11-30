@@ -15,7 +15,6 @@ import org.springframework.context.annotation.ImportResource;
 @MapperScan("cn.edu.zzti.bibased.dao")
 public class Starter {
     private static ConfigurableApplicationContext applicationContext;
-
     public static void main(String[] args) {
         applicationContext = SpringApplication.run(Starter.class, args);
     }

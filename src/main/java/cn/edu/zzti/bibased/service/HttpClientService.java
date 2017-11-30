@@ -12,6 +12,8 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -43,9 +45,7 @@ public class HttpClientService {
             }
             uri = builder.build();
         }
-        if("https://".contains(url)) {
-            httpClient = SSLContextClient.getNewHttpsClient(httpClient);
-        }
+        httpClient = SSLContextClient.getNewHttpsClient(httpClient);
         String html = "";
         HttpGet request = new HttpGet(uri);
         for (Map.Entry<String, String> entry : HttpHeaderConstant.lagouHeader.entrySet()) {
@@ -53,11 +53,6 @@ public class HttpClientService {
         }
         CloseableHttpResponse response = null;
         try {
-            httpClient.getParams().setParameter(
-                    CoreConnectionPNames. CONNECTION_TIMEOUT, 5000);
-            // 读取超时
-            httpClient.getParams().setParameter(
-                    CoreConnectionPNames. SO_TIMEOUT, 5000);
             response = httpClient.execute(request);
             if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
                 HttpEntity entity = response.getEntity();

@@ -40,6 +40,7 @@ public class SSLContextClient {
             SchemeRegistry registry = new SchemeRegistry();
             registry.register(new Scheme("https", 443, ssf));
             ThreadSafeClientConnManager mgr = new ThreadSafeClientConnManager(registry);
+            
             return new DefaultHttpClient(mgr, httpClient.getParams());
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -111,4 +112,6 @@ public class SSLContextClient {
         }
 
     }
+
+
 }

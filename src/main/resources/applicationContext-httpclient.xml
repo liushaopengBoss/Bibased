@@ -17,10 +17,15 @@
 		<!-- 设置每个地址的并发数 -->
 		<property name="defaultMaxPerRoute" value="${http.pool.defaultMaxPerRoute}"></property>
 	</bean>
-
+	<bean id="myX509TrustManager" class="cn.edu.zzti.bibased.utils.MyX509TrustManager"/>
+	<bean id = "ssl" class="org.apache.http.conn.ssl.SSLConnectionSocketFactory">
+		<constructor-arg name="sslContext" value=""/>
+		<constructor-arg name="hostnameVerifier" value="myX509TrustManager"/>
+	</bean>
 	<!-- 定义 HttpClient工厂，这里使用HttpClientBuilder构建 -->
 	<bean id="httpClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder"
 		factory-method="create">
+
 		<property name="connectionManager" ref="httpClientConnectionManager"></property>
 	</bean>
 	<!-- 2.创建httpClient -->
