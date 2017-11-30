@@ -3,15 +3,32 @@ package cn.edu.zzti.bibased.utils;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.springframework.util.StringUtils;
@@ -43,7 +60,8 @@ public class MyHttpClientUtils {
 //        request.addHeader("Host","search.51job.com");
 //        request.addHeader("Referer","http://www.51job.com/?from=baidupz");
      // request.addHeader("Upgrade-Insecure-Requests","SEARCH_ID=2d190aa8a3b043da920c9f420c8db60c; Version=1; Max-Age=86400; Expires=Mon, 27-Nov-2017 10:27:19 GMT; Path=/");
-        request.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
+        //request.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
+        request.addHeader(new BasicHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"));
         HttpResponse response = null;
         try {
             httpClient.getParams().setParameter(
@@ -94,9 +112,59 @@ public class MyHttpClientUtils {
     /**
      * 获取网页html  post
      */
-    public static String doHttpCilentPost(){
-        return "";
-    }
+//    public static String send(String url, Map<String,String> map, String encoding) throws ClientProtocolException, IOException {
+//        String body = "";
+//
+//        //tomcat是我自己的密钥库的密码，你可以替换成自己的
+//        //如果密码为空，则用"nopassword"代替
+//        SSLContext sslcontext = SSLContextClient.getSSLContext();
+//
+//        // 设置协议http和https对应的处理socket链接工厂的对象
+//        Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+//                .register("http", PlainConnectionSocketFactory.INSTANCE)
+//                .register("https", new SSLConnectionSocketFactory(sslcontext))
+//                .build();
+//        PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+//        HttpClients.custom().setConnectionManager(connManager);
+//
+//        //创建自定义的httpclient对象
+//        CloseableHttpClient client = HttpClients.custom().setConnectionManager(connManager).build();
+////        CloseableHttpClient client = HttpClients.createDefault();
+//
+//        //创建post方式请求对象
+//        HttpPost httpPost = new HttpPost(url);
+//
+//        //装填参数
+//        List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+//        if(map!=null){
+//            for (Map.Entry<String, String> entry : map.entrySet()) {
+//                nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+//            }
+//        }
+//        //设置参数到请求对象中
+//        httpPost.setEntity(new UrlEncodedFormEntity(nvps, encoding));
+//
+//        System.out.println("请求地址："+url);
+//        System.out.println("请求参数："+nvps.toString());
+//
+//        //设置header信息
+//        //指定报文头【Content-type】、【User-Agent】
+//        httpPost.setHeader("Content-type", "application/x-www-form-urlencoded");
+//        httpPost.setHeader("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+//
+//        //执行请求操作，并拿到结果（同步阻塞）
+//        CloseableHttpResponse response = client.execute(httpPost);
+//        //获取结果实体
+//        HttpEntity entity = response.getEntity();
+//        if (entity != null) {
+//            //按指定编码转换结果实体为String类型
+//            body = EntityUtils.toString(entity, encoding);
+//        }
+//        EntityUtils.consume(entity);
+//        //释放链接
+//        response.close();
+//        return body;
+//    }
 
 
     public static String doPost(String url, String params, String charset, int connectTimeout, int readTimeout) throws Exception {
