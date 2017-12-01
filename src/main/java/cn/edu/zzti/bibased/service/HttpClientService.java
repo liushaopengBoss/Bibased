@@ -30,7 +30,7 @@ public class HttpClientService {
     private static final Logger logger = LoggerFactory.getLogger(HttpClientService.class);
 
     @Autowired
-    private CloseableHttpClient httpClient;
+    private CloseableHttpClient httpsClient;
 
 
     public String doGet(String url,Map<String, String> parapms) throws Exception {
@@ -45,7 +45,6 @@ public class HttpClientService {
             }
             uri = builder.build();
         }
-        httpClient = SSLContextClient.getNewHttpsClient(httpClient);
         String html = "";
         HttpGet request = new HttpGet(uri);
         for (Map.Entry<String, String> entry : HttpHeaderConstant.lagouHeader.entrySet()) {
@@ -53,7 +52,7 @@ public class HttpClientService {
         }
         CloseableHttpResponse response = null;
         try {
-            response = httpClient.execute(request);
+            response = httpsClient.execute(request);
             if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
                 HttpEntity entity = response.getEntity();
                 String charset = getContentCharSet(entity);

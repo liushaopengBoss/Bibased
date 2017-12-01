@@ -12,8 +12,8 @@ import java.util.UUID;
 
 @RestController
 public class TestController {
-    @Resource
-    TestMapper testMapper;
+//    @Resource
+//    TestMapper testMapper;
     @Resource
     private HttpClientService httpClientService;
     @RequestMapping("/hello")
