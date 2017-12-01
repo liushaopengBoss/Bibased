@@ -14,8 +14,11 @@ import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.ssl.SSLContextBuilder;
+
 public class SSLContextClient {
 
     public static DefaultHttpClient getNewHttpsClient(HttpClient httpClient){
@@ -94,7 +97,6 @@ public class SSLContextClient {
         }catch (Exception e){
 
         }
-
         return null;
 
     }

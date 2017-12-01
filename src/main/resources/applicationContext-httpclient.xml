@@ -25,18 +25,27 @@
 		<constructor-arg name="hostnameVerifier" ref="X509TrustManager" />
 	</bean>
 
-	<!-- 定义 HttpClient工厂，这里使用HttpClientBuilder构建 -->
-	<bean id="httpClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder"
+	<!-- 定义 HttpsClient工厂，这里使用HttpClientBuilder构建 -->
+	<bean id="httpsClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder"
 		factory-method="create">
 		<property name="SSLSocketFactory" ref="SSLConnectionSocketFactory"/>
 		<property name="connectionManager" ref="httpClientConnectionManager"></property>
 	</bean>
-	<!-- 2.创建httpClient -->
+	<bean id = "cookieStore" class="org.apache.http.impl.client.BasicCookieStore"/>
+	<!-- 定义 HttpClient工厂，这里使用HttpClientBuilder构建 -->
+	<bean id="httpClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder"
+		  factory-method="create">
+		<property name="defaultCookieStore" ref="cookieStore"/>
+		<property name="connectionManager" ref="httpClientConnectionManager"></property>
+	</bean>
 	<!-- 通过httpClientBulider得到httpClient对象，并且设置httpClient为多利模式 -->
 	<!-- 要保证httpClient为多利，以为每次都是新的http请求 -->
 	<bean id="httpsClient" class="org.apache.http.impl.client.CloseableHttpClient"
+		  factory-bean="httpsClientBuilder" factory-method="build" scope="prototype" />
+	<!-- 要保证httpClient为多利，以为每次都是新的http请求 -->
+	<bean id="httpClient" class="org.apache.http.impl.client.CloseableHttpClient"
 		  factory-bean="httpClientBuilder" factory-method="build" scope="prototype" />
-	
+
 	<!-- 定期清理无效的连接 -->
 	<bean class="cn.edu.zzti.bibased.utils.IdleConnectionEvictor" destroy-method="shutdown">
 		<constructor-arg index="0" ref="httpClientConnectionManager" />
