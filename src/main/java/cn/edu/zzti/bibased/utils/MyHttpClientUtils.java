@@ -48,7 +48,7 @@ public class MyHttpClientUtils {
         }
         String html = "";
         HttpGet request = new HttpGet(currentUrl);
-       request.addHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+       request.addHeader("Accept","application/json, text/javascript, */*; q=0.01");
        request.addHeader("Accept-Language","zh-CN,zh;q=0.9");
        request.addHeader("Cache-Control","max-age=0");
        request.addHeader("Connection","keep-alive");
