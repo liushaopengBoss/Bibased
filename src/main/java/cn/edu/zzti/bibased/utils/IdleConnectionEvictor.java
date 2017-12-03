@@ -2,6 +2,9 @@ package cn.edu.zzti.bibased.utils;
 
 import org.apache.http.conn.HttpClientConnectionManager;
 
+/**
+ * 定时清理无效连接
+ */
 public class IdleConnectionEvictor extends Thread {
 
 	private final HttpClientConnectionManager connMgr;

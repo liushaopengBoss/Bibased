@@ -31,7 +31,7 @@
 		<property name="SSLSocketFactory" ref="SSLConnectionSocketFactory"/>
 		<property name="connectionManager" ref="httpClientConnectionManager"></property>
 	</bean>
-	<bean id = "cookieStore" class="org.apache.http.impl.client.BasicCookieStore"/>
+	<bean id = "cookieStore" class="org.apache.http.impl.client.BasicCookieStore" scope="prototype" />
 	<!-- 定义 HttpClient工厂，这里使用HttpClientBuilder构建 -->
 	<bean id="httpClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder"
 		  factory-method="create">

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -33,35 +34,58 @@ import java.io.IOException;
 @Service
 public class HttpClientService {
     private static final Logger logger = LoggerFactory.getLogger(HttpClientService.class);
-
+    /**
+     * 注入HTTPS
+     */
     @Resource
     private CloseableHttpClient httpsClient;
+    /**
+     * 注入HTTP
+     */
+    @Resource
+    private CloseableHttpClient httpClient;
+
     @Resource
     private RequestConfig requestConfig;
     @Resource
     private BasicCookieStore cookieStore;
 
-    public String doGet(String apiUrl,Map<String, String> parapms) throws Exception {
+    /**
+     * get请求
+     * @param apiUrl   url
+     * @param params   参数
+     * @return
+     * @throws Exception
+     */
+    public String doGet(String apiUrl,Map<String, String> params,Map<String, Object> headers)  {
         URI uri = null;
-        if (null == parapms) {
+        if (null == params) {
             uri = URI.create(apiUrl);
         } else {
-            // 设置参数
-            URIBuilder builder = new URIBuilder(apiUrl);
-            for (Map.Entry<String, String> entry : parapms.entrySet()) {
-                builder.addParameter(entry.getKey(), entry.getValue());
+            try{
+                // 设置参数
+                URIBuilder builder = new URIBuilder(apiUrl);
+                for (Map.Entry<String, String> entry : params.entrySet()) {
+                    builder.addParameter(entry.getKey(), entry.getValue().toString());
+                }
+                uri = builder.build();
+            }catch (Exception e){
+                logger.error("https get参数设置一样："+e);
             }
-            uri = builder.build();
         }
         String html = "";
-        HttpGet request = new HttpGet(uri);
-        for (Map.Entry<String, String> entry : HttpHeaderConstant.lagouHeader.entrySet()) {
-            request.addHeader(entry.getKey(), entry.getValue());
-        }
         CloseableHttpResponse response = null;
         try {
-            request.setConfig(requestConfig);
-            response = httpsClient.execute(request);
+            HttpGet httpGet = new HttpGet(uri);
+            for (Map.Entry<String, Object> entry : HttpHeaderConstant.lagouGetHeader.entrySet()) {
+                httpGet.addHeader(entry.getKey(), entry.getValue().toString());
+            }
+            httpGet.setConfig(requestConfig);
+            if(uri.toString().contains("https://")){
+                response = httpsClient.execute(httpGet);
+            }else{
+                response = httpClient.execute(httpGet);
+            }
             if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
                 HttpEntity entity = response.getEntity();
                 String charset = getContentCharSet(entity);
@@ -73,7 +97,7 @@ public class HttpClientService {
 
             }
         }catch(IOException e){
-            logger.error("http service error!!"+e);
+            logger.error("https get请求失败：uri:"+apiUrl+"\n"+e);
             e.printStackTrace();
         } finally {
             if (response != null) {
@@ -88,17 +112,19 @@ public class HttpClientService {
     }
 
     /**
-     * 执行POST请求
+     *  post请求
+     * @param apiUrl   url
+     * @param params   参数
+     * @param headers  header头
+     * @return
      */
-    public String doPost(String apiUrl, Map<String, Object> params) throws Exception {
+    public String doPost(String apiUrl, Map<String, Object> params,Map<String, Object> headers)  {
         HttpPost httpPost = new HttpPost(apiUrl);
         CloseableHttpResponse response = null;
         String html = null;
-
         try {
-            httpPost.setConfig(requestConfig);
-            for (Map.Entry<String, String> entry : HttpHeaderConstant.lagouHeader.entrySet()) {
-                httpPost.addHeader(entry.getKey(), entry.getValue());
+            for (Map.Entry<String, Object> entry : headers.entrySet()) {
+                httpPost.addHeader(entry.getKey(), entry.getValue().toString());
             }
             List<NameValuePair> pairList = new ArrayList<NameValuePair>(params.size());
             for (Map.Entry<String, Object> entry : params.entrySet()) {
@@ -106,7 +132,13 @@ public class HttpClientService {
                         .getValue().toString());
                 pairList.add(pair);
             }
-            httpPost.setEntity(new UrlEncodedFormEntity(pairList, Charset.forName("utf-8")));
+            httpPost.setEntity(new UrlEncodedFormEntity(pairList, Charset.forName("UTF-8")));
+            httpPost.setConfig(requestConfig);
+            if(apiUrl.toString().contains("https://")){
+                response = httpsClient.execute(httpPost);
+            }else{
+                response = httpClient.execute(httpPost);
+            }
             response = httpsClient.execute(httpPost);
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
@@ -118,6 +150,7 @@ public class HttpClientService {
             }
             html = EntityUtils.toString(entity, "utf-8");
         } catch (Exception e) {
+            logger.error("post请求异常：uri:"+apiUrl+"\n异常信息"+e);
             e.printStackTrace();
         } finally {
             if (response != null) {
