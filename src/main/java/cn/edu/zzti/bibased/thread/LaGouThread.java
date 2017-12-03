@@ -12,7 +12,7 @@ public class LaGouThread implements Callable {
     private String apiUrl;
     private HttpClientService HttpClientService;
 
-    public LaGouThread(String apiUrl, cn.edu.zzti.bibased.service.HttpClientService httpClientService) {
+    public LaGouThread(String apiUrl, HttpClientService httpClientService) {
         this.apiUrl = apiUrl;
         HttpClientService = httpClientService;
     }
