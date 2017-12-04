@@ -6,7 +6,22 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ImportResource;
+//=======================================================
+//		          .----.
+//		       _.'__    `.
+//		   .--(^)(^^)---/!\
+//		 .' @          /!!!\
+//		 :         ,    !!!!
+//		  `-..__.-' _.-\!!!/
+//		        `;_:    `"'
+//		      .'"""""`.
+//		     /,  ya ,\\
+//		    //  保佑  \\
+//		    `-._______.-'
+//		    ___`. | .'___
+//		   (______|______)
 
+//=======================================================
 /**
  * spring-boot启动类
  */

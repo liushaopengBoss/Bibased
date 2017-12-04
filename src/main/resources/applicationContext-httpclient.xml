@@ -31,7 +31,7 @@
 		<property name="SSLSocketFactory" ref="SSLConnectionSocketFactory"/>
 		<property name="connectionManager" ref="httpClientConnectionManager"></property>
 	</bean>
-	<bean id = "cookieStore" class="org.apache.http.impl.client.BasicCookieStore"/>
+	<bean id = "cookieStore" class="org.apache.http.impl.client.BasicCookieStore" scope="prototype" />
 	<!-- 定义 HttpClient工厂，这里使用HttpClientBuilder构建 -->
 	<bean id="httpClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder"
 		  factory-method="create">
@@ -68,5 +68,16 @@
 	<!-- 得到requestConfig实例 -->
 	<bean id="requestConfig" class="org.apache.http.client.config.RequestConfig"
 		  factory-bean="requestConfigBuilder" factory-method="build" />
-
+	<!-- 线程池, 当池子满时, 调用处理阻塞等待 -->
+	<bean id="promotionExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="6"/>
+		<property name="maxPoolSize" value="18"/>
+		<property name="queueCapacity" value="12"/>
+		<property name="waitForTasksToCompleteOnShutdown" value="true"/>
+		<property name="awaitTerminationSeconds" value="10"/>
+		<property name="keepAliveSeconds" value="30"/>
+		<property name="rejectedExecutionHandler">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
+		</property>
+	</bean>
 </beans>
