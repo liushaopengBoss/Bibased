@@ -1,10 +1,8 @@
 package cn.edu.zzti.bibased.service;
 
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.HeaderElement;
-import org.apache.http.HttpEntity;
+import org.apache.http.*;
+
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -87,10 +85,15 @@ public class HttpClientService {
                 response = httpClient.execute(httpGet);
             }
             if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                //获取返回数据
                 HttpEntity entity = response.getEntity();
                 String charset = getContentCharSet(entity);
                 HttpEntity mEntity = response.getEntity();
                 html = EntityUtils.toString(mEntity,charset);
+                //获取header头
+                // Set-Cookie: SEARCH_ID=1b772ae7995c4065ba144eeea6d02636; Version=1; Max-Age=86400; Expires=Tue, 05-Dec-2017 05:37:10 GMT; Path=/
+                Header[] resultHeaders = response.getHeaders("Set-Cookie");
+                resultHeaders[0].getValue();
             }
             List<Cookie> cookies = cookieStore.getCookies();
             if(!CollectionUtils.isEmpty(cookies)){
