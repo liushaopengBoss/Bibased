@@ -33,7 +33,7 @@ public class TestController {
             param.put("first",true);
             param.put("pn",1);
             param.put("kd","Java");
-            url = httpClientService.doPost(postUrl, param);
+            //url = httpClientService.doPost(postUrl, param);
         }catch (Exception e){
             logger.error("ertr");
             e.printStackTrace();
