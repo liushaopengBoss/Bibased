@@ -27,7 +27,6 @@ mybatis:
 
 
 #http
-#从连接池中获取到连接的最长时间
 http:
     request:
             connectionRequestTimeout: 500  #从连接池中获取到连接的最长时间

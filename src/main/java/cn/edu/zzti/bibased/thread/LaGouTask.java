@@ -10,15 +10,15 @@ import java.util.concurrent.Callable;
  * 拉钩网的获取数据线程
  * 有返回值的
  */
-@Component
+
 public class LaGouTask implements Callable {
-   //final private String apiUrl;
+   final private String apiUrl;
     @Resource
     private HttpClientService HttpClientService;
-//
-//    public LaGouTask(String apiUrl) {
-//        this.apiUrl = apiUrl;
-//    }
+
+    public LaGouTask(String apiUrl) {
+        this.apiUrl = apiUrl;
+    }
 
     @Override
     public Object call() throws Exception {

@@ -39,10 +39,10 @@
 		<property name="connectionManager" ref="httpClientConnectionManager"></property>
 	</bean>
 	<!-- 通过httpClientBulider得到httpClient对象，并且设置httpClient为多利模式 -->
-	<!-- 要保证httpClient为多利，以为每次都是新的http请求 -->
+	<!-- 要保证httpClient为多利，以为每次都是新的http请求   HTTPS-->
 	<bean id="httpsClient" class="org.apache.http.impl.client.CloseableHttpClient"
 		  factory-bean="httpsClientBuilder" factory-method="build" scope="prototype" />
-	<!-- 要保证httpClient为多利，以为每次都是新的http请求 -->
+	<!-- 要保证httpClient为多利，以为每次都是新的http请求   HTTP-->
 	<bean id="httpClient" class="org.apache.http.impl.client.CloseableHttpClient"
 		  factory-bean="httpClientBuilder" factory-method="build" scope="prototype" />
 
@@ -63,8 +63,8 @@
 		<property name="socketTimeout" value="${http.request.socketTimeout}"/>
 		<!-- 提交请求前测试连接是否可用 -->
 		<property name="staleConnectionCheckEnabled" value="${http.request.staleConnectionCheckEnabled}"/>
-	</bean>	
-	
+	</bean>
+
 	<!-- 得到requestConfig实例 -->
 	<bean id="requestConfig" class="org.apache.http.client.config.RequestConfig"
 		  factory-bean="requestConfigBuilder" factory-method="build" />
@@ -79,5 +79,8 @@
 		<property name="rejectedExecutionHandler">
 			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
 		</property>
+	</bean>
+	<bean id="ompletionService" class="java.util.concurrent.ExecutorCompletionService">
+		<constructor-arg name="executor" ref="promotionExecutor"/>
 	</bean>
 </beans>
