@@ -2,7 +2,7 @@ package cn.edu.zzti.bibased.utilsTests;
 
 import cn.edu.zzti.bibased.BaseApplicationTests;
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
-import cn.edu.zzti.bibased.service.HttpClientService;
+import cn.edu.zzti.bibased.service.http.HttpClientService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

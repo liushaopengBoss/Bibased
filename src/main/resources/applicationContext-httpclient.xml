@@ -70,17 +70,20 @@
 		  factory-bean="requestConfigBuilder" factory-method="build" />
 	<!-- 线程池, 当池子满时, 调用处理阻塞等待 -->
 	<bean id="promotionExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<property name="corePoolSize" value="6"/>
-		<property name="maxPoolSize" value="18"/>
-		<property name="queueCapacity" value="12"/>
+		<property name="corePoolSize" value="18"/>
+		<property name="maxPoolSize" value="54"/>
+		<property name="queueCapacity" value="36"/>
 		<property name="waitForTasksToCompleteOnShutdown" value="true"/>
-		<property name="awaitTerminationSeconds" value="10"/>
-		<property name="keepAliveSeconds" value="30"/>
+		<property name="awaitTerminationSeconds" value="30"/>
+		<property name="keepAliveSeconds" value="90"/>
 		<property name="rejectedExecutionHandler">
 			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
 		</property>
 	</bean>
-	<bean id="ompletionService" class="java.util.concurrent.ExecutorCompletionService">
+	<!--解决多线程下返回值耗时顺序不同，而出现的阻塞问题-->
+	<bean id="completionService" class="java.util.concurrent.ExecutorCompletionService">
 		<constructor-arg name="executor" ref="promotionExecutor"/>
 	</bean>
+	<!--解决多线程下无法注入Service问题-->
+	<bean  class="cn.edu.zzti.bibased.utils.SpringContextUtils"/>
 </beans>

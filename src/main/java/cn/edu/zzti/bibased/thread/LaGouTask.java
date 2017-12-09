@@ -1,28 +1,35 @@
 package cn.edu.zzti.bibased.thread;
 
-import cn.edu.zzti.bibased.service.HttpClientService;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
+import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
+import cn.edu.zzti.bibased.constant.HttpType;
+import cn.edu.zzti.bibased.service.http.HttpClientService;
+import cn.edu.zzti.bibased.utils.SpringContextUtils;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 /**
  * 拉钩网的获取数据线程
  * 有返回值的
  */
-
 public class LaGouTask implements Callable {
-   final private String apiUrl;
-    @Resource
-    private HttpClientService HttpClientService;
-
-    public LaGouTask(String apiUrl) {
+    private String apiUrl; //url
+    private Map<String,Object> param;//参数
+    private String httpType;//请求类型
+    public LaGouTask(String apiUrl, Map<String,Object> param,String httpType) {
         this.apiUrl = apiUrl;
+        this.param = param;
+        this.httpType = httpType;
     }
 
     @Override
-    public Object call() throws Exception {
+    public String call() throws Exception {
+        HttpClientService httpClientService =(HttpClientService) SpringContextUtils.getBean("httpClientService");
+        String data = null;
+        switch (httpType){
+            case HttpType.GET:data =  httpClientService.doGet(apiUrl, param, HttpHeaderConstant.lagouGetHeader);break;
+            case HttpType.POST:data =  data = httpClientService.doPost(apiUrl, param, HttpHeaderConstant.lagouAjaxHeader);break;
+        }
+        return data;
 
-        return null;
     }
 }
