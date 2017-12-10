@@ -14,9 +14,9 @@
 	<!-- 定义httpclient连接池 -->
 	<bean id="httpClientConnectionManager" class="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" destroy-method="close">
 		<!-- 设置连接总数 -->
-		<property name="maxTotal" value="${http.pool.maxTotal}"></property>
+		<property name="maxTotal" value="200"></property>
 		<!-- 设置每个地址的并发数 -->
-		<property name="defaultMaxPerRoute" value="${http.pool.defaultMaxPerRoute}"></property>
+		<property name="defaultMaxPerRoute" value="100"></property>
 	</bean>
 	<!--ssl-->
 	<bean id="X509TrustManager" class="cn.edu.zzti.bibased.utils.MyX509TrustManager"/>
@@ -57,13 +57,13 @@
 	<!-- 定义requestConfig的工厂 -->
 	<bean id="requestConfigBuilder" class="org.apache.http.client.config.RequestConfig.Builder">
 		<!-- 从连接池中获取到连接的最长时间 -->
-		<property name="connectionRequestTimeout" value="${http.request.connectionRequestTimeout}"/>
+		<property name="connectionRequestTimeout" value="500"/>
 		<!-- 创建连接的最长时间 -->
-		<property name="connectTimeout" value="${http.request.connectTimeout}"/>
+		<property name="connectTimeout" value="5000"/>
 		<!-- 数据传输的最长时间 -->
-		<property name="socketTimeout" value="${http.request.socketTimeout}"/>
+		<property name="socketTimeout" value="30000"/>
 		<!-- 提交请求前测试连接是否可用 -->
-		<property name="staleConnectionCheckEnabled" value="${http.request.staleConnectionCheckEnabled}"/>
+		<property name="staleConnectionCheckEnabled" value="true"/>
 	</bean>
 
 	<!-- 得到requestConfig实例 -->

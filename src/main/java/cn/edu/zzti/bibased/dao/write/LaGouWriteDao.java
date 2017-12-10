@@ -19,7 +19,7 @@ public class LaGouWriteDao<T> {
     private JdbcTemplate jdbcTemplate;
 
     public void batchAdd(List<T> list){
-        handleSql(list);
+      //  handleSql(list);
         String sql= "insert into test1 (id,name) values (?,?)";
         BatchPreparedStatementSetter pssUpdate = new BatchPreparedStatementSetter() {
             @Override

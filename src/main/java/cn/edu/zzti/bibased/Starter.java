@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ImportResource("classpath:*.xml")//导入配置文件
 @SpringBootApplication()//springboot
 @EnableTransactionManagement//事务
-@MapperScan("cn.edu.zzti.bibased.dao")//mapper扫描
+@MapperScan("cn.edu.zzti.bibased.dao.read")//mapper扫描
 public class Starter {
     private static ConfigurableApplicationContext applicationContext;
     public static void main(String[] args) {
