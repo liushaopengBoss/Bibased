@@ -1,6 +1,5 @@
 package cn.edu.zzti.bibased.service.http;
 
-import cn.edu.zzti.bibased.constant.HttpType;
 import cn.edu.zzti.bibased.thread.LaGouTask;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,7 @@ public class LagouService {
      * 注入无阻塞的
      */
     @Resource
-    private CompletionService<String> completionService;
+    private CompletionService completionService;
 
     public String startGetDate(String apiUrl, Map<String,Object> param,String httpType) throws Exception{
         LaGouTask laGouTask = new LaGouTask(apiUrl,param, httpType);

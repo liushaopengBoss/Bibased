@@ -10,6 +10,7 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
+
 	<!-- 定义httpclient连接池 -->
 	<bean id="httpClientConnectionManager" class="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" destroy-method="close">
 		<!-- 设置连接总数 -->
@@ -68,6 +69,7 @@
 	<!-- 得到requestConfig实例 -->
 	<bean id="requestConfig" class="org.apache.http.client.config.RequestConfig"
 		  factory-bean="requestConfigBuilder" factory-method="build" />
+
 	<!-- 线程池, 当池子满时, 调用处理阻塞等待 -->
 	<bean id="promotionExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="18"/>

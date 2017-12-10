@@ -5,11 +5,12 @@ import cn.edu.zzti.bibased.dao.write.LaGouWriteDao;
 import cn.edu.zzti.bibased.pojo.PojoTest;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-
+@Transactional
 public class DaoTest extends BaseApplicationTests {
     @Resource
     private JdbcTemplate jdbcTemplate;

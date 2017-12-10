@@ -14,12 +14,13 @@ import java.util.List;
  * 用于数据的写入
  */
 @Repository
-public class LaGouWriteDao {
+public class LaGouWriteDao<T> {
     @Resource
     private JdbcTemplate jdbcTemplate;
 
-    public void batchAdd(List<?> list){
-        String sql= handleSql(list);
+    public void batchAdd(List<T> list){
+        handleSql(list);
+        String sql= "insert into test1 (id,name) values (?,?)";
         BatchPreparedStatementSetter pssUpdate = new BatchPreparedStatementSetter() {
             @Override
             public int getBatchSize() {
