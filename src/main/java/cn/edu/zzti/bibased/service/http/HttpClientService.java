@@ -1,4 +1,4 @@
-package cn.edu.zzti.bibased.service;
+package cn.edu.zzti.bibased.service.http;
 
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
 import org.apache.http.*;
@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -55,7 +54,7 @@ public class HttpClientService {
      * @return
      * @throws Exception
      */
-    public String doGet(String apiUrl,Map<String, String> params,Map<String, Object> headers)  {
+    public String doGet(String apiUrl,Map<String, Object> params,Map<String, Object> headers)  {
         URI uri = null;
         if (null == params) {
             uri = URI.create(apiUrl);
@@ -63,7 +62,7 @@ public class HttpClientService {
             try{
                 // 设置参数
                 URIBuilder builder = new URIBuilder(apiUrl);
-                for (Map.Entry<String, String> entry : params.entrySet()) {
+                for (Map.Entry<String, Object> entry : params.entrySet()) {
                     builder.addParameter(entry.getKey(), entry.getValue().toString());
                 }
                 uri = builder.build();

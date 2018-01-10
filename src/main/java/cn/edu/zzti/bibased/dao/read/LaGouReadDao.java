@@ -1,4 +1,4 @@
-package cn.edu.zzti.bibased.dao;
+package cn.edu.zzti.bibased.dao.read;
 
 import cn.edu.zzti.bibased.pojo.PojoTest;
 import org.apache.ibatis.annotations.Mapper;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public interface TestMapper {
+public interface LaGouReadDao {
 
     public void insert(PojoTest PojoTest);
 

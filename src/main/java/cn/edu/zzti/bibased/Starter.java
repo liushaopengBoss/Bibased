@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 //=======================================================
 //		          .----.
 //		       _.'__    `.
@@ -20,14 +21,15 @@ import org.springframework.context.annotation.ImportResource;
 //		    `-._______.-'
 //		    ___`. | .'___
 //		   (______|______)
-
+//
 //=======================================================
 /**
  * spring-boot启动类
  */
-@ImportResource("classpath:*.xml")
-@SpringBootApplication()
-@MapperScan("cn.edu.zzti.bibased.dao")
+@ImportResource("classpath:*.xml")//导入配置文件
+@SpringBootApplication()//springboot
+@EnableTransactionManagement//事务
+@MapperScan("cn.edu.zzti.bibased.dao.read")//mapper扫描
 public class Starter {
     private static ConfigurableApplicationContext applicationContext;
     public static void main(String[] args) {

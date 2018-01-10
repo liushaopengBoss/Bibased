@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.edu.zzti</groupId>
-    <artifactId>Bibased</artifactId>
+    <artifactId>bibased</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>Bibased</name>
+    <name>bibased</name>
     <description>Spring Boot</description>
 
     <parent>

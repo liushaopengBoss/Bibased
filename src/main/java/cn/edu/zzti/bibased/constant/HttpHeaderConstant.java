@@ -3,6 +3,9 @@ package cn.edu.zzti.bibased.constant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * http 请求header头
+ */
 public class HttpHeaderConstant {
 
     /**
