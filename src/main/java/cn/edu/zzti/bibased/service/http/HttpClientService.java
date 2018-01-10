@@ -18,6 +18,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -47,6 +48,9 @@ public class HttpClientService {
     @Resource
     private BasicCookieStore cookieStore;
 
+    @Resource
+    private PoolingHttpClientConnectionManager poolingHttpClientConnectionManager;
+
     /**
      * get请求
      * @param apiUrl   url
@@ -56,6 +60,9 @@ public class HttpClientService {
      */
     public String doGet(String apiUrl,Map<String, Object> params,Map<String, Object> headers)  {
         URI uri = null;
+        CloseableHttpResponse response = null;
+        HttpGet httpGet = new HttpGet(uri);
+        String data = "";
         if (null == params) {
             uri = URI.create(apiUrl);
         } else {
@@ -67,12 +74,10 @@ public class HttpClientService {
                 }
                 uri = builder.build();
             }catch (Exception e){
-                logger.error("https get参数设置一样："+e);
+                logger.error("https get参数设置一样："+e.getMessage());
+                e.printStackTrace();
             }
         }
-        String html = "";
-        CloseableHttpResponse response = null;
-        HttpGet httpGet = new HttpGet(uri);
         try {
             for (Map.Entry<String, Object> entry : HttpHeaderConstant.lagouGetHeader.entrySet()) {
                 httpGet.addHeader(entry.getKey(), entry.getValue().toString());
@@ -88,18 +93,19 @@ public class HttpClientService {
                 HttpEntity entity = response.getEntity();
                 String charset = getContentCharSet(entity);
                 HttpEntity mEntity = response.getEntity();
-                html = EntityUtils.toString(mEntity,charset);
+                data = EntityUtils.toString(mEntity,charset);
                 //获取header头
                 // Set-Cookie: SEARCH_ID=1b772ae7995c4065ba144eeea6d02636; Version=1; Max-Age=86400; Expires=Tue, 05-Dec-2017 05:37:10 GMT; Path=/
                 Header[] resultHeaders = response.getHeaders("Set-Cookie");
                 resultHeaders[0].getValue();
             }else{
                 httpGet.abort();
+                return null;
             }
-            List<Cookie> cookies = cookieStore.getCookies();
-            if(!CollectionUtils.isEmpty(cookies)){
-
-            }
+//            List<Cookie> cookies = cookieStore.getCookies();
+//            if(!CollectionUtils.isEmpty(cookies)){
+//
+//            }
         }catch(IOException e){
             httpGet.abort();
             logger.error("https get请求失败：uri:"+apiUrl+"\n"+e);
@@ -113,7 +119,7 @@ public class HttpClientService {
                 }
             }
         }
-        return html;
+        return data;
     }
 
     /**
@@ -126,7 +132,8 @@ public class HttpClientService {
     public String doPost(String apiUrl, Map<String, Object> params,Map<String, Object> headers)  {
         HttpPost httpPost = new HttpPost(apiUrl);
         CloseableHttpResponse response = null;
-        String html = null;
+        poolingHttpClientConnectionManager.getTotalStats();
+        String data = null;
         try {
             for (Map.Entry<String, Object> entry : headers.entrySet()) {
                 httpPost.addHeader(entry.getKey(), entry.getValue().toString());
@@ -141,6 +148,7 @@ public class HttpClientService {
             httpPost.setConfig(requestConfig);
             if(apiUrl.toString().contains("https://")){
                 response = httpsClient.execute(httpPost);
+
             }else{
                 response = httpClient.execute(httpPost);
             }
@@ -154,21 +162,22 @@ public class HttpClientService {
             if (entity == null) {
                 return null;
             }
-            html = EntityUtils.toString(entity, "utf-8");
+            data = EntityUtils.toString(entity, "utf-8");
         } catch (Exception e) {
             httpPost.abort();
-            logger.error("post请求异常：uri:"+apiUrl+"\n异常信息"+e);
+            logger.error("post请求异常：uri:"+apiUrl+"\n异常信息"+e.getMessage());
             e.printStackTrace();
         } finally {
             if (response != null) {
                 try {
                     EntityUtils.consume(response.getEntity());
+                    response.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-        return html;
+        return data;
     }
 
     private static String getContentCharSet(final HttpEntity entity) {

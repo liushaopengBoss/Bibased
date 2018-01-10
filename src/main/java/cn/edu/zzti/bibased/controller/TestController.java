@@ -24,16 +24,10 @@ public class TestController {
 //    TestMapper testMapper;
     @Resource
     private LagouService lagouService;
-    @Resource
-    LaGouWriteDao laGouWriteDao;
+
     @RequestMapping("/hello")
     public String ab(){
 
-        List<PojoTest> list = new ArrayList<>(3);
-        list.add(new PojoTest("3434545","hahaha1"));
-        list.add(new PojoTest("34344345","hahaha2"));
-        list.add(new PojoTest("343434556","hahaha3"));
-        laGouWriteDao.batchAdd(list);
         String url = "https://www.lagou.com/zhaopin/Java/?labelWords=label";
         String postUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city=%E5%8C%97%E4%BA%AC&needAddtionalResult=false&isSchoolJob=0";
         try{
@@ -43,7 +37,7 @@ public class TestController {
             param.put("first",true);
            url = lagouService.startGetDate(postUrl,param, HttpType.POST);
         }catch (Exception e){
-            logger.error("error"+e);
+            logger.error("error"+e.getMessage());
             e.printStackTrace();
         }
         return  url;

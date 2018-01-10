@@ -14,9 +14,9 @@
 	<!-- 定义httpclient连接池 -->
 	<bean id="httpClientConnectionManager" class="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" destroy-method="close">
 		<!-- 设置连接总数 -->
-		<property name="maxTotal" value="200"></property>
+		<property name="maxTotal" value="50"></property>
 		<!-- 设置每个地址的并发数 -->
-		<property name="defaultMaxPerRoute" value="100"></property>
+		<property name="defaultMaxPerRoute" value="50"></property>
 	</bean>
 	<!--ssl-->
 	<bean id="X509TrustManager" class="cn.edu.zzti.bibased.utils.MyX509TrustManager"/>
@@ -42,10 +42,10 @@
 	<!-- 通过httpClientBulider得到httpClient对象，并且设置httpClient为多利模式 -->
 	<!-- 要保证httpClient为多利，以为每次都是新的http请求   HTTPS-->
 	<bean id="httpsClient" class="org.apache.http.impl.client.CloseableHttpClient"
-		  factory-bean="httpsClientBuilder" factory-method="build" scope="prototype" />
-	<!-- 要保证httpClient为多利，以为每次都是新的http请求   HTTP-->
+		  factory-bean="httpsClientBuilder" factory-method="build" scope="prototype"  />
+	<!-- 要保证httpClient为多利，以为每次都是新的http请求 scope="prototype"  HTTP-->
 	<bean id="httpClient" class="org.apache.http.impl.client.CloseableHttpClient"
-		  factory-bean="httpClientBuilder" factory-method="build" scope="prototype" />
+		  factory-bean="httpClientBuilder" factory-method="build" scope="prototype"  />
 
 	<!-- 定期清理无效的连接 -->
 	<bean class="cn.edu.zzti.bibased.utils.IdleConnectionEvictor" destroy-method="shutdown">
@@ -57,7 +57,7 @@
 	<!-- 定义requestConfig的工厂 -->
 	<bean id="requestConfigBuilder" class="org.apache.http.client.config.RequestConfig.Builder">
 		<!-- 从连接池中获取到连接的最长时间 -->
-		<property name="connectionRequestTimeout" value="500"/>
+		<property name="connectionRequestTimeout" value="5000"/>
 		<!-- 创建连接的最长时间 -->
 		<property name="connectTimeout" value="5000"/>
 		<!-- 数据传输的最长时间 -->
@@ -73,7 +73,7 @@
 	<!-- 线程池, 当池子满时, 调用处理阻塞等待 -->
 	<bean id="promotionExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="18"/>
-		<property name="maxPoolSize" value="54"/>
+		<property name="maxPoolSize" value="50"/>
 		<property name="queueCapacity" value="36"/>
 		<property name="waitForTasksToCompleteOnShutdown" value="true"/>
 		<property name="awaitTerminationSeconds" value="30"/>
