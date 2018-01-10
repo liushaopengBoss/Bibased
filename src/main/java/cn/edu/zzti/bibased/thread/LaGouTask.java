@@ -27,7 +27,7 @@ public class LaGouTask implements Callable {
         String data = null;
         switch (httpType){
             case HttpType.GET:data =  httpClientService.doGet(apiUrl, param, HttpHeaderConstant.lagouGetHeader);break;
-            case HttpType.POST:data =  data = httpClientService.doPost(apiUrl, param, HttpHeaderConstant.lagouAjaxHeader);break;
+            case HttpType.POST:data =  httpClientService.doPost(apiUrl, param, HttpHeaderConstant.lagouAjaxHeader);break;
         }
         return data;
 

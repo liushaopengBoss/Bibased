@@ -14,6 +14,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
@@ -43,8 +44,6 @@ public class HttpClientService {
     @Resource
     private CloseableHttpClient httpClient;
 
-    @Resource
-    private RequestConfig requestConfig;
     @Resource
     private BasicCookieStore cookieStore;
 
@@ -82,7 +81,6 @@ public class HttpClientService {
             for (Map.Entry<String, Object> entry : HttpHeaderConstant.lagouGetHeader.entrySet()) {
                 httpGet.addHeader(entry.getKey(), entry.getValue().toString());
             }
-            httpGet.setConfig(requestConfig);
             if(uri.toString().contains("https://")){
                 response = httpsClient.execute(httpGet);
             }else{
@@ -91,16 +89,14 @@ public class HttpClientService {
             if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
                 //获取返回数据
                 HttpEntity entity = response.getEntity();
-                String charset = getContentCharSet(entity);
-                HttpEntity mEntity = response.getEntity();
-                data = EntityUtils.toString(mEntity,charset);
+                data = getDate(response.getEntity());
                 //获取header头
                 // Set-Cookie: SEARCH_ID=1b772ae7995c4065ba144eeea6d02636; Version=1; Max-Age=86400; Expires=Tue, 05-Dec-2017 05:37:10 GMT; Path=/
                 Header[] resultHeaders = response.getHeaders("Set-Cookie");
                 resultHeaders[0].getValue();
             }else{
                 httpGet.abort();
-                return null;
+                return data;
             }
 //            List<Cookie> cookies = cookieStore.getCookies();
 //            if(!CollectionUtils.isEmpty(cookies)){
@@ -111,13 +107,7 @@ public class HttpClientService {
             logger.error("https get请求失败：uri:"+apiUrl+"\n"+e);
             e.printStackTrace();
         } finally {
-            if (response != null) {
-                try {
-                    EntityUtils.consume(response.getEntity());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeConnection(response,httpGet);
         }
         return data;
     }
@@ -145,60 +135,74 @@ public class HttpClientService {
                 pairList.add(pair);
             }
             httpPost.setEntity(new UrlEncodedFormEntity(pairList, Charset.forName("UTF-8")));
-            httpPost.setConfig(requestConfig);
             if(apiUrl.toString().contains("https://")){
                 response = httpsClient.execute(httpPost);
-
             }else{
                 response = httpClient.execute(httpPost);
             }
-            response = httpsClient.execute(httpPost);
-            int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if ( response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
                 httpPost.abort();
                 return null;
             }
-            HttpEntity entity = response.getEntity();
-            if (entity == null) {
-                return null;
-            }
-            data = EntityUtils.toString(entity, "utf-8");
+            data = getDate(response.getEntity());
         } catch (Exception e) {
             httpPost.abort();
-            logger.error("post请求异常：uri:"+apiUrl+"\n异常信息"+e.getMessage());
+            logger.error("post请求异常：uri:"+apiUrl+"\n"+e.toString());
             e.printStackTrace();
         } finally {
-            if (response != null) {
-                try {
-                    EntityUtils.consume(response.getEntity());
-                    response.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeConnection(response,httpPost);
         }
         return data;
     }
 
-    private static String getContentCharSet(final HttpEntity entity) {
-
-        if (entity == null) {
-            throw new IllegalArgumentException("HTTP entity may not be null");
+    /**
+     *关闭连接
+     *
+     * @param response
+     * @param request
+     */
+    private void closeConnection(HttpResponse response,HttpRequestBase request){
+        if (response != null) {
+            EntityUtils.consumeQuietly(response.getEntity());
         }
-        String charset = null;
-        if (entity.getContentType() != null) {
-            HeaderElement[] values = entity.getContentType().getElements();
-            if (values.length > 0) {
-                org.apache.http.NameValuePair param = values[0].getParameterByName("charset");
-                if (param != null) {
-                    charset = param.getValue();
-                }
+        request.releaseConnection();
+    }
+
+    /**
+     * 获取数据
+     *
+     * @param entity
+     */
+    private String getDate(HttpEntity entity){
+        if(entity!=null){
+            try {
+                return  EntityUtils.toString(entity, "utf-8");
+            }catch (Exception e){
+
             }
         }
-
-        if(StringUtils.isEmpty(charset)){
-            charset = "UTF-8";
-        }
-        return charset;
+        return null;
     }
+
+//    private static String getContentCharSet(final HttpEntity entity) {
+//
+//        if (entity == null) {
+//            throw new IllegalArgumentException("HTTP entity may not be null");
+//        }
+//        String charset = null;
+//        if (entity.getContentType() != null) {
+//            HeaderElement[] values = entity.getContentType().getElements();
+//            if (values.length > 0) {
+//                org.apache.http.NameValuePair param = values[0].getParameterByName("charset");
+//                if (param != null) {
+//                    charset = param.getValue();
+//                }
+//            }
+//        }
+//
+//        if(StringUtils.isEmpty(charset)){
+//            charset = "UTF-8";
+//        }
+//        return charset;
+//    }
 }

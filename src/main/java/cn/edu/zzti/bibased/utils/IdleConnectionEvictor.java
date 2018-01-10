@@ -19,6 +19,7 @@ public class IdleConnectionEvictor extends Thread {
 		super();
 		this.connMgr = connMgr;
 		this.waitTime = waitTime;
+		this.setDaemon(true);
 		this.start();
 	}
 
@@ -30,8 +31,8 @@ public class IdleConnectionEvictor extends Thread {
 					this.wait(waitTime);
 					//关闭无效的连接
 					connMgr.closeExpiredConnections();
-					// 选择关闭 空闲30秒的链接
-					connMgr.closeIdleConnections(10, TimeUnit.SECONDS);
+					// 选择关闭 空闲20秒的链接
+					connMgr.closeIdleConnections(20, TimeUnit.SECONDS);
 				}
 			}
 		} catch (InterruptedException ex) {
@@ -39,8 +40,8 @@ public class IdleConnectionEvictor extends Thread {
 	}
 
 	public void shutdown() {
-		shutdown = true;
 		synchronized (this) {
+			shutdown = true;
 			notifyAll();
 		}
 	}

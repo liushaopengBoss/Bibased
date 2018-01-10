@@ -14,9 +14,9 @@
 	<!-- 定义httpclient连接池 -->
 	<bean id="httpClientConnectionManager" class="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" destroy-method="close">
 		<!-- 设置连接总数 -->
-		<property name="maxTotal" value="50"></property>
+		<property name="maxTotal" value="100"></property>
 		<!-- 设置每个地址的并发数 -->
-		<property name="defaultMaxPerRoute" value="50"></property>
+		<property name="defaultMaxPerRoute" value="100"></property>
 	</bean>
 	<!--ssl-->
 	<bean id="X509TrustManager" class="cn.edu.zzti.bibased.utils.MyX509TrustManager"/>
@@ -30,6 +30,7 @@
 	<bean id="httpsClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder"
 		factory-method="create">
 		<property name="SSLSocketFactory" ref="SSLConnectionSocketFactory"/>
+		<property name="defaultRequestConfig" ref="requestConfig"/>
 		<property name="connectionManager" ref="httpClientConnectionManager"></property>
 	</bean>
 	<bean id = "cookieStore" class="org.apache.http.impl.client.BasicCookieStore" scope="prototype" />
@@ -37,13 +38,14 @@
 	<bean id="httpClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder"
 		  factory-method="create">
 		<property name="defaultCookieStore" ref="cookieStore"/>
+		<property name="defaultRequestConfig" ref="requestConfig"/>
 		<property name="connectionManager" ref="httpClientConnectionManager"></property>
 	</bean>
-	<!-- 通过httpClientBulider得到httpClient对象，并且设置httpClient为多利模式 -->
 	<!-- 要保证httpClient为多利，以为每次都是新的http请求   HTTPS-->
 	<bean id="httpsClient" class="org.apache.http.impl.client.CloseableHttpClient"
 		  factory-bean="httpsClientBuilder" factory-method="build" scope="prototype"  />
-	<!-- 要保证httpClient为多利，以为每次都是新的http请求 scope="prototype"  HTTP-->
+
+	<!-- 要保证httpClient为多利，以为每次都是新的http请求   HTTP-->
 	<bean id="httpClient" class="org.apache.http.impl.client.CloseableHttpClient"
 		  factory-bean="httpClientBuilder" factory-method="build" scope="prototype"  />
 
@@ -59,11 +61,12 @@
 		<!-- 从连接池中获取到连接的最长时间 -->
 		<property name="connectionRequestTimeout" value="5000"/>
 		<!-- 创建连接的最长时间 -->
-		<property name="connectTimeout" value="5000"/>
+		<property name="connectTimeout" value="3000"/>
 		<!-- 数据传输的最长时间 -->
-		<property name="socketTimeout" value="30000"/>
+		<property name="socketTimeout" value="3000"/>
 		<!-- 提交请求前测试连接是否可用 -->
 		<property name="staleConnectionCheckEnabled" value="true"/>
+
 	</bean>
 
 	<!-- 得到requestConfig实例 -->
