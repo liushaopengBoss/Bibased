@@ -66,7 +66,6 @@
 		<property name="socketTimeout" value="3000"/>
 		<!-- 提交请求前测试连接是否可用 -->
 		<property name="staleConnectionCheckEnabled" value="true"/>
-
 	</bean>
 
 	<!-- 得到requestConfig实例 -->
