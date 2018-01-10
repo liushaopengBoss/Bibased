@@ -73,8 +73,8 @@ public class HttpClientService {
         }
         String html = "";
         CloseableHttpResponse response = null;
+        HttpGet httpGet = new HttpGet(uri);
         try {
-            HttpGet httpGet = new HttpGet(uri);
             for (Map.Entry<String, Object> entry : HttpHeaderConstant.lagouGetHeader.entrySet()) {
                 httpGet.addHeader(entry.getKey(), entry.getValue().toString());
             }
@@ -94,12 +94,15 @@ public class HttpClientService {
                 // Set-Cookie: SEARCH_ID=1b772ae7995c4065ba144eeea6d02636; Version=1; Max-Age=86400; Expires=Tue, 05-Dec-2017 05:37:10 GMT; Path=/
                 Header[] resultHeaders = response.getHeaders("Set-Cookie");
                 resultHeaders[0].getValue();
+            }else{
+                httpGet.abort();
             }
             List<Cookie> cookies = cookieStore.getCookies();
             if(!CollectionUtils.isEmpty(cookies)){
 
             }
         }catch(IOException e){
+            httpGet.abort();
             logger.error("https get请求失败：uri:"+apiUrl+"\n"+e);
             e.printStackTrace();
         } finally {
@@ -145,6 +148,7 @@ public class HttpClientService {
             response = httpsClient.execute(httpPost);
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
+                httpPost.abort();
                 return null;
             }
             HttpEntity entity = response.getEntity();
@@ -153,6 +157,7 @@ public class HttpClientService {
             }
             html = EntityUtils.toString(entity, "utf-8");
         } catch (Exception e) {
+            httpPost.abort();
             logger.error("post请求异常：uri:"+apiUrl+"\n异常信息"+e);
             e.printStackTrace();
         } finally {
