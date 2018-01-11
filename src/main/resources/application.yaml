@@ -27,16 +27,17 @@ mybatis:
 
 
 #http
-#从连接池中获取到连接的最长时间
 http:
-      request:
-               connectionRequestTimeout: 500  #从连接池中获取到连接的最长时间
-               connectTimeout: 5000
-               socketTimeout: 30000  #数据传输的最长时间
-               staleConnectionCheckEnabled: true #提交请求前测试连接是否可用
-      pool:
-            maxTotal: 200     #设置连接总数
-            defaultMaxPerRoute: 100    #设置每个地址的并发数
+    request:
+            connectionRequestTimeout: 500  #从连接池中获取到连接的最长时间
+            connectTimeout: 5000
+            socketTimeout: 30000  #数据传输的最长时间
+            staleConnectionCheckEnabled: true #提交请求前测试连接是否可用
+    pool:
+        maxTotal: 200     #设置连接总数
+        defaultMaxPerRoute: 100    #设置每个地址的并发数
+
+
 
 
 

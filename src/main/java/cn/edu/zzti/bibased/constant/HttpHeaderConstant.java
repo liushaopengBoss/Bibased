@@ -1,14 +1,17 @@
 package cn.edu.zzti.bibased.constant;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * http 请求header头
+ */
 public class HttpHeaderConstant {
 
     /**
      * 拉钩get请求header
      */
-    public static final Map<String,Object>  lagouGetHeader = new HashMap<>();
+    public static final Map<String,Object>  lagouGetHeader = new ConcurrentHashMap<>();
 
     static {
         lagouGetHeader.put("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
@@ -30,7 +33,7 @@ public class HttpHeaderConstant {
     /**
      * lagou ajax请求Header(post请求)
      */
-    public static final Map<String,Object>  lagouAjaxHeader = new HashMap<>();
+    public static final Map<String,Object>  lagouAjaxHeader = new ConcurrentHashMap<>();
 
     static {
         /**
@@ -53,7 +56,7 @@ public class HttpHeaderConstant {
         lagouAjaxHeader.put("X-Anit-Forge-Token","None");
         lagouAjaxHeader.put("X-Requested-With","XMLHttpRequest");
     }
-    public static final Map<String,String>  jobHeader = new HashMap<>();
+    public static final Map<String,String>  jobHeader = new ConcurrentHashMap<>();
     static {
 
     }
