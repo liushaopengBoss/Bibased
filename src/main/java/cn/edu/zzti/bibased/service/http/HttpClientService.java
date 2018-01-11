@@ -36,19 +36,17 @@ public class HttpClientService {
     /**
      * 注入HTTPS
      */
-    @Resource
+    @Resource(name = "httpsClient")
     private CloseableHttpClient httpsClient;
     /**
      * 注入HTTP
      */
-    @Resource
+    @Resource(name = "httpClient")
     private CloseableHttpClient httpClient;
 
     @Resource
     private BasicCookieStore cookieStore;
 
-    @Resource
-    private PoolingHttpClientConnectionManager poolingHttpClientConnectionManager;
 
     /**
      * get请求
@@ -59,8 +57,6 @@ public class HttpClientService {
      */
     public String doGet(String apiUrl,Map<String, Object> params,Map<String, Object> headers)  {
         URI uri = null;
-        CloseableHttpResponse response = null;
-        HttpGet httpGet = new HttpGet(uri);
         String data = "";
         if (null == params) {
             uri = URI.create(apiUrl);
@@ -77,6 +73,8 @@ public class HttpClientService {
                 e.printStackTrace();
             }
         }
+        CloseableHttpResponse response = null;
+        HttpGet httpGet = new HttpGet(uri);
         try {
             for (Map.Entry<String, Object> entry : HttpHeaderConstant.lagouGetHeader.entrySet()) {
                 httpGet.addHeader(entry.getKey(), entry.getValue().toString());
@@ -92,8 +90,8 @@ public class HttpClientService {
                 data = getDate(response.getEntity());
                 //获取header头
                 // Set-Cookie: SEARCH_ID=1b772ae7995c4065ba144eeea6d02636; Version=1; Max-Age=86400; Expires=Tue, 05-Dec-2017 05:37:10 GMT; Path=/
-                Header[] resultHeaders = response.getHeaders("Set-Cookie");
-                resultHeaders[0].getValue();
+//                Header[] resultHeaders = response.getHeaders("Set-Cookie");
+//                resultHeaders[0].getValue();
             }else{
                 httpGet.abort();
                 return data;
@@ -122,7 +120,6 @@ public class HttpClientService {
     public String doPost(String apiUrl, Map<String, Object> params,Map<String, Object> headers)  {
         HttpPost httpPost = new HttpPost(apiUrl);
         CloseableHttpResponse response = null;
-        poolingHttpClientConnectionManager.getTotalStats();
         String data = null;
         try {
             for (Map.Entry<String, Object> entry : headers.entrySet()) {
@@ -178,7 +175,7 @@ public class HttpClientService {
             try {
                 return  EntityUtils.toString(entity, "utf-8");
             }catch (Exception e){
-
+                logger.error("获取数据失败："+e.getMessage());
             }
         }
         return null;
