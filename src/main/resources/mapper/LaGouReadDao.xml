@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.zzti.bibased.dao.read.LaGouReadDao">
 
-    <insert id="insert" parameterType="cn.edu.zzti.bibased.pojo.PojoTest">
+    <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.PojoTest">
         insert into test1 (id,name) values (#{id},#{name})
     </insert>
 
-    <select id="get" resultType="cn.edu.zzti.bibased.pojo.PojoTest">
+    <select id="get" resultType="cn.edu.zzti.bibased.dto.PojoTest">
         select * from test1
     </select>
 </mapper>

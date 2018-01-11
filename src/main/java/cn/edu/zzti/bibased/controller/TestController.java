@@ -1,8 +1,6 @@
 package cn.edu.zzti.bibased.controller;
 
 import cn.edu.zzti.bibased.constant.HttpType;
-import cn.edu.zzti.bibased.dao.write.LaGouWriteDao;
-import cn.edu.zzti.bibased.pojo.PojoTest;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.service.http.LagouService;
 import org.slf4j.Logger;
@@ -11,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController

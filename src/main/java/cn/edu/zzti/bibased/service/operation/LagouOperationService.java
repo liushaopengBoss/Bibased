@@ -1,6 +1,6 @@
 package cn.edu.zzti.bibased.service.operation;
 
-import cn.edu.zzti.bibased.dao.write.LaGouWriteDao;
+import cn.edu.zzti.bibased.dao.write.dao.LagouWriteDao;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 @Service
-public class LaGouOperationService {
+public class LagouOperationService {
 
     @Resource
-    private LaGouWriteDao laGouWriteDao;
+    private LagouWriteDao lagouWriteDao;
     /**
      * 单个数据写入
      */

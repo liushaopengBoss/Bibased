@@ -1,4 +1,4 @@
-package cn.edu.zzti.bibased.pojo;
+package cn.edu.zzti.bibased.dto;
 
 public class PojoTest {
     private String id;
