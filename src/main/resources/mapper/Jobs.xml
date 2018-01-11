@@ -18,14 +18,14 @@
     <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.Jobs">
         <include refid="insertFields" />
         <foreach collection="list" item="job" index="index" separator="," >
-        (#{job.id},#{job.jobUrl},#{job.jobName},#{job.include},#{job.isValid},#{job.createTime},#{job.opTime},#{job.lastVer})
+        (#{job.id},#{job.jobUrl},#{job.jobName},#{job.include},1,UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),0)
       </foreach>
     </insert>
 
     <select id="insert" resultType="cn.edu.zzti.bibased.dto.Jobs">
         <include refid="insertFields" />
         <![CDATA[
-        (#{job.id},#{job.jobUrl},#{job.jobName},#{job.include},#{job.isValid},#{job.createTime},#{job.opTime},#{job.lastVer})
+       (#{job.id},#{job.jobUrl},#{job.jobName},#{job.include},1,UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),0)
           ]]>
     </select>
 </mapper>

@@ -25,7 +25,7 @@ public class Jobs implements Serializable {
     private long opTime;
     private long lastVer;
     private int isValid;
-
+    private int parentId;
     public int getId() {
         return id;
     }
@@ -89,4 +89,5 @@ public class Jobs implements Serializable {
     public void setIsValid(int isValid) {
         this.isValid = isValid;
     }
+
 }
