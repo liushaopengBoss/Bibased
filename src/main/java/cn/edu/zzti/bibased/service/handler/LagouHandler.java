@@ -34,10 +34,10 @@ public class LagouHandler {
             for (int i = 0; i <size ; i++) {
                 Element element = menuBox.get(i);
                 String jobName = element.select("h2").text();
-                Jobs job = new Jobs();
+                Jobs job = new Jobs();//root
                 jobs.add(job);
                 job.setJobName(jobName);
-//                job.setParentId(0);
+                job.setInclude(WebsiteEnum.LAGOU.getWebCode());
                 Elements categoryList = element.getElementsByClass("category-list");
                 jobs(categoryList,jobs);
                 Elements menuSubDn = element.getElementsByClass("menu_sub");
@@ -62,7 +62,7 @@ public class LagouHandler {
             String jobsName = element1.text(); //职位名称
             Jobs job = new Jobs();
             jobs.add(job);
-            job.setInclude(WebsiteEnum.LAGOU.getWebId());
+            job.setInclude(WebsiteEnum.LAGOU.getWebCode());
             job.setJobName(jobsName);
             job.setJobUrl(jobUrl);
         }

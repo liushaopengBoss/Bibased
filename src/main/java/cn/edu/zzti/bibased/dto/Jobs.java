@@ -8,24 +8,18 @@ import java.io.Serializable;
  * Created by huaidou on  2018/1/11
  */
 public class Jobs implements Serializable {
-    /**
-     *   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
-     `job_url` varchar(50) DEFAULT NULL COMMENT '职位url链接地址',
-     `job_name` varchar(50) DEFAULT NULL COMMENT '职位名称',
-     `include` bigint(2) DEFAULT NULL COMMENT '属于哪个网站',
-     `is_valid` tinyint(4) DEFAULT NULL COMMENT '是否有效',
-     `create_time` bigint(20) DEFAULT NULL COMMENT '创建时间',
-     `op_time` bigint(20) DEFAULT NULL COMMENT '修改时间',
-     */
     private int id;
-    private String jobUrl;
-    private String jobName;
-    private int include;
-    private long createTime;
-    private long opTime;
-    private long lastVer;
-    private int isValid;
-    private int parentId;
+    private String jobUrl;//职位url链接地址
+    private String jobName;//职位名称
+    private String include;//属于哪个网站
+    private int parentId;//父id
+    private int rootId;//根节点
+    private boolean leaf;//是否为叶子节点
+    private long createTime;//创建时间
+    private long opTime;//修改时间
+    private long lastVer;// 版本
+    private int isValid;//是否有效
+
     public int getId() {
         return id;
     }
@@ -50,12 +44,36 @@ public class Jobs implements Serializable {
         this.jobName = jobName;
     }
 
-    public int getInclude() {
+    public String getInclude() {
         return include;
     }
 
-    public void setInclude(int include) {
+    public void setInclude(String include) {
         this.include = include;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
+    }
+
+    public int getRootId() {
+        return rootId;
+    }
+
+    public void setRootId(int rootId) {
+        this.rootId = rootId;
+    }
+
+    public boolean isLeaf() {
+        return leaf;
+    }
+
+    public void setLeaf(boolean leaf) {
+        this.leaf = leaf;
     }
 
     public long getCreateTime() {
@@ -89,5 +107,4 @@ public class Jobs implements Serializable {
     public void setIsValid(int isValid) {
         this.isValid = isValid;
     }
-
 }

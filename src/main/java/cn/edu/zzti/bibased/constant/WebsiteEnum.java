@@ -6,29 +6,22 @@ package cn.edu.zzti.bibased.constant;
  * Created by huaidou on  2018/1/11
  */
 public enum WebsiteEnum {
-    LAGOU(1,"拉钩");
+    LAGOU("lagou","拉钩"),ZHILIAN("zhilian","智联"),
+    JOB("51job","51Job");
 
-    private int webId;
+    private String webCode;
     private String webName;
 
-    WebsiteEnum(int webId, String webName) {
-        this.webId = webId;
+    WebsiteEnum(String webCode, String webName) {
+        this.webCode = webCode;
         this.webName = webName;
     }
 
-    public int getWebId() {
-        return webId;
-    }
-
-    public void setWebId(int webId) {
-        this.webId = webId;
+    public String getWebCode() {
+        return webCode;
     }
 
     public String getWebName() {
         return webName;
-    }
-
-    public void setWebName(String webName) {
-        this.webName = webName;
     }
 }

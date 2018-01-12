@@ -1,31 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.zzti.bibased.dao.mapper.JobsMapper">
-    <sql id="returnFields">
+    <resultMap id="BaseResultMap" type="cn.edu.zzti.bibased.dto.Jobs" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="job_url" property="jobUrl" jdbcType="VARCHAR" />
+        <result column="job_name" property="jobName" jdbcType="VARCHAR" />
+        <result column="include" property="include" jdbcType="VARCHAR" />
+        <result column="is_valid" property="isValid" jdbcType="TINYINT" />
+        <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+        <result column="root_id" property="rootId" jdbcType="VARCHAR" />
+        <result column="leaf" property="leaf" jdbcType="BIT" />
+        <result column="create_time" property="createTime" jdbcType="BIGINT" />
+        <result column="op_time" property="opTime" jdbcType="BIGINT" />
+        <result column="last_ver" property="lastVer" jdbcType="BIGINT" />
+    </resultMap>
+    <sql id="fields">
         <![CDATA[
-         select
-            id,job_url,job_name,include,is_valid,create_time,op_time,last_ver
-         FROM
-            jobs
+            id, job_url, job_name, include, parent_id, root_id, leaf, create_time, op_time,is_valid, last_ver
         ]]>
     </sql>
-
-    <sql id="insertFields">
+    <sql id="valueFields">
         <![CDATA[
-         insert into jobs (id,job_url,job_name,include,is_valid,create_time,op_time,last_ver) values
-        ]]>
+        (#{job.id},#{job.jobUrl},#{job.jobName},#{job.include},#{job.parentId},#{job.rootId},#{job.leaf},1,UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),0)
+          ]]>
+    </sql>
+    <sql id="selectSql">
+         select
+         <include refid="fields" />
+         FROM  jobs
+    </sql>
+    <sql id="insertSql">
+         insert into jobs (
+        <include refid="fields" />
+         ) values
     </sql>
     <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.Jobs">
-        <include refid="insertFields" />
+        <include refid="insertSql" />
         <foreach collection="list" item="job" index="index" separator="," >
-        (#{job.id},#{job.jobUrl},#{job.jobName},#{job.include},1,UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),0)
+            <include refid="valueFields" />
       </foreach>
     </insert>
-
-    <select id="insert" resultType="cn.edu.zzti.bibased.dto.Jobs">
+    <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.Jobs">
         <include refid="insertFields" />
-        <![CDATA[
-       (#{job.id},#{job.jobUrl},#{job.jobName},#{job.include},1,UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),0)
-          ]]>
-    </select>
+        <include refid="valueFields" />
+    </insert>
 </mapper>

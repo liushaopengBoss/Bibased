@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages={"cn.edu.zzti.bibased"})
 @MapperScan("cn.edu.zzti.bibased.dao.mapper")//mapper扫描
 @ContextConfiguration(locations = {"classpath:applicationContext-config.xml"})//使用配置文件
-@EnableTransactionManagement//事务
 public  class BaseApplicationTests {
 
 }

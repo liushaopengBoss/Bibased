@@ -7,6 +7,7 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.http.client.config.RequestConfig;
@@ -90,8 +91,9 @@ public class HttpClientService {
                 data = getDate(response.getEntity());
                 //获取header头
                 // Set-Cookie: SEARCH_ID=1b772ae7995c4065ba144eeea6d02636; Version=1; Max-Age=86400; Expires=Tue, 05-Dec-2017 05:37:10 GMT; Path=/
-//                Header[] resultHeaders = response.getHeaders("Set-Cookie");
-//                resultHeaders[0].getValue();
+                Header[] allHeaders = response.getAllHeaders();
+                Header[] resultHeaders = response.getHeaders("Set-Cookie");
+                Locale locale = response.getLocale();
             }else{
                 httpGet.abort();
                 return data;
