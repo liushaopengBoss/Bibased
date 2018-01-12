@@ -2,30 +2,21 @@ package cn.edu.zzti.bibased.utilsTests;
 
 import cn.edu.zzti.bibased.BaseApplicationTests;
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
-import cn.edu.zzti.bibased.dao.write.dao.LagouWriteDao;
+import cn.edu.zzti.bibased.dao.lagou.LagouDao;
 import cn.edu.zzti.bibased.dto.Jobs;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
-import jdk.nashorn.internal.objects.NativeArray;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class HttpTests extends BaseApplicationTests {
 
     @Autowired
     private HttpClientService httpClientService;
     @Resource
-    LagouWriteDao lagouWriteDao;
+    LagouDao lagouWriteDao;
     @Test
     public void getService() throws Exception {
 
@@ -33,6 +24,7 @@ public class HttpTests extends BaseApplicationTests {
         String url = "https://www.lagou.com";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
         List<Jobs> jobs = LagouHandler.getJobs(html);
+
         lagouWriteDao.batchInsertJobs(jobs);
     }
 
