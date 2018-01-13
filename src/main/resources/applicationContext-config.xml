@@ -73,7 +73,7 @@
 		  factory-bean="requestConfigBuilder" factory-method="build" />
 
 	<!-- 线程池, 当池子满时, 调用处理阻塞等待 -->
-	<bean id="promotionExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	<bean id="lagouPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="18"/>
 		<property name="maxPoolSize" value="50"/>
 		<property name="queueCapacity" value="36"/>
@@ -86,7 +86,7 @@
 	</bean>
 	<!--解决多线程下返回值耗时顺序不同，而出现的阻塞问题-->
 	<bean id="completionService" class="java.util.concurrent.ExecutorCompletionService">
-		<constructor-arg name="executor" ref="promotionExecutor"/>
+		<constructor-arg name="executor" ref="lagouPool"/>
 	</bean>
 	<!--解决多线程下无法注入Service问题-->
 	<bean  class="cn.edu.zzti.bibased.utils.SpringContextUtils"/>

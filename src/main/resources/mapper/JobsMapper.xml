@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.zzti.bibased.dao.mapper.JobsMapper">
     <resultMap id="BaseResultMap" type="cn.edu.zzti.bibased.dto.Jobs" >
-        <id column="id" property="id" jdbcType="INTEGER" />
+        <id column="id" property="id" jdbcType="BIGINT" />
         <result column="job_url" property="jobUrl" jdbcType="VARCHAR" />
         <result column="job_name" property="jobName" jdbcType="VARCHAR" />
         <result column="include" property="include" jdbcType="VARCHAR" />
         <result column="is_valid" property="isValid" jdbcType="TINYINT" />
-        <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+        <result column="parent_id" property="parentId" jdbcType="BIGINT" />
         <result column="root_id" property="rootId" jdbcType="VARCHAR" />
         <result column="leaf" property="leaf" jdbcType="BIT" />
         <result column="create_time" property="createTime" jdbcType="BIGINT" />
@@ -21,18 +21,14 @@
     </sql>
     <sql id="valueFields">
         <![CDATA[
-        (#{job.id},#{job.jobUrl},#{job.jobName},#{job.include},#{job.parentId},#{job.rootId},#{job.leaf},1,UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),0)
+        (#{job.id},#{job.jobUrl},#{job.jobName},#{job.include},#{job.parentId},#{job.rootId},#{job.leaf},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),1,0)
           ]]>
     </sql>
     <sql id="selectSql">
-         select
-         <include refid="fields" />
-         FROM  jobs
+         select <include refid="fields" /> FROM  jobs
     </sql>
     <sql id="insertSql">
-         insert into jobs (
-        <include refid="fields" />
-         ) values
+         insert into jobs (<include refid="fields" />) values
     </sql>
     <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.Jobs">
         <include refid="insertSql" />
@@ -41,7 +37,7 @@
       </foreach>
     </insert>
     <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.Jobs">
-        <include refid="insertFields" />
+        <include refid="insertSql" />
         <include refid="valueFields" />
     </insert>
 </mapper>

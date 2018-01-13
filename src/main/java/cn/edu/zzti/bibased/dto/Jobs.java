@@ -8,23 +8,23 @@ import java.io.Serializable;
  * Created by huaidou on  2018/1/11
  */
 public class Jobs implements Serializable {
-    private int id;
+    private long id;
     private String jobUrl;//职位url链接地址
     private String jobName;//职位名称
     private String include;//属于哪个网站
-    private int parentId;//父id
-    private int rootId;//根节点
-    private boolean leaf;//是否为叶子节点
+    private long parentId;//父id  如果父节点为0 则为根节点
+    private long rootId;//根节点
+    private boolean leaf = true;//是否为叶子节点
     private long createTime;//创建时间
     private long opTime;//修改时间
     private long lastVer;// 版本
     private int isValid;//是否有效
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -52,19 +52,19 @@ public class Jobs implements Serializable {
         this.include = include;
     }
 
-    public int getParentId() {
+    public long getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(long parentId) {
         this.parentId = parentId;
     }
 
-    public int getRootId() {
+    public long getRootId() {
         return rootId;
     }
 
-    public void setRootId(int rootId) {
+    public void setRootId(long rootId) {
         this.rootId = rootId;
     }
 

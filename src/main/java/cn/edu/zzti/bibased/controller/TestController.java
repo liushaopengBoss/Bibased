@@ -2,7 +2,7 @@ package cn.edu.zzti.bibased.controller;
 
 import cn.edu.zzti.bibased.constant.HttpType;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
-import cn.edu.zzti.bibased.service.http.LagouService;
+import cn.edu.zzti.bibased.service.operation.lagou.LagouService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +16,6 @@ import java.util.Map;
 public class TestController {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpClientService.class);
-//    @Resource
-//    TestMapper testMapper;
     @Resource
     private LagouService lagouService;
 
@@ -37,6 +35,12 @@ public class TestController {
             e.printStackTrace();
         }
         return  url;
+    }
+
+    @RequestMapping("/jobs")
+    public String jobs(){
+        lagouService.initLagouInfo();
+        return "success";
     }
 
 }
