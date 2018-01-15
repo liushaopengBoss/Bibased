@@ -7,7 +7,7 @@ import java.io.Serializable;
  * <p>
  * Created by huaidou on  2018/1/11
  */
-public class Jobs implements Serializable {
+public class Position implements Serializable {
     private long id;
     private String jobUrl;//职位url链接地址
     private String jobName;//职位名称

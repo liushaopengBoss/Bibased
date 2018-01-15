@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.edu.zzti.bibased.dao.mapper.JobsMapper">
-    <resultMap id="BaseResultMap" type="cn.edu.zzti.bibased.dto.Jobs" >
+<mapper namespace="cn.edu.zzti.bibased.dao.mapper.PositionMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.zzti.bibased.dto.Position" >
         <id column="id" property="id" jdbcType="BIGINT" />
         <result column="job_url" property="jobUrl" jdbcType="VARCHAR" />
         <result column="job_name" property="jobName" jdbcType="VARCHAR" />
@@ -30,13 +30,13 @@
     <sql id="insertSql">
          insert into jobs (<include refid="fields" />) values
     </sql>
-    <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.Jobs">
+    <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.Position">
         <include refid="insertSql" />
         <foreach collection="list" item="job" index="index" separator="," >
             <include refid="valueFields" />
       </foreach>
     </insert>
-    <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.Jobs">
+    <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.Position">
         <include refid="insertSql" />
         <include refid="valueFields" />
     </insert>

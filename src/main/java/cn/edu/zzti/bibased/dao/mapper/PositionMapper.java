@@ -1,7 +1,6 @@
 package cn.edu.zzti.bibased.dao.mapper;
 
-import cn.edu.zzti.bibased.dto.Jobs;
-import org.springframework.stereotype.Repository;
+import cn.edu.zzti.bibased.dto.Position;
 
 import java.util.List;
 
@@ -10,16 +9,16 @@ import java.util.List;
  * <p>
  * Created by huaidou on  2018/1/11
  */
-public interface JobsMapper {
+public interface PositionMapper {
     /**
      * 插入
      * @param jobs
      */
-     void insert(Jobs jobs);
+     void insert(Position jobs);
 
     /**
      * 批量插入
      * @param jobList
      */
-     void batchInsert(List<Jobs> jobList);
+     void batchInsert(List<Position> jobList);
 }

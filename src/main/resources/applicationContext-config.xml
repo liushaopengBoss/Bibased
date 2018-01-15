@@ -84,30 +84,7 @@
 			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
 		</property>
 	</bean>
-	<!-- 线程池, 当池子满时, 调用处理阻塞等待 -->
-	<bean id="zhilianPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<property name="corePoolSize" value="18"/>
-		<property name="maxPoolSize" value="50"/>
-		<property name="queueCapacity" value="36"/>
-		<property name="waitForTasksToCompleteOnShutdown" value="true"/>
-		<property name="awaitTerminationSeconds" value="30"/>
-		<property name="keepAliveSeconds" value="90"/>
-		<property name="rejectedExecutionHandler">
-			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
-		</property>
-	</bean>
-	<!-- 线程池, 当池子满时, 调用处理阻塞等待 -->
-	<bean id="jobPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-		<property name="corePoolSize" value="18"/>
-		<property name="maxPoolSize" value="50"/>
-		<property name="queueCapacity" value="36"/>
-		<property name="waitForTasksToCompleteOnShutdown" value="true"/>
-		<property name="awaitTerminationSeconds" value="30"/>
-		<property name="keepAliveSeconds" value="90"/>
-		<property name="rejectedExecutionHandler">
-			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
-		</property>
-	</bean>
+
 	<!--解决多线程下返回值耗时顺序不同，而出现的阻塞问题-->
 	<bean id="completionService" class="java.util.concurrent.ExecutorCompletionService">
 		<constructor-arg name="executor" ref="lagouPool"/>

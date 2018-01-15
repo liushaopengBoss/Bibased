@@ -2,7 +2,7 @@ package cn.edu.zzti.bibased.service.handler;
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dto.City;
-import cn.edu.zzti.bibased.dto.Jobs;
+import cn.edu.zzti.bibased.dto.Position;
 import cn.edu.zzti.bibased.utils.IDUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -25,16 +25,16 @@ public class LagouHandler {
      * @param html
      * @return
      */
-    public static List<Jobs> getJobs(String html){
+    public static List<Position> getJobs(String html){
         if(StringUtils.isNotEmpty(html)){
             Document lagouJobs = Jsoup.parse(html);
-            List<Jobs> jobs =new LinkedList<>();
+            List<Position> jobs =new LinkedList<>();
             Elements menuBox = lagouJobs.getElementsByClass("menu_box");
             int size = menuBox.size();
             for (int i = 0; i <size ; i++) {
                 Element element = menuBox.get(i);
                 String jobName = element.select("h2").text();
-                Jobs job = new Jobs();//root
+                Position job = new Position();//root
                 jobs.add(job);
                 job.setJobName(jobName);
                 job.setInclude(WebsiteEnum.LAGOU.getWebCode());
@@ -56,13 +56,13 @@ public class LagouHandler {
      * @param elements
      * @param jobs
      */
-    private static void jobs(Elements elements, List<Jobs> jobs,Jobs rootJob){
+    private static void jobs(Elements elements, List<Position> jobs, Position rootJob){
         Elements titles = elements.select("dt");
         Elements contents = elements.select("dd");
         for (int i = 0; i <titles.size() ; i++) {
             Element titleElement = titles.get(i);
             String title = titleElement.select("span").text();
-            Jobs job = new Jobs();
+            Position job = new Position();
             jobs.add(job);
             job.setInclude(WebsiteEnum.LAGOU.getWebCode());
             job.setJobName(title);
@@ -75,7 +75,7 @@ public class LagouHandler {
                 Element element1 = aTages.get(j);
                 String jobUrl = element1.attr("href"); //职位的Url
                 String jobsName = element1.text(); //职位名称
-                Jobs job2 = new Jobs();
+                Position job2 = new Position();
                 jobs.add(job2);
                 job2.setInclude(WebsiteEnum.LAGOU.getWebCode());
                 job2.setJobName(jobsName);
