@@ -2,7 +2,7 @@ package cn.edu.zzti.bibased.service.operation.lagou;
 
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
 import cn.edu.zzti.bibased.dto.City;
-import cn.edu.zzti.bibased.dto.Position;
+import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.thread.LaGouTask;
@@ -64,7 +64,7 @@ public class LagouService {
     private void collectionJobInformation(){
         String url = "https://www.lagou.com";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
-        List<Position> jobs = LagouHandler.getJobs(html);
+        List<Positions> jobs = LagouHandler.getJobs(html);
         lagouOperationService.batchAddJob(jobs);
     }
     /**

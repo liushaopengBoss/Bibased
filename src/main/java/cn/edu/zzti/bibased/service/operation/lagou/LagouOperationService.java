@@ -2,7 +2,7 @@ package cn.edu.zzti.bibased.service.operation.lagou;
 
 import cn.edu.zzti.bibased.dao.lagou.LagouDao;
 import cn.edu.zzti.bibased.dto.City;
-import cn.edu.zzti.bibased.dto.Position;
+import cn.edu.zzti.bibased.dto.Positions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -21,7 +21,7 @@ public class LagouOperationService{
      * 单个数据写入
      */
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
-    public void addJob(Position jobs){
+    public void addJob(Positions jobs){
         lagouDao.insertJob(jobs);
     }
 
@@ -29,7 +29,7 @@ public class LagouOperationService{
      * 批量数据写入
      */
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
-    public void batchAddJob(List<Position> jobs){
+    public void batchAddJob(List<Positions> jobs){
         lagouDao.batchInsertJobs(jobs);
     }
 

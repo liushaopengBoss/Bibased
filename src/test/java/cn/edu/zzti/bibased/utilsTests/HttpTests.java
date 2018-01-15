@@ -3,7 +3,7 @@ package cn.edu.zzti.bibased.utilsTests;
 import cn.edu.zzti.bibased.BaseApplicationTests;
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
 import cn.edu.zzti.bibased.dao.lagou.LagouDao;
-import cn.edu.zzti.bibased.dto.Position;
+import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.utils.IDUtils;
@@ -25,7 +25,7 @@ public class HttpTests extends BaseApplicationTests {
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
 
         for (int i = 0; i < 1000; i++) {
-            List<Position> jobs = LagouHandler.getJobs(html);
+            List<Positions> jobs = LagouHandler.getJobs(html);
             lagouWriteDao.batchInsertJobs(jobs);
             System.out.printf(""+i);
         }

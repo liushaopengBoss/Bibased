@@ -2,7 +2,7 @@ package cn.edu.zzti.bibased.service.handler;
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dto.City;
-import cn.edu.zzti.bibased.dto.Position;
+import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.utils.IDUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -25,18 +25,18 @@ public class LagouHandler {
      * @param html
      * @return
      */
-    public static List<Position> getJobs(String html){
+    public static List<Positions> getJobs(String html){
         if(StringUtils.isNotEmpty(html)){
             Document lagouJobs = Jsoup.parse(html);
-            List<Position> jobs =new LinkedList<>();
+            List<Positions> jobs =new LinkedList<>();
             Elements menuBox = lagouJobs.getElementsByClass("menu_box");
             int size = menuBox.size();
             for (int i = 0; i <size ; i++) {
                 Element element = menuBox.get(i);
                 String jobName = element.select("h2").text();
-                Position job = new Position();//root
+                Positions job = new Positions();//root
                 jobs.add(job);
-                job.setJobName(jobName);
+                job.setPositionName(jobName);
                 job.setInclude(WebsiteEnum.LAGOU.getWebCode());
                 long jobsIntId = IDUtils.getJobsIntId();
                 job.setId(jobsIntId);
@@ -56,16 +56,16 @@ public class LagouHandler {
      * @param elements
      * @param jobs
      */
-    private static void jobs(Elements elements, List<Position> jobs, Position rootJob){
+    private static void jobs(Elements elements, List<Positions> jobs, Positions rootJob){
         Elements titles = elements.select("dt");
         Elements contents = elements.select("dd");
         for (int i = 0; i <titles.size() ; i++) {
             Element titleElement = titles.get(i);
             String title = titleElement.select("span").text();
-            Position job = new Position();
+            Positions job = new Positions();
             jobs.add(job);
             job.setInclude(WebsiteEnum.LAGOU.getWebCode());
-            job.setJobName(title);
+            job.setPositionName(title);
             job.setId(IDUtils.getJobsIntId());
             job.setParentId(rootJob.getId());
             job.setRootId(rootJob.getRootId());
@@ -75,11 +75,11 @@ public class LagouHandler {
                 Element element1 = aTages.get(j);
                 String jobUrl = element1.attr("href"); //职位的Url
                 String jobsName = element1.text(); //职位名称
-                Position job2 = new Position();
+                Positions job2 = new Positions();
                 jobs.add(job2);
                 job2.setInclude(WebsiteEnum.LAGOU.getWebCode());
-                job2.setJobName(jobsName);
-                job2.setJobUrl(jobUrl);
+                job2.setPositionName(jobsName);
+                job2.setPositionUrl(jobUrl);
                 job2.setParentId(job.getId());
                 job2.setRootId(rootJob.getRootId());
             }

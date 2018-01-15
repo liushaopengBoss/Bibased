@@ -7,10 +7,10 @@ import java.io.Serializable;
  * <p>
  * Created by huaidou on  2018/1/11
  */
-public class Position implements Serializable {
+public class Positions implements Serializable {
     private long id;
-    private String jobUrl;//职位url链接地址
-    private String jobName;//职位名称
+    private String positionUrl;//职位url链接地址
+    private String positionName;//职位名称
     private String include;//属于哪个网站
     private long parentId;//父id  如果父节点为0 则为根节点
     private long rootId;//根节点
@@ -28,20 +28,20 @@ public class Position implements Serializable {
         this.id = id;
     }
 
-    public String getJobUrl() {
-        return jobUrl;
+    public String getPositionUrl() {
+        return positionUrl;
     }
 
-    public void setJobUrl(String jobUrl) {
-        this.jobUrl = jobUrl;
+    public void setPositionUrl(String positionUrl) {
+        this.positionUrl = positionUrl;
     }
 
-    public String getJobName() {
-        return jobName;
+    public String getPositionName() {
+        return positionName;
     }
 
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
     }
 
     public String getInclude() {

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.edu.zzti.bibased.dao.mapper.PositionMapper">
-    <resultMap id="BaseResultMap" type="cn.edu.zzti.bibased.dto.Position" >
+<mapper namespace="cn.edu.zzti.bibased.dao.mapper.PositionsMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.zzti.bibased.dto.Positions" >
         <id column="id" property="id" jdbcType="BIGINT" />
-        <result column="job_url" property="jobUrl" jdbcType="VARCHAR" />
-        <result column="job_name" property="jobName" jdbcType="VARCHAR" />
+        <result column="position_url" property="positionUrl" jdbcType="VARCHAR" />
+        <result column="position_name" property="positionName" jdbcType="VARCHAR" />
         <result column="include" property="include" jdbcType="VARCHAR" />
         <result column="is_valid" property="isValid" jdbcType="TINYINT" />
         <result column="parent_id" property="parentId" jdbcType="BIGINT" />
@@ -16,27 +16,27 @@
     </resultMap>
     <sql id="fields">
         <![CDATA[
-            id, job_url, job_name, include, parent_id, root_id, leaf, create_time, op_time,is_valid, last_ver
+            id, position_url, position_name, include, parent_id, root_id, leaf, create_time, op_time,is_valid, last_ver
         ]]>
     </sql>
     <sql id="valueFields">
         <![CDATA[
-        (#{job.id},#{job.jobUrl},#{job.jobName},#{job.include},#{job.parentId},#{job.rootId},#{job.leaf},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),1,0)
+        (#{position.id},#{position.positionUrl},#{position.positionName},#{position.include},#{position.parentId},#{position.rootId},#{position.leaf},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),1,0)
           ]]>
     </sql>
     <sql id="selectSql">
-         select <include refid="fields" /> FROM  jobs
+         select <include refid="fields" /> FROM  positions
     </sql>
     <sql id="insertSql">
-         insert into jobs (<include refid="fields" />) values
+         insert into positions (<include refid="fields" />) values
     </sql>
-    <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.Position">
+    <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.Positions">
         <include refid="insertSql" />
-        <foreach collection="list" item="job" index="index" separator="," >
+        <foreach collection="list" item="position" index="index" separator="," >
             <include refid="valueFields" />
       </foreach>
     </insert>
-    <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.Position">
+    <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.Positions">
         <include refid="insertSql" />
         <include refid="valueFields" />
     </insert>
