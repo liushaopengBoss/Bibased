@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.zzti.bibased.dao.mapper.CompanyMapper" >
+  <resultMap id="BaseResultMap" type="cn.edu.zzti.bibased.dto.Company" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="company_url" property="companyUrl" jdbcType="VARCHAR" />
+    <result column="industry_field" property="industryField" jdbcType="VARCHAR" />
+    <result column="finance_stage" property="financeStage" jdbcType="VARCHAR" />
+    <result column="position_num" property="positionNum" jdbcType="INTEGER" />
+    <result column="resume_rate" property="resumeRate" jdbcType="INTEGER" />
+    <result column="position_slogan" property="positionSlogan" jdbcType="VARCHAR" />
+    <result column="include" property="include" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="op_time" property="opTime" jdbcType="BIGINT" />
+    <result column="is_valid" property="isValid" jdbcType="TINYINT" />
+    <result column="last_ver" property="lastVer" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, company_name, company_url, industry_field, finance_stage, position_num, resume_rate, 
+    position_slogan, include
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from company
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.Company" >
+    insert into company ( company_name, company_url,
+      industry_field, finance_stage, position_num, 
+      resume_rate, position_slogan, include, 
+      create_time, op_time, is_valid, 
+      last_ver)
+    values ( #{companyName,jdbcType=VARCHAR}, #{companyUrl,jdbcType=VARCHAR},
+      #{industryField,jdbcType=VARCHAR}, #{financeStage,jdbcType=VARCHAR}, #{positionNum,jdbcType=INTEGER}, 
+      #{resumeRate,jdbcType=INTEGER}, #{positionSlogan,jdbcType=VARCHAR}, #{include,jdbcType=VARCHAR}, 
+      UNIX_TIMESTAMP(now()), UNIX_TIMESTAMP(now()), 1,0)
+  </insert>
+  <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.Company" >
+    insert into company ( company_name, company_url,
+    industry_field, finance_stage, position_num,
+    resume_rate, position_slogan, include,
+    create_time, op_time, is_valid,
+    last_ver)
+    values
+    <foreach collection="list" item="company" index="index" separator="," >
+    ( #{company.companyName,jdbcType=VARCHAR}, #{company.companyUrl,jdbcType=VARCHAR},
+    #{company.industryField,jdbcType=VARCHAR}, #{company.financeStage,jdbcType=VARCHAR}, #{company.positionNum,jdbcType=INTEGER},
+    #{company.resumeRate,jdbcType=INTEGER}, #{company.positionSlogan,jdbcType=VARCHAR}, #{company.include,jdbcType=VARCHAR},
+      UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()), 1, 0)
+    </foreach>
+  </insert>
+</mapper>

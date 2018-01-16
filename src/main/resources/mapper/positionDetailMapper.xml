@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper" >
+  <resultMap id="BaseResultMap" type="cn.edu.zzti.bibased.dto.PositionDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="position_name" property="positionName" jdbcType="VARCHAR" />
+    <result column="work_min_year" property="workMinYear" jdbcType="INTEGER" />
+    <result column="work_max_year" property="workMaxYear" jdbcType="INTEGER" />
+    <result column="education" property="education" jdbcType="VARCHAR" />
+    <result column="job_nature" property="jobNature" jdbcType="VARCHAR" />
+    <result column="position_id" property="positionId" jdbcType="INTEGER" />
+    <result column="position_create_time" property="positionCreateTime" jdbcType="BIGINT" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="company_logo" property="companyLogo" jdbcType="VARCHAR" />
+    <result column="industry_field" property="industryField" jdbcType="VARCHAR" />
+    <result column="position_advantage" property="positionAdvantage" jdbcType="VARCHAR" />
+    <result column="min_salary" property="minSalary" jdbcType="DECIMAL" />
+    <result column="max_salary" property="maxSalary" jdbcType="DECIMAL" />
+    <result column="company_short_name" property="companyShortName" jdbcType="VARCHAR" />
+    <result column="company_min_size" property="companyMinSize" jdbcType="INTEGER" />
+    <result column="company_max_size" property="companyMaxSize" jdbcType="INTEGER" />
+    <result column="position_lables" property="positionLables" jdbcType="VARCHAR" />
+    <result column="industry_lables" property="industryLables" jdbcType="VARCHAR" />
+    <result column="finance_stage" property="financeStage" jdbcType="VARCHAR" />
+    <result column="company_label_List" property="companyLabelList" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="business_zones" property="businessZones" jdbcType="VARCHAR" />
+    <result column="company_full_name" property="companyFullName" jdbcType="VARCHAR" />
+    <result column="first_type" property="firstType" jdbcType="VARCHAR" />
+    <result column="second_type" property="secondType" jdbcType="VARCHAR" />
+    <result column="subwayline" property="subwayline" jdbcType="VARCHAR" />
+    <result column="stationname" property="stationname" jdbcType="VARCHAR" />
+    <result column="linestaion" property="linestaion" jdbcType="VARCHAR" />
+    <result column="last_login" property="lastLogin" jdbcType="BIGINT" />
+    <result column="gps" property="gps" jdbcType="VARCHAR" />
+    <result column="cr_time" property="crTime" jdbcType="BIGINT" />
+    <result column="op_time" property="opTime" jdbcType="BIGINT" />
+    <result column="is_valid" property="isValid" jdbcType="TINYINT" />
+    <result column="last_ver" property="lastVer" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, position_name, work_min_year, work_max_year, education, job_nature, position_id, 
+    position_create_time, city, company_logo, industry_field, position_advantage, min_salary, 
+    max_salary, company_short_name, company_min_size, company_max_size, position_lables, 
+    industry_lables, finance_stage, company_label_List, district, business_zones, company_full_name, 
+    first_type, second_type, subwayline, stationname, linestaion, last_login, gps, cr_time, 
+    op_time, is_valid, last_ver
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from position_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.PositionDetail" >
+    insert into position_detail (id, position_name, work_min_year, 
+      work_max_year, education, job_nature, 
+      position_id, position_create_time, city, 
+      company_logo, industry_field, position_advantage, 
+      min_salary, max_salary, company_short_name, 
+      company_min_size, company_max_size, position_lables, 
+      industry_lables, finance_stage, company_label_List, 
+      district, business_zones, company_full_name, 
+      first_type, second_type, subwayline, 
+      stationname, linestaion, last_login, 
+      gps, cr_time, op_time, 
+      is_valid, last_ver)
+    values (#{id,jdbcType=INTEGER}, #{positionName,jdbcType=VARCHAR}, #{workMinYear,jdbcType=INTEGER}, 
+      #{workMaxYear,jdbcType=INTEGER}, #{education,jdbcType=VARCHAR}, #{jobNature,jdbcType=VARCHAR}, 
+      #{positionId,jdbcType=INTEGER}, #{positionCreateTime,jdbcType=BIGINT}, #{city,jdbcType=VARCHAR}, 
+      #{companyLogo,jdbcType=VARCHAR}, #{industryField,jdbcType=VARCHAR}, #{positionAdvantage,jdbcType=VARCHAR}, 
+      #{minSalary,jdbcType=DECIMAL}, #{maxSalary,jdbcType=DECIMAL}, #{companyShortName,jdbcType=VARCHAR}, 
+      #{companyMinSize,jdbcType=INTEGER}, #{companyMaxSize,jdbcType=INTEGER}, #{positionLables,jdbcType=VARCHAR}, 
+      #{industryLables,jdbcType=VARCHAR}, #{financeStage,jdbcType=VARCHAR}, #{companyLabelList,jdbcType=VARCHAR}, 
+      #{district,jdbcType=VARCHAR}, #{businessZones,jdbcType=VARCHAR}, #{companyFullName,jdbcType=VARCHAR}, 
+      #{firstType,jdbcType=VARCHAR}, #{secondType,jdbcType=VARCHAR}, #{subwayline,jdbcType=VARCHAR}, 
+      #{stationname,jdbcType=VARCHAR}, #{linestaion,jdbcType=VARCHAR}, #{lastLogin,jdbcType=BIGINT}, 
+      #{gps,jdbcType=VARCHAR}, UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()) ,
+      1, 0)
+  </insert>
+  <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.PositionDetail" >
+    insert into position_detail ( position_name, work_min_year,
+    work_max_year, education, job_nature,
+    position_id, position_create_time, city,
+    company_logo, industry_field, position_advantage,
+    min_salary, max_salary, company_short_name,
+    company_min_size, company_max_size, position_lables,
+    industry_lables, finance_stage, company_label_List,
+    district, business_zones, company_full_name,
+    first_type, second_type, subwayline,
+    stationname, linestaion, last_login,
+    gps, cr_time, op_time,
+    is_valid, last_ver)
+    values
+    <foreach collection="list" item="position" index="index" separator="," >
+      ( #{position.positionName,jdbcType=VARCHAR}, #{position.workMinYear,jdbcType=INTEGER},
+      #{position.workMaxYear,jdbcType=INTEGER}, #{position.education,jdbcType=VARCHAR}, #{position.jobNature,jdbcType=VARCHAR},
+      #{position.positionId,jdbcType=INTEGER}, #{position.positionCreateTime,jdbcType=BIGINT}, #{position.city,jdbcType=VARCHAR},
+      #{position.companyLogo,jdbcType=VARCHAR}, #{position.industryField,jdbcType=VARCHAR}, #{position.positionAdvantage,jdbcType=VARCHAR},
+      #{position.minSalary,jdbcType=DECIMAL}, #{position.maxSalary,jdbcType=DECIMAL}, #{position.companyShortName,jdbcType=VARCHAR},
+      #{position.companyMinSize,jdbcType=INTEGER}, #{position.companyMaxSize,jdbcType=INTEGER}, #{position.positionLables,jdbcType=VARCHAR},
+      #{position.industryLables,jdbcType=VARCHAR}, #{position.financeStage,jdbcType=VARCHAR}, #{position.companyLabelList,jdbcType=VARCHAR},
+      #{position.district,jdbcType=VARCHAR}, #{position.businessZones,jdbcType=VARCHAR}, #{position.companyFullName,jdbcType=VARCHAR},
+      #{position.firstType,jdbcType=VARCHAR}, #{position.secondType,jdbcType=VARCHAR}, #{position.subwayline,jdbcType=VARCHAR},
+      #{position.stationname,jdbcType=VARCHAR}, #{position.linestaion,jdbcType=VARCHAR}, #{position.lastLogin,jdbcType=BIGINT},
+      #{position.gps,jdbcType=VARCHAR}, UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()) ,
+      1, 0)
+    </foreach>
+
+  </insert>
+
+</mapper>
