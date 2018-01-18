@@ -11,13 +11,18 @@ spring:
       max-lifetime: 1765000
       connection-timeout: 6000
 #mvc
-  mvc:
-      view:
-        prefix: classpath:templates/
-        suffix: .html
+  thymeleaf:
+    prefix: classpath:/static/
+    suffix: .html
+    cache: false
+    encoding: UTF-8
+    content-type: text/html
+    check-template: true
+
 #server
 server:
   port: 8081
+  address:
 
 #mybatis
 mybatis:
