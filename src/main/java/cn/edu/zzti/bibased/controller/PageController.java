@@ -1,7 +1,6 @@
 package cn.edu.zzti.bibased.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -19,8 +18,7 @@ public class PageController {
      * @return
      */
     @RequestMapping(value = "/index")
-    public String homepageIndex(Model model) {
-        model.addAttribute("index","2322");
+    public String homepageIndex() {
         return INDEX_SHOPSEARCH;
     }
 }

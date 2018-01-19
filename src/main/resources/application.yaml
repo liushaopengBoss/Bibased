@@ -18,6 +18,12 @@ spring:
     encoding: UTF-8
     content-type: text/html
     check-template: true
+    mode: LEGACYHTML5
+##热部署
+#  devtools:
+#    restart:
+#      additional-paths:
+#      enabled: true
 
 #server
 server:
@@ -40,8 +46,10 @@ http:
             staleConnectionCheckEnabled: true #提交请求前测试连接是否可用
     pool:
         maxTotal: 200     #设置连接总数
-        defaultMaxPerRoute: 100    #设置每个地址的并发数
-
+        defaultMaxPerRoute: 100  #设置每个地址的并发数
+logging:
+  config: classpath:mg-logback.xml
+  path: ../logs/spring-boot
 
 
 

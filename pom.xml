@@ -30,6 +30,7 @@
         <httpclient-version>4.5.4</httpclient-version>
         <commons-httpclient-version>3.1</commons-httpclient-version>
         <elastic-job-version>1.1.1</elastic-job-version>
+        <nekohtml_version>1.9.22</nekohtml_version>
     </properties>
 
     <dependencies>
@@ -56,11 +57,21 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
             <version>${spring_boot_version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.sourceforge.nekohtml</groupId>
+            <artifactId>nekohtml</artifactId>
+            <version>${nekohtml_version}</version>
+        </dependency>
         <!-- 添加 log4j 依赖 -->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-log4j</artifactId>-->
+            <!--<version>${log4j-version}</version>-->
+        <!--</dependency>-->
+        <!-- logback -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j</artifactId>
-            <version>${log4j-version}</version>
+            <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
         <!--使用jetty作为内置容器-->
         <dependency>
@@ -74,6 +85,12 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector-java-version}</version>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <version>${spring_boot_version}</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -117,34 +134,35 @@
             <artifactId>httpclient-cache</artifactId>
             <version>${httpclient-version}</version>
         </dependency>
-        <!--http的mime类型都在这里面-->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>${httpclient-version}</version>
-        </dependency>
+        <!--&lt;!&ndash;http的mime类型都在这里面&ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.httpcomponents</groupId>-->
+            <!--<artifactId>httpmime</artifactId>-->
+            <!--<version>${httpclient-version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
             <version>${commons-httpclient-version}</version>
         </dependency>
-        <!-- elastic-job -->
-        <dependency>
-            <groupId>com.dangdang</groupId>
-            <artifactId>elastic-job-core</artifactId>
-            <version>${elastic-job-version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-beanutils</groupId>
-                    <artifactId>commons-beanutils</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!--&lt;!&ndash; elastic-job &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>com.dangdang</groupId>-->
+            <!--<artifactId>elastic-job-core</artifactId>-->
+            <!--<version>${elastic-job-version}</version>-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>commons-beanutils</groupId>-->
+                    <!--<artifactId>commons-beanutils</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.3.2</version>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -152,6 +170,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
             </plugin>
         </plugins>
     </build>
