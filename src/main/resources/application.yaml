@@ -49,7 +49,11 @@ http:
         defaultMaxPerRoute: 100  #设置每个地址的并发数
 logging:
   config: classpath:mg-logback.xml
-  path: ../logs/spring-boot
+log:
+    dir: opt/logs
+    leavel: info
+    immediate:
+          flush: true
 
 
 
