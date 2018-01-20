@@ -10,6 +10,8 @@ spring:
       maximum-pool-size: 15
       max-lifetime: 1765000
       connection-timeout: 6000
+
+
 #mvc
   thymeleaf:
     prefix: classpath:/static/

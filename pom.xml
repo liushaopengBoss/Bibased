@@ -23,14 +23,16 @@
         <java.version>1.8</java.version>
         <spring_boot_version>1.5.8.RELEASE</spring_boot_version>
         <spring_boot_mybatis_version>1.2.2</spring_boot_mybatis_version>
-        <mysql-connector-java-version>5.1.26</mysql-connector-java-version>
-        <HikariCP-version>2.6.0</HikariCP-version>
-        <log4j-version>1.3.3.RELEASE</log4j-version>
-        <jsoup-version>1.9.1</jsoup-version>
-        <httpclient-version>4.5.4</httpclient-version>
-        <commons-httpclient-version>3.1</commons-httpclient-version>
-        <elastic-job-version>1.1.1</elastic-job-version>
+        <mysql_connector_java_version>5.1.26</mysql_connector_java_version>
+        <HikariCP_version>2.6.0</HikariCP_version>
+        <log4j_version>1.3.3.RELEASE</log4j_version>
+        <jsoup_version>1.9.1</jsoup_version>
+        <httpclient_version>4.5.4</httpclient_version>
+        <commons_httpclient_version>3.1</commons_httpclient_version>
+        <elastic_job-version>1.1.1</elastic_job-version>
         <nekohtml_version>1.9.22</nekohtml_version>
+        <guava_version>23.0</guava_version>
+        <aspectj_version>1.8.2</aspectj_version>
     </properties>
 
     <dependencies>
@@ -83,14 +85,8 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-connector-java-version}</version>
+            <version>${mysql_connector_java_version}</version>
             <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <version>${spring_boot_version}</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -108,7 +104,7 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>${HikariCP-version}</version>
+            <version>${HikariCP_version}</version>
         </dependency>
         <!-- test-->
         <dependency>
@@ -116,23 +112,30 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--热部署-->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-devtools</artifactId>-->
+            <!--<version>${spring_boot_version}</version>-->
+            <!--<optional>true</optional>-->
+        <!--</dependency>-->
         <!--jsoup-->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>${jsoup-version}</version>
+            <version>${jsoup_version}</version>
         </dependency>
         <!--httpclient-->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>${httpclient-version}</version>
+            <version>${httpclient_version}</version>
         </dependency>
         <!--httpclient缓存-->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient-cache</artifactId>
-            <version>${httpclient-version}</version>
+            <version>${httpclient_version}</version>
         </dependency>
         <!--&lt;!&ndash;http的mime类型都在这里面&ndash;&gt;-->
         <!--<dependency>-->
@@ -143,7 +146,7 @@
         <dependency>
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
-            <version>${commons-httpclient-version}</version>
+            <version>${commons_httpclient_version}</version>
         </dependency>
         <!--&lt;!&ndash; elastic-job &ndash;&gt;-->
         <!--<dependency>-->
@@ -165,12 +168,17 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
-            <version>1.8.2</version>
+            <version>${aspectj_version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava_version}</version>
         </dependency>
     </dependencies>
 
@@ -180,7 +188,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <fork>true</fork>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
