@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootTest(classes = BaseApplicationTests.class)
 @WebAppConfiguration // 由于是Web项目，Junit需要模拟ServletContext，因此我们需要给我们的测试类加上@WebAppConfiguration。
 @ComponentScan(basePackages={"cn.edu.zzti.bibased"})
-//@MapperScan("cn.edu.zzti.bibased.dao.mapper")//mapper扫描
+@MapperScan("cn.edu.zzti.bibased.dao.mapper")//mapper扫描
 @ContextConfiguration(locations = {"classpath:applicationContext-config.xml"})//使用配置文件
 public  class BaseApplicationTests {
 
