@@ -4,6 +4,9 @@ import cn.edu.zzti.bibased.dao.mapper.CityMapper;
 import cn.edu.zzti.bibased.dao.mapper.PositionsMapper;
 import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.Positions;
+import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -14,7 +17,6 @@ import java.util.List;
  */
 @Repository
 public class LagouDao {
-
     @Resource
     private PositionsMapper positionsMapper;
 
