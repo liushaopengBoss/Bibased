@@ -14,14 +14,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.8.RELEASE</version>
+        <version>1.5.9.RELEASE</version>
     </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <spring_boot_version>1.5.8.RELEASE</spring_boot_version>
+        <spring_boot_version>1.5.9.RELEASE</spring_boot_version>
         <spring_boot_mybatis_version>1.2.2</spring_boot_mybatis_version>
         <mysql_connector_java_version>5.1.26</mysql_connector_java_version>
         <HikariCP_version>2.6.0</HikariCP_version>
@@ -33,6 +33,7 @@
         <nekohtml_version>1.9.22</nekohtml_version>
         <guava_version>23.0</guava_version>
         <aspectj_version>1.8.2</aspectj_version>
+        <skipTests>true</skipTests>
     </properties>
 
     <dependencies>
@@ -65,16 +66,17 @@
             <version>${nekohtml_version}</version>
         </dependency>
         <!-- 添加 log4j 依赖 -->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-log4j</artifactId>-->
-            <!--<version>${log4j-version}</version>-->
-        <!--</dependency>-->
-        <!-- logback -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
+            <artifactId>spring-boot-starter-log4j</artifactId>
+            <version>${log4j_version}</version>
         </dependency>
+        <!-- logback -->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-logging</artifactId>-->
+            <!--<version>${spring_boot_version}</version>-->
+        <!--</dependency>-->
         <!--使用jetty作为内置容器-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -188,9 +190,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring_boot_version}</version>
-                <!--<configuration>-->
-                    <!--<skip>true</skip>-->
-                <!--</configuration>-->
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
