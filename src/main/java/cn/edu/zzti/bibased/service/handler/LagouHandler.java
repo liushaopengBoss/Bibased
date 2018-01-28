@@ -2,6 +2,7 @@ package cn.edu.zzti.bibased.service.handler;
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dto.City;
+import cn.edu.zzti.bibased.dto.Company;
 import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.utils.IDUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -87,6 +88,12 @@ public class LagouHandler {
         }
     }
 
+    /**
+     * 获取全部招聘城市
+     *
+     * @param html
+     * @return
+     */
     public static List<City> getCitys(String html){
         if(StringUtils.isNotEmpty(html)){
             Document lagouCitys = Jsoup.parse(html);
@@ -108,4 +115,69 @@ public class LagouHandler {
         }
         return new LinkedList<>();
     }
+
+    /**
+     * 获取公司信息
+     *
+     * @param html
+     * @return
+     */
+    public static  List<Company>  getCompanys(String html,String  city){
+        List<Company> companies = new LinkedList<>();
+        if(StringUtils.isNotEmpty(html)){
+            Document lagouCompanys = Jsoup.parse(html);
+            Elements item_con_pager = lagouCompanys.getElementsByClass("item_con_pager");
+            Elements liTag = lagouCompanys.getElementById("company_list").getElementsByClass("item_con_list").select("li");
+            for (int i = 0; i <liTag.size() ; i++) {
+                Company company = new Company();
+                companies.add(company);
+                Elements pTags = liTag.get(i).getElementsByClass("top").select("p");
+                String companyUrl = pTags.get(0).select("a").attr("href");
+                String companyName = pTags.get(1).select("a").attr("title");
+                String industry = pTags.get(2).text();
+                String positionSlogan = pTags.get(3).text();
+                Elements bottomATags = liTag.get(i).getElementsByClass("bottom").select("a");
+                int positionNum =  Integer.parseInt(bottomATags.get(1).select("p").get(0).text());
+                int resumeNate =  Integer.parseInt(bottomATags.get(2).select("p").get(0).text().replace("%",""));
+                company.setCity(city);
+                company.setCompanyName(companyName);
+                company.setCompanyUrl(companyUrl);
+                String [] strArr = industry.split("/");
+                company.setFinanceStage(strArr[1]);
+                company.setIndustryField(strArr[0]);
+                company.setResumeRate(resumeNate);
+                company.setPositionNum(positionNum);
+                company.setPositionSlogan(positionSlogan);
+                company.setIndustryField((WebsiteEnum.LAGOU.getWebCode()));
+            }
+
+        }
+        return companies;
+    }
+
+    /**
+     * 由公司页面中获取的城市
+     *
+     * @param html
+     * @return
+     */
+    public static  List<City> getCityByCompany(String html){
+        if(StringUtils.isNotEmpty(html)){
+            Document lagouCompanys = Jsoup.parse(html);
+            Elements cityWrapper = lagouCompanys.getElementsByClass("more-positions");
+            Elements aTag = cityWrapper.select("a");
+            List<City> cityList = new LinkedList<>();
+            for (int i = 0; i <aTag.size() ; i++) {
+                String id = aTag.get(i).attr("data-id");
+                String cityName = aTag.get(i).text();
+                City city = new City();
+                cityList.add(city);
+                city.setCityName(cityName);
+                city.setLinkId(id);
+            }
+            return cityList;
+        }
+        return new LinkedList<>();
+    }
+
 }

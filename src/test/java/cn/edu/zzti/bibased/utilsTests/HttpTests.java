@@ -3,6 +3,8 @@ package cn.edu.zzti.bibased.utilsTests;
 import cn.edu.zzti.bibased.BaseApplicationTests;
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
 import cn.edu.zzti.bibased.dao.lagou.LagouDao;
+import cn.edu.zzti.bibased.dto.City;
+import cn.edu.zzti.bibased.dto.Company;
 import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
@@ -43,6 +45,16 @@ public class HttpTests extends BaseApplicationTests {
 
     }
 
-
-
+    @Test
+    public void tt23() throws Exception {
+        String url = "https://www.lagou.com/gongsi/";
+        String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
+        List<City> cityByCompany = LagouHandler.getCityByCompany(html);
+    }
+    @Test
+    public void tt423() throws Exception {
+        String url = "https://www.lagou.com/gongsi/";
+        String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
+        LagouHandler.getCompanys(html, "");
+    }
 }

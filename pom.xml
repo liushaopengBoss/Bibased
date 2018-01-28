@@ -66,17 +66,17 @@
             <version>${nekohtml_version}</version>
         </dependency>
         <!-- 添加 log4j 依赖 -->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-log4j</artifactId>-->
-            <!--<version>${log4j_version}</version>-->
-        <!--</dependency>-->
-        <!-- logback -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
-            <version>${spring_boot_version}</version>
+            <artifactId>spring-boot-starter-log4j</artifactId>
+            <version>${log4j_version}</version>
         </dependency>
+        <!-- logback -->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-logging</artifactId>-->
+            <!--<version>${spring_boot_version}</version>-->
+        <!--</dependency>-->
         <!--使用jetty作为内置容器-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

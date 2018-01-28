@@ -7,6 +7,8 @@ public class Company {
 
     private String companyUrl;
 
+    private String city;
+
     private String industryField;
 
     private String financeStage;
@@ -18,6 +20,7 @@ public class Company {
     private String positionSlogan;
 
     private String include;
+
 
     private Long createTime;
 
@@ -41,6 +44,14 @@ public class Company {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName == null ? null : companyName.trim();
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getCompanyUrl() {

@@ -16,6 +16,8 @@ public class City implements Serializable {
     private long lastVer;// 版本
     private int isValid;//是否有效
 
+    private String linkId;
+
     public Integer getId() {
         return id;
     }
@@ -70,5 +72,13 @@ public class City implements Serializable {
 
     public void setIsValid(int isValid) {
         this.isValid = isValid;
+    }
+
+    public String getLinkId() {
+        return linkId;
+    }
+
+    public void setLinkId(String linkId) {
+        this.linkId = linkId;
     }
 }
