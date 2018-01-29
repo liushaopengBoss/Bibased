@@ -117,7 +117,7 @@ public class LagouHandler {
     }
 
     /**
-     * 获取公司信息
+     * 获取公司信息(html)
      *
      * @param html
      * @return
@@ -126,7 +126,6 @@ public class LagouHandler {
         List<Company> companies = new LinkedList<>();
         if(StringUtils.isNotEmpty(html)){
             Document lagouCompanys = Jsoup.parse(html);
-            Elements item_con_pager = lagouCompanys.getElementsByClass("item_con_pager");
             Elements liTag = lagouCompanys.getElementById("company_list").getElementsByClass("item_con_list").select("li");
             for (int i = 0; i <liTag.size() ; i++) {
                 Company company = new Company();
@@ -179,5 +178,31 @@ public class LagouHandler {
         }
         return new LinkedList<>();
     }
+
+    /**
+     * 获取数据有多少页
+     *
+     * @param html
+     * @return
+     */
+    public static int getTotalPageNum(String html){
+        Document lagouCompanys = Jsoup.parse(html);
+        Elements scripts = lagouCompanys.select("script");
+        int pageNum = 0;
+        for (int i = 0; i <scripts.size() ; i++) {
+
+            if(scripts.get(i).html().contains("global.total")){
+                String htmlInfo = scripts.get(i).html();
+                String globalTotal = htmlInfo.substring(htmlInfo.indexOf("global.total"), htmlInfo.indexOf("global.total") + 25);
+                int totalNum = Integer.parseInt(globalTotal.substring(globalTotal.indexOf("\"")+1, globalTotal.lastIndexOf("\"")));
+                String globalps = htmlInfo.substring(htmlInfo.indexOf("global.ps"), htmlInfo.indexOf("global.ps") + 20);
+                int ps = Integer.parseInt(globalps.substring(globalps.indexOf("\"")+1, globalps.lastIndexOf("\"")));
+                pageNum = totalNum/ps;
+               break;
+            }
+        }
+        return  pageNum;
+    }
+
 
 }
