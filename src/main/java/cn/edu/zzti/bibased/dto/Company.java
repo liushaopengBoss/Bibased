@@ -5,7 +5,11 @@ public class Company {
 
     private String companyName;
 
+    private String companyFullName;
+
     private String companyUrl;
+
+    private String companyLogo;
 
     private String city;
 
@@ -29,6 +33,22 @@ public class Company {
     private Byte isValid;
 
     private Long lastVer;
+
+    public String getCompanyFullName() {
+        return companyFullName;
+    }
+
+    public void setCompanyFullName(String companyFullName) {
+        this.companyFullName = companyFullName;
+    }
+
+    public String getCompanyLogo() {
+        return companyLogo;
+    }
+
+    public void setCompanyLogo(String companyLogo) {
+        this.companyLogo = companyLogo;
+    }
 
     public Integer getId() {
         return id;

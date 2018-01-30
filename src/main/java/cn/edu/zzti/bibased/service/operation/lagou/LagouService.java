@@ -77,4 +77,11 @@ public class LagouService {
         List<City> jobs = LagouHandler.getCitys(html);
         lagouOperationService.batchAddCity(jobs);
     }
+    /**
+     * 采集拉勾网的公司信息
+     */
+    public void  collectionCompanyInfomation(){
+        String url = "https://www.lagou.com/gongsi/";
+
+    }
 }

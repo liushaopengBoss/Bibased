@@ -4,7 +4,9 @@
   <resultMap id="BaseResultMap" type="cn.edu.zzti.bibased.dto.Company" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="company_full_name" property="companyFullName" jdbcType="VARCHAR" />
     <result column="company_url" property="companyUrl" jdbcType="VARCHAR" />
+    <result column="company_logo" property="companyLogo" jdbcType="VARCHAR" />
     <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="industry_field" property="industryField" jdbcType="VARCHAR" />
     <result column="finance_stage" property="financeStage" jdbcType="VARCHAR" />
@@ -18,7 +20,7 @@
     <result column="last_ver" property="lastVer" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, company_name, company_url, city,industry_field, finance_stage, position_num, resume_rate,
+    company_name,company_full_name, company_url,company_logo, city,industry_field, finance_stage, position_num, resume_rate,
     position_slogan, include
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -29,12 +31,12 @@
   </select>
 
   <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.Company" >
-    insert into company ( company_name, company_url,city,
+    insert into company ( company_name,company_full_name, company_url,company_logo,city,
       industry_field, finance_stage, position_num, 
       resume_rate, position_slogan, include, 
       create_time, op_time, is_valid, 
       last_ver)
-    values ( #{companyName,jdbcType=VARCHAR}, #{companyUrl,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+    values ( #{companyName,jdbcType=VARCHAR}, #{companyFullName,jdbcType=VARCHAR}, #{companyUrl,jdbcType=VARCHAR},#{companyLogo,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
       #{industryField,jdbcType=VARCHAR}, #{financeStage,jdbcType=VARCHAR}, #{positionNum,jdbcType=INTEGER}, 
       #{resumeRate,jdbcType=INTEGER}, #{positionSlogan,jdbcType=VARCHAR}, #{include,jdbcType=VARCHAR}, 
       UNIX_TIMESTAMP(now()), UNIX_TIMESTAMP(now()), 1,0)
@@ -47,7 +49,7 @@
     last_ver)
     values
     <foreach collection="list" item="company" index="index" separator="," >
-    ( #{company.companyName,jdbcType=VARCHAR}, #{company.companyUrl,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+    ( #{company.companyName,jdbcType=VARCHAR},#{companyFullName,jdbcType=VARCHAR}, #{company.companyUrl,jdbcType=VARCHAR},#{companyLogo,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
     #{company.industryField,jdbcType=VARCHAR}, #{company.financeStage,jdbcType=VARCHAR}, #{company.positionNum,jdbcType=INTEGER},
     #{company.resumeRate,jdbcType=INTEGER}, #{company.positionSlogan,jdbcType=VARCHAR}, #{company.include,jdbcType=VARCHAR},
       UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()), 1, 0)
