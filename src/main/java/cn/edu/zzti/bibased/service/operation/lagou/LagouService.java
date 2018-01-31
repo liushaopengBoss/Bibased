@@ -1,17 +1,26 @@
 package cn.edu.zzti.bibased.service.operation.lagou;
 
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
+import cn.edu.zzti.bibased.constant.HttpType;
+import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dto.City;
+import cn.edu.zzti.bibased.dto.Company;
 import cn.edu.zzti.bibased.dto.Positions;
+import cn.edu.zzti.bibased.dto.lagou.CompanyResultJsonVO;
+import cn.edu.zzti.bibased.dto.lagou.CompanyVO;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.thread.LaGouTask;
+import com.google.gson.Gson;
+import org.apache.commons.lang3.time.StopWatch;
+import org.springframework.beans.BeanUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.Future;
 
@@ -81,7 +90,69 @@ public class LagouService {
      * 采集拉勾网的公司信息
      */
     public void  collectionCompanyInfomation(){
-        String url = "https://www.lagou.com/gongsi/";
+        String apiUrl = "https://www.lagou.com/gongsi/";
+        String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);
+        List<City> cityByCompany = LagouHandler.getCityByCompany(html);
+        //去掉第一个和最后一个
+        for (int i = 1; i < cityByCompany.size()-1; i++) {
+            Gson gson = new Gson();
+            apiUrl = apiUrl+cityByCompany.get(i).getLinkId()+"-0-0.json";
+            Map<String,Object> param = new LinkedHashMap<>();
+            param.put("first",true);
+            param.put("pn",1);
+            param.put("sortField",0);
+            param.put("havemark",0);
+            String data = httpClientService.doPost(apiUrl, param, HttpHeaderConstant.lagouAjaxHeader);
+            CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data, CompanyResultJsonVO.class);
+            int pageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
+            System.out.printf("-----------page:"+pageNo+"\n");
+            LaGouTask laGouTask = new LaGouTask(apiUrl,param, HttpType.POST);
+            List<CompanyVO> resultVOS = new LinkedList<>();
+            resultVOS.addAll(companyResultJsonVO.getResult());
+            for (int j = 2; j <= pageNo; j++) {
+                for (int k = 0; k < 10; k++) {
+                    param.put("first",false);
+                    param.put("pn",j);
+                    completionService.submit(laGouTask);
+                    j++;
+                }
+                System.out.printf("-------------------------->"+j+"\n");
+                for (int k = 0; k < 10; k++) {
+                    try{
+                        Future<String> take = completionService.take();
+                        CompanyResultJsonVO companyResultJsonVO1 = gson.fromJson(take.get(), CompanyResultJsonVO.class);
+                        List<CompanyVO> result = companyResultJsonVO1.getResult();
+                        resultVOS.addAll(result);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                handleCompany(resultVOS);
+            }
+            break;
+        }
+    }
 
+    @Async
+    void handleCompany(List<CompanyVO> companyVOS){
+        if(!CollectionUtils.isEmpty(companyVOS)){
+            List<Company> targetCompany = new LinkedList<>();
+            for (CompanyVO vo:companyVOS) {
+                Company company = new Company();
+                targetCompany.add(company);
+                BeanUtils.copyProperties(vo,company);
+                company.setCompanyName(vo.getCompanyShortName());
+                company.setCompanyUrl("https://www.lagou.com/gongsi/"+vo.getCompanyId());
+                company.setResumeRate(vo.getProcessRate());
+                company.setInclude(WebsiteEnum.LAGOU.getWebCode());
+                company.setPositionSlogan(vo.getCompanyFeatures());
+            }
+            StopWatch clock = new StopWatch();
+            clock.start(); //计时开始
+            lagouOperationService.batchAddCompany(targetCompany);
+            clock.stop();
+            long time = clock.getTime();
+            System.out.printf(""+time+"\n");
+        }
     }
 }

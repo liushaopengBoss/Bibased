@@ -50,7 +50,7 @@ public class HttpHeaderConstant {
         lagouAjaxHeader.put("Cookie","user_trace_token=20171126164429-0464ac5c-d286-11e7-ab32-525400f775ce; LGUID=20171126164429-0464b234-d286-11e7-ab32-525400f775ce; JSESSIONID=ABAAABAACBHABBIF26E2EF92AF8C2FBA3772253D632BF83; PRE_UTM=; PRE_HOST=; PRE_SITE=; PRE_LAND=https%3A%2F%2Fwww.lagou.com%2F; _putrc=875B1A3E36073C27; login=true; unick=%E6%9D%A8%E6%99%BA%E7%BF%94; showExpriedIndex=1; showExpriedCompanyHome=1; showExpriedMyPublish=1; hasDeliver=189; TG-TRACK-CODE=index_navigation; _gat=1; _gid=GA1.2.640132791.1512206234; _ga=GA1.2.1872966524.1511685872; Hm_lvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1511685872,1511790697,1512206234; Hm_lpvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1512206975; LGSID=20171202171712-94e55ba3-d741-11e7-bbf7-525400f775ce; LGRID=20171202172934-4ea1f066-d743-11e7-bbf7-525400f775ce; SEARCH_ID=013a9d0ac89f4f51858fe10b937daec7; index_location_city=%E6%9D%AD%E5%B7%9E");
         lagouAjaxHeader.put("Host","www.lagou.com");
         lagouAjaxHeader.put("Origin","https://www.lagou.com");
-        lagouAjaxHeader.put("Referer","https://www.lagou.com/jobs/list_Java?px=default&city=%E5%8C%97%E4%BA%AC");
+        lagouAjaxHeader.put("Referer","https://www.lagou.com/gongsi/");
         lagouAjaxHeader.put("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
         lagouAjaxHeader.put("X-Anit-Forge-Code",0);
         lagouAjaxHeader.put("X-Anit-Forge-Token","None");

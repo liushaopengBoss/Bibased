@@ -15,7 +15,9 @@ public class City implements Serializable {
     private long opTime;//修改时间
     private long lastVer;// 版本
     private int isValid;//是否有效
-
+    /**
+     * 获取公司的链接 ID (用于数据的拼装)
+     */
     private String linkId;
 
     public Integer getId() {

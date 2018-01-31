@@ -42,14 +42,14 @@
       UNIX_TIMESTAMP(now()), UNIX_TIMESTAMP(now()), 1,0)
   </insert>
   <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.Company" >
-    insert into company ( company_name, company_url,city,
+    insert into company ( company_name,company_full_name, company_url,company_logo,city,
     industry_field, finance_stage, position_num,
     resume_rate, position_slogan, include,
     create_time, op_time, is_valid,
     last_ver)
     values
     <foreach collection="list" item="company" index="index" separator="," >
-    ( #{company.companyName,jdbcType=VARCHAR},#{companyFullName,jdbcType=VARCHAR}, #{company.companyUrl,jdbcType=VARCHAR},#{companyLogo,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+    ( #{company.companyName,jdbcType=VARCHAR},#{company.companyFullName,jdbcType=VARCHAR}, #{company.companyUrl,jdbcType=VARCHAR},#{company.companyLogo,jdbcType=VARCHAR}, #{company.city,jdbcType=VARCHAR},
     #{company.industryField,jdbcType=VARCHAR}, #{company.financeStage,jdbcType=VARCHAR}, #{company.positionNum,jdbcType=INTEGER},
     #{company.resumeRate,jdbcType=INTEGER}, #{company.positionSlogan,jdbcType=VARCHAR}, #{company.include,jdbcType=VARCHAR},
       UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()), 1, 0)

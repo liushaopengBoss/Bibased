@@ -20,7 +20,7 @@ import java.util.Map;
 @Component
 public class LongTimeAspect {
     private static final Logger longTimeLogger = LoggerFactory.getLogger("longTime");
-    private static final int MS_THRESHOLD = 300;//毫秒阈值
+    private static final int MS_THRESHOLD = 3000;//毫秒阈值
 
     @Around("execution(public * cn.edu.zzti.bibased.service.operation.*.*.*(..))")
     public Object aroundService(ProceedingJoinPoint pjp) throws Throwable {

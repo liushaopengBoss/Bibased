@@ -8,6 +8,7 @@ import cn.edu.zzti.bibased.dto.Company;
 import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
+import cn.edu.zzti.bibased.service.operation.lagou.LagouService;
 import cn.edu.zzti.bibased.utils.IDUtils;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.Page;
@@ -27,6 +28,8 @@ public class HttpTests extends BaseApplicationTests {
     private HttpClientService httpClientService;
     @Resource
     private LagouDao lagouWriteDao;
+    @Resource
+    LagouService lagouService;
     @Test
     public void getService4544() throws Exception {
         // String url = "http://search.51job.com/list/080200,000000,0000,00,9,99,Java%2B%25E5%25BC%2580%25E5%258F%2591,2,1.html?lang=c&stype=1&postchannel=0000&workyear=99&cotype=99&degreefrom=99&jobterm=99&companysize=99&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=1&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=";
@@ -87,5 +90,9 @@ public class HttpTests extends BaseApplicationTests {
 //        String text = item_con_pager.text();
 //        System.out.printf(""+text);
 //        Elements item_con_pager = lagouCompanys.getElementsByClass("item_con_pager");
+    }
+    @Test
+    public void textCompany(){
+        lagouService.collectionCompanyInfomation();
     }
 }

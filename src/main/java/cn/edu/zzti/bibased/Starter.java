@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 //=======================================================
 //		          .----.
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 /**
  * spring-boot启动类
  */
+@EnableAsync // 启动异步调用
 @ImportResource("classpath:applicationContext-config.xml")//导入配置文件
 @SpringBootApplication()//springboot
 @EnableTransactionManagement//事务
