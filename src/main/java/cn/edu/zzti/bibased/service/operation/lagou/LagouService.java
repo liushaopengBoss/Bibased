@@ -21,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.Future;
 
@@ -89,12 +90,13 @@ public class LagouService {
     /**
      * 采集拉勾网的公司信息
      */
-    public void  collectionCompanyInfomation(){
+    public void collectionCompanyInfomation(){
         String apiUrl = "https://www.lagou.com/gongsi/";
         String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);
         List<City> cityByCompany = LagouHandler.getCityByCompany(html);
         //去掉第一个和最后一个
         for (int i = 1; i < cityByCompany.size()-1; i++) {
+            System.out.printf("chengshi:"+i);
             Gson gson = new Gson();
             apiUrl = apiUrl+cityByCompany.get(i).getLinkId()+"-0-0.json";
             Map<String,Object> param = new LinkedHashMap<>();
@@ -109,6 +111,7 @@ public class LagouService {
             LaGouTask laGouTask = new LaGouTask(apiUrl,param, HttpType.POST);
             List<CompanyVO> resultVOS = new LinkedList<>();
             resultVOS.addAll(companyResultJsonVO.getResult());
+            List<Future> futureList = new ArrayList<>();
             for (int j = 2; j <= pageNo; j++) {
                 for (int k = 0; k < 10; k++) {
                     param.put("first",false);
@@ -127,13 +130,28 @@ public class LagouService {
                         e.printStackTrace();
                     }
                 }
-                handleCompany(resultVOS);
+
+                if (resultVOS.size() > 0) {
+                    handleCompany(resultVOS);
+                }else{
+                    break;
+                }
             }
-            break;
+            try {
+                Thread.sleep(3000);
+            }catch (Exception e){}
         }
     }
-
-    @Async
+    private void clearThread(List<Future> futureList){
+        if(futureList.size()>10){
+            for(int i=0;i<futureList.size();i++){
+                try {
+                    Object o = futureList.get(i).get();
+                    System.out.printf("o"+o);
+                }catch (Exception e){}
+            }
+        }
+    }
     void handleCompany(List<CompanyVO> companyVOS){
         if(!CollectionUtils.isEmpty(companyVOS)){
             List<Company> targetCompany = new LinkedList<>();
@@ -147,6 +165,7 @@ public class LagouService {
                 company.setInclude(WebsiteEnum.LAGOU.getWebCode());
                 company.setPositionSlogan(vo.getCompanyFeatures());
             }
+            companyVOS.clear();
             StopWatch clock = new StopWatch();
             clock.start(); //计时开始
             lagouOperationService.batchAddCompany(targetCompany);
