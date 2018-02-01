@@ -87,5 +87,8 @@ public class HttpTests extends BaseApplicationTests {
     @Test
     public void textCompany(){
         lagouService.collectionCompanyInfomation();
+        try {
+            Thread.sleep(300000);
+        }catch (Exception e){}
     }
 }

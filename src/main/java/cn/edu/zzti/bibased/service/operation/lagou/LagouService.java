@@ -12,18 +12,15 @@ import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.thread.LaGouTask;
 import com.google.gson.Gson;
-import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.Future;
 
@@ -71,7 +68,7 @@ public class LagouService {
         });
     }
     /**
-     * 采集拉勾网的职位信息
+     * 采集拉勾网的职位分类信息
      *
      */
     private void collectionJobInformation(){
@@ -125,9 +122,11 @@ public class LagouService {
                 for (int k = 0; k < 10; k++) {
                     try{
                         Future<String> take = completionService.take();
-                        CompanyResultJsonVO companyResultJsonVO1 = gson.fromJson(take.get(), CompanyResultJsonVO.class);
-                        List<CompanyVO> result = companyResultJsonVO1.getResult();
-                        resultVOS.addAll(result);
+                        if(take.get()!=null){
+                            CompanyResultJsonVO companyResultJsonVO1 = gson.fromJson(take.get(), CompanyResultJsonVO.class);
+                            List<CompanyVO> result = companyResultJsonVO1.getResult();
+                            resultVOS.addAll(result);
+                        }
                     }catch (Exception e){
                         e.printStackTrace();
                     }
