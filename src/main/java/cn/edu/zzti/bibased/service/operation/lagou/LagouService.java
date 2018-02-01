@@ -13,6 +13,8 @@ import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.thread.LaGouTask;
 import com.google.gson.Gson;
 import org.apache.commons.lang3.time.StopWatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -27,6 +29,7 @@ import java.util.concurrent.Future;
 
 @Service
 public class LagouService {
+    private static final Logger logger = LoggerFactory.getLogger(LagouService.class);
     @Resource
     private ThreadPoolTaskExecutor lagouPool;
     /**
@@ -96,22 +99,21 @@ public class LagouService {
         List<City> cityByCompany = LagouHandler.getCityByCompany(html);
         //去掉第一个和最后一个
         for (int i = 1; i < cityByCompany.size()-1; i++) {
-            System.out.printf("chengshi:"+i);
             Gson gson = new Gson();
-            apiUrl = apiUrl+cityByCompany.get(i).getLinkId()+"-0-0.json";
+            String url = apiUrl+cityByCompany.get(i).getLinkId()+"-0-0.json";
+            logger.info(url);
             Map<String,Object> param = new LinkedHashMap<>();
             param.put("first",true);
             param.put("pn",1);
             param.put("sortField",0);
             param.put("havemark",0);
-            String data = httpClientService.doPost(apiUrl, param, HttpHeaderConstant.lagouAjaxHeader);
+            String data = httpClientService.doPost(url, param, HttpHeaderConstant.lagouAjaxHeader);
             CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data, CompanyResultJsonVO.class);
             int pageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
-            System.out.printf("-----------page:"+pageNo+"\n");
-            LaGouTask laGouTask = new LaGouTask(apiUrl,param, HttpType.POST);
+            logger.info("-----------page:"+pageNo+"\n");
+            LaGouTask laGouTask = new LaGouTask(url,param, HttpType.POST);
             List<CompanyVO> resultVOS = new LinkedList<>();
             resultVOS.addAll(companyResultJsonVO.getResult());
-            List<Future> futureList = new ArrayList<>();
             for (int j = 2; j <= pageNo; j++) {
                 for (int k = 0; k < 10; k++) {
                     param.put("first",false);
@@ -119,7 +121,7 @@ public class LagouService {
                     completionService.submit(laGouTask);
                     j++;
                 }
-                System.out.printf("-------------------------->"+j+"\n");
+                logger.info("-------------------------->"+j+"\n");
                 for (int k = 0; k < 10; k++) {
                     try{
                         Future<String> take = completionService.take();
@@ -142,16 +144,6 @@ public class LagouService {
             }catch (Exception e){}
         }
     }
-    private void clearThread(List<Future> futureList){
-        if(futureList.size()>10){
-            for(int i=0;i<futureList.size();i++){
-                try {
-                    Object o = futureList.get(i).get();
-                    System.out.printf("o"+o);
-                }catch (Exception e){}
-            }
-        }
-    }
     void handleCompany(List<CompanyVO> companyVOS){
         if(!CollectionUtils.isEmpty(companyVOS)){
             List<Company> targetCompany = new LinkedList<>();
@@ -166,12 +158,7 @@ public class LagouService {
                 company.setPositionSlogan(vo.getCompanyFeatures());
             }
             companyVOS.clear();
-            StopWatch clock = new StopWatch();
-            clock.start(); //计时开始
             lagouOperationService.batchAddCompany(targetCompany);
-            clock.stop();
-            long time = clock.getTime();
-            System.out.printf(""+time+"\n");
         }
     }
 }
