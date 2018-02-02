@@ -114,25 +114,25 @@ public class LagouService {
                     j++;
                 }
                 logger.info("-------------------------->"+j+"\n");
-//                for (int k = 0; k < 10; k++) {
-//                    try{
-//                        Future<String> take = completionService.take();
-//                        if(take.get()!=null){
-//                            CompanyResultJsonVO companyResultJsonVO1 = gson.fromJson(take.get(), CompanyResultJsonVO.class);
-//                            List<CompanyVO> result = companyResultJsonVO1.getResult();
-//                            resultVOS.addAll(result);
-//                        }
-//                    }catch (Exception e){
-//                        e.printStackTrace();
-//                        logger.error(e.getMessage());
-//                    }
-//                }
-//
-//                if (resultVOS.size() > 0) {
-//                    handleCompany(resultVOS);
-//                }else{
-//                    break;
-//                }
+                for (int k = 0; k < 10; k++) {
+                    try{
+                        Future<String> take = completionService.take();
+                        if(take.get()!=null){
+                            CompanyResultJsonVO companyResultJsonVO1 = gson.fromJson(take.get(), CompanyResultJsonVO.class);
+                            List<CompanyVO> result = companyResultJsonVO1.getResult();
+                            resultVOS.addAll(result);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        logger.error(e.getMessage());
+                    }
+                }
+
+                if (resultVOS.size() > 0) {
+                    handleCompany(resultVOS);
+                }else{
+                    break;
+                }
             }
             try {
                 Thread.sleep(3000);

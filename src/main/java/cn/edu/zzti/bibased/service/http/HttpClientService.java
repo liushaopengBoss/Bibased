@@ -128,7 +128,6 @@ public class HttpClientService {
             for (Map.Entry<String, Object> entry : headers.entrySet()) {
                 if("Cookie".equals(entry.getKey())){
                     String cookie = entry.getValue().toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
-                    System.out.printf(""+cookie);
                     httpPost.addHeader(entry.getKey(), cookie);
                     continue;
                 }
