@@ -94,7 +94,7 @@ public class LagouService {
             String url = apiUrl+cityByCompany.get(i).getLinkId()+"-0-0.json";
             logger.info(url);
             Map<String,Object> param = new LinkedHashMap<>();
-            param.put("first",true);
+            param.put("first",1);
             param.put("pn",1);
             param.put("sortField",0);
             param.put("havemark",0);
