@@ -5,10 +5,7 @@ import org.apache.http.*;
 
 import java.net.URI;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -78,6 +75,10 @@ public class HttpClientService {
         HttpGet httpGet = new HttpGet(uri);
         try {
             for (Map.Entry<String, Object> entry : HttpHeaderConstant.lagouGetHeader.entrySet()) {
+                if("Cookie".equals(entry.getKey())){
+                    httpGet.addHeader(entry.getKey(), entry.getValue().toString()+ UUID.randomUUID().toString().replace("-","").toString());
+                    continue;
+                }
                 httpGet.addHeader(entry.getKey(), entry.getValue().toString());
             }
             if(uri.toString().contains("https://")){
@@ -125,6 +126,12 @@ public class HttpClientService {
         String data = null;
         try {
             for (Map.Entry<String, Object> entry : headers.entrySet()) {
+                if("Cookie".equals(entry.getKey())){
+                    String cookie = entry.getValue().toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
+                    System.out.printf(""+cookie);
+                    httpPost.addHeader(entry.getKey(), cookie);
+                    continue;
+                }
                 httpPost.addHeader(entry.getKey(), entry.getValue().toString());
             }
             List<NameValuePair> pairList = new ArrayList<NameValuePair>(params.size());

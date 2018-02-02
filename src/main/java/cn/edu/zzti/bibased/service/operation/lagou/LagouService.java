@@ -102,35 +102,37 @@ public class LagouService {
             CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data, CompanyResultJsonVO.class);
             int pageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
             logger.info("-----------page:"+pageNo+"\n");
-            LaGouTask laGouTask = new LaGouTask(url,param, HttpType.POST);
+            LaGouTask laGouTask ;
             List<CompanyVO> resultVOS = new LinkedList<>();
             resultVOS.addAll(companyResultJsonVO.getResult());
             for (int j = 2; j <= pageNo; j++) {
                 for (int k = 0; k < 10; k++) {
+                    laGouTask = new LaGouTask(url,param, HttpType.POST);
                     param.put("first",false);
                     param.put("pn",j);
                     completionService.submit(laGouTask);
                     j++;
                 }
                 logger.info("-------------------------->"+j+"\n");
-                for (int k = 0; k < 10; k++) {
-                    try{
-                        Future<String> take = completionService.take();
-                        if(take.get()!=null){
-                            CompanyResultJsonVO companyResultJsonVO1 = gson.fromJson(take.get(), CompanyResultJsonVO.class);
-                            List<CompanyVO> result = companyResultJsonVO1.getResult();
-                            resultVOS.addAll(result);
-                        }
-                    }catch (Exception e){
-                        logger.error(e.getMessage());
-                    }
-                }
-
-                if (resultVOS.size() > 0) {
-                    handleCompany(resultVOS);
-                }else{
-                    break;
-                }
+//                for (int k = 0; k < 10; k++) {
+//                    try{
+//                        Future<String> take = completionService.take();
+//                        if(take.get()!=null){
+//                            CompanyResultJsonVO companyResultJsonVO1 = gson.fromJson(take.get(), CompanyResultJsonVO.class);
+//                            List<CompanyVO> result = companyResultJsonVO1.getResult();
+//                            resultVOS.addAll(result);
+//                        }
+//                    }catch (Exception e){
+//                        e.printStackTrace();
+//                        logger.error(e.getMessage());
+//                    }
+//                }
+//
+//                if (resultVOS.size() > 0) {
+//                    handleCompany(resultVOS);
+//                }else{
+//                    break;
+//                }
             }
             try {
                 Thread.sleep(3000);
