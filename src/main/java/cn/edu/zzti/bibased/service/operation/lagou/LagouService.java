@@ -54,17 +54,11 @@ public class LagouService {
     }
 
     public void initLagouInfo(){
-        lagouPool.execute(new Runnable() {
-            @Override
-            public void run() {
+        lagouPool.execute(()-> {
                 collectionJobInformation();
-            }
         });
-        lagouPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                collectionCityInformation();
-            }
+        lagouPool.execute(()->{
+            collectionCityInformation();
         });
     }
     /**
@@ -128,7 +122,7 @@ public class LagouService {
                             resultVOS.addAll(result);
                         }
                     }catch (Exception e){
-                        e.printStackTrace();
+                        logger.error(e.getMessage());
                     }
                 }
 
