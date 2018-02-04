@@ -1,5 +1,6 @@
 package cn.edu.zzti.bibased.service.operation.lagou;
 
+import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dao.lagou.LagouDao;
 import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.Company;
@@ -53,5 +54,13 @@ public class LagouOperationService{
         clock.stop();
         long time = clock.getTime();
         logger.info("批处理执行时间:"+time+"\n");
+    }
+
+    public List<Positions> queryLeftPositions(){
+        return  lagouDao.queryLeafPositions(WebsiteEnum.LAGOU.getWebCode());
+    }
+
+    public List<City> queryCitys(){
+        return lagouDao.queryCitys(WebsiteEnum.LAGOU.getWebCode());
     }
 }

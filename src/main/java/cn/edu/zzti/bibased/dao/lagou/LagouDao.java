@@ -42,4 +42,12 @@ public class LagouDao {
     public void batchInsertCompanys(List<Company> companies){
         companyMapper.batchInsert(companies);
     }
+
+    public List<Positions> queryLeafPositions(String include){
+        return positionsMapper.queryLeafPositions(include);
+    }
+
+    public List<City> queryCitys(String include){
+        return cityMapper.queryCity(include);
+    }
 }

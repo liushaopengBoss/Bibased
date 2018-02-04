@@ -102,4 +102,8 @@ public class HttpTests extends BaseApplicationTests {
         String url = "https://www.lagou.com/gongsi/";
         String html = httpClientService.doGet(url, null, null);
     }
+    @Test
+    public void positiionTests(){
+        lagouService.connectionPositionInfomation();
+    }
 }

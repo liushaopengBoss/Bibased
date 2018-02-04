@@ -8,10 +8,15 @@ import cn.edu.zzti.bibased.dto.Company;
 import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.dto.lagou.CompanyResultJsonVO;
 import cn.edu.zzti.bibased.dto.lagou.CompanyVO;
+import cn.edu.zzti.bibased.dto.lagou.PositionDetailResultJsonVo;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.thread.LaGouTask;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -60,6 +65,7 @@ public class LagouService {
         lagouPool.execute(()->{
             collectionCityInformation();
         });
+
     }
     /**
      * 采集拉勾网的职位分类信息
@@ -94,7 +100,7 @@ public class LagouService {
             String url = apiUrl+cityByCompany.get(i).getLinkId()+"-0-0.json";
             logger.info(url);
             Map<String,Object> param = new LinkedHashMap<>();
-            param.put("first",1);
+            param.put("first",false);
             param.put("pn",1);
             param.put("sortField",0);
             param.put("havemark",0);
@@ -155,5 +161,51 @@ public class LagouService {
             companyVOS.clear();
             lagouOperationService.batchAddCompany(targetCompany);
         }
+    }
+
+    public void connectionPositionInfomation(){
+        List<Positions> positions = lagouOperationService.queryLeftPositions();
+        List<City> citys = lagouOperationService.queryCitys();
+        if(!CollectionUtils.isEmpty(positions) && !CollectionUtils.isEmpty(citys)){
+            positions.forEach(position -> {
+                String positionName = position.getPositionName();
+                Map<String,Object> param = new LinkedHashMap<>();
+                param.put("first",true);
+                param.put("pn",1);
+                param.put("kd",positionName);
+                citys.forEach(city -> {
+                   // String apiUrl = "https://www.lagou.com/jobs/companyAjax.json?px=default&city="+city.getCityName()+"&needAddtionalResult=false&isSchoolJob=0";
+                    String apiUrl = "https://www.lagou.com/jobs/companyAjax.json?px=default&city=%E6%B7%B1%E5%9C%B3&needAddtionalResult=false&isSchoolJob=0";
+                    String data = httpClientService.doPost(apiUrl, param, HttpHeaderConstant.lagouAjaxHeader);
+                    PositionDetailResultJsonVo positionDetailResultJsonVo = handlePositions(data);
+                    if(positionDetailResultJsonVo.getTotalCount() == 0){
+
+                    }
+return ;
+
+                });
+
+            });
+
+        }
+    }
+
+    private PositionDetailResultJsonVo handlePositions(String sourceJson){
+            String targetJson = null;
+            try {
+                JsonElement jsonElement = new JsonParser().parse(sourceJson);
+                targetJson =  jsonElement.getAsJsonObject().get("positionResult").toString();
+            }catch (Exception e){
+                logger.error("职位json获取值失败",e);
+            }
+            Gson gson = new Gson();
+            PositionDetailResultJsonVo positionDetailResultJsonVo = gson.fromJson(targetJson == null ? "{}" : targetJson, PositionDetailResultJsonVo.class);
+            if(positionDetailResultJsonVo ==null){
+                positionDetailResultJsonVo = new PositionDetailResultJsonVo();
+                positionDetailResultJsonVo.setResultSize(0);
+                positionDetailResultJsonVo.setTotalCount(0);
+            }
+            return positionDetailResultJsonVo;
+
     }
 }
