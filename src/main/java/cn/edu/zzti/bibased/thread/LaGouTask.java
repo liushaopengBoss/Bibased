@@ -30,6 +30,5 @@ public class LaGouTask implements Callable {
             case HttpType.POST:data =  httpClientService.doPost(apiUrl, param, HttpHeaderConstant.lagouAjaxHeader);break;
         }
         return data;
-
     }
 }

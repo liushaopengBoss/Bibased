@@ -1,9 +1,14 @@
 package cn.edu.zzti.bibased.dao.lagou;
 
 import cn.edu.zzti.bibased.dao.mapper.CityMapper;
+import cn.edu.zzti.bibased.dao.mapper.CompanyMapper;
 import cn.edu.zzti.bibased.dao.mapper.PositionsMapper;
 import cn.edu.zzti.bibased.dto.City;
+import cn.edu.zzti.bibased.dto.Company;
 import cn.edu.zzti.bibased.dto.Positions;
+import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -14,12 +19,14 @@ import java.util.List;
  */
 @Repository
 public class LagouDao {
-
     @Resource
     private PositionsMapper positionsMapper;
 
     @Resource
     private CityMapper cityMapper;
+
+    @Resource
+    private CompanyMapper companyMapper;
 
     public void insertJob(Positions position){
         positionsMapper.insert(position);
@@ -30,5 +37,9 @@ public class LagouDao {
 
     public void batchInsertCitys(List<City> cityList){
         cityMapper.batchInsert(cityList);
+    }
+
+    public void batchInsertCompanys(List<Company> companies){
+        companyMapper.batchInsert(companies);
     }
 }
