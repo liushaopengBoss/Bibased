@@ -90,7 +90,8 @@ public class LagouService {
     /**
      * 采集拉勾网的公司信息
      */
-    public void collectionCompanyInfomation(){
+    public void
+    collectionCompanyInfomation(){
         String apiUrl = "https://www.lagou.com/gongsi/";
         String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);
         List<City> cityByCompany = LagouHandler.getCityByCompany(html);
