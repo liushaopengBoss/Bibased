@@ -108,12 +108,11 @@ public class LagouService {
             CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data, CompanyResultJsonVO.class);
             int pageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
             logger.info("-----------page:"+pageNo+"\n");
-            LaGouTask laGouTask ;
+            LaGouTask laGouTask = new LaGouTask(url,param, HttpType.POST);
             List<CompanyVO> resultVOS = new LinkedList<>();
             resultVOS.addAll(companyResultJsonVO.getResult());
             for (int j = 2; j <= pageNo; j++) {
                 for (int k = 0; k < 10; k++) {
-                    laGouTask = new LaGouTask(url,param, HttpType.POST);
                     param.put("first",false);
                     param.put("pn",j);
                     completionService.submit(laGouTask);
@@ -129,8 +128,7 @@ public class LagouService {
                             resultVOS.addAll(result);
                         }
                     }catch (Exception e){
-                        e.printStackTrace();
-                        logger.error(e.getMessage());
+                        logger.error(e.getMessage(),e);
                     }
                 }
 
