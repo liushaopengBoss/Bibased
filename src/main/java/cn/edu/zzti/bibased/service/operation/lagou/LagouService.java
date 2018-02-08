@@ -170,12 +170,12 @@ public class LagouService {
             positions.forEach(position -> {
                 String positionName = position.getPositionName();
                 Map<String,Object> param = new LinkedHashMap<>();
-                param.put("first",true);
-                param.put("pn",1);
+                param.put("first",false);
+                param.put("pn",3);
                 param.put("kd",positionName);
                 citys.forEach(city -> {
                    // String apiUrl = "https://www.lagou.com/jobs/companyAjax.json?px=default&city="+city.getCityName()+"&needAddtionalResult=false&isSchoolJob=0";
-                    String apiUrl = "https://www.lagou.com/jobs/companyAjax.json?px=default&city=%E6%B7%B1%E5%9C%B3&needAddtionalResult=false&isSchoolJob=0";
+                    String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city=%E6%9D%AD%E5%B7%9E&needAddtionalResult=false&isSchoolJob=0";
                     String data = httpClientService.doPost(apiUrl, param, HttpHeaderConstant.lagouAjaxHeader);
                     PositionDetailResultJsonVo positionDetailResultJsonVo = handlePositions(data);
                     if(positionDetailResultJsonVo.getTotalCount() == 0){
@@ -194,7 +194,7 @@ return ;
             String targetJson = null;
             try {
                 JsonElement jsonElement = new JsonParser().parse(sourceJson);
-                targetJson =  jsonElement.getAsJsonObject().get("positionResult").toString();
+                targetJson =  jsonElement.getAsJsonObject().get("contet").getAsJsonObject().get("positionResult").toString();
             }catch (Exception e){
                 logger.error("职位json获取值失败",e);
             }

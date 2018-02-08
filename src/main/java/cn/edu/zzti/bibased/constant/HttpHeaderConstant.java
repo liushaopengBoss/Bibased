@@ -56,7 +56,8 @@ public class HttpHeaderConstant {
         lagouAjaxHeader.put("Cookie","user_trace_token=20171126164429-0464ac5c-d286-11e7-ab32-525400f775ce; LGUID=20171126164429-0464b234-d286-11e7-ab32-525400f775ce; fromsite=\"localhost:8081\"; _ga=GA1.2.1872966524.1511685872; index_location_city=%E5%8C%97%E4%BA%AC; JSESSIONID=ABAAABAAAGGABCB6B6E54153AAD9C8C279E0573C23DF61F; _gid=GA1.2.501554749.1517730303; Hm_lvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1516533433,1517122069,1517412525,1517730312; TG-TRACK-CODE=index_navigation; LGSID=20180204181009-948d72ea-0993-11e8-aa06-525400f775ce; PRE_UTM=; PRE_HOST=; PRE_SITE=https%3A%2F%2Fwww.lagou.com%2Fzhaopin%2FJava%2F%3FlabelWords%3Dlabel; PRE_LAND=https%3A%2F%2Fwww.lagou.com%2Fjobs%2F4087854.html; SEARCH_ID=428a794879134bc6910a4df4eb69031e; _gat=1; Hm_lpvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1517740493; LGRID=20180204183453-09432a2c-0997-11e8-aa0d-525400f775ce");
         lagouAjaxHeader.put("Host","www.lagou.com");
         lagouAjaxHeader.put("Origin","https://www.lagou.com");
-        lagouAjaxHeader.put("Referer","https://www.lagou.com/gongsi/6-0-0");
+        //lagouAjaxHeader.put("Referer","https://www.lagou.com/gongsi/6-0-0");
+        lagouAjaxHeader.put("Referer","https://www.lagou.com/jobs/list_Java?px=default&city=%E6%9D%AD%E5%B7%9E");
         lagouAjaxHeader.put("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36");
         lagouAjaxHeader.put("X-Anit-Forge-Code",0);
         lagouAjaxHeader.put("X-Anit-Forge-Token","None");
