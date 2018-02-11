@@ -106,4 +106,9 @@ public class HttpTests extends BaseApplicationTests {
     public void positiionTests(){
         lagouService.connectionPositionInfomation();
     }
+
+    @Test
+    public void  positionDetailsTest(){
+        lagouService.collectionCompanyInfomationV2();
+    }
 }

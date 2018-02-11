@@ -5,13 +5,18 @@ import cn.edu.zzti.bibased.constant.HttpType;
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.Company;
+import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.dto.lagou.CompanyResultJsonVO;
 import cn.edu.zzti.bibased.dto.lagou.CompanyVO;
 import cn.edu.zzti.bibased.dto.lagou.PositionDetailResultJsonVo;
+import cn.edu.zzti.bibased.dto.lagou.PositionDetailVo;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
+import cn.edu.zzti.bibased.thread.BaseTask;
+import cn.edu.zzti.bibased.thread.CompanyExecute;
 import cn.edu.zzti.bibased.thread.LaGouTask;
+import cn.edu.zzti.bibased.thread.PositionDetailExecute;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -38,11 +43,12 @@ public class LagouService {
      * 注入无阻塞的
      */
     @Resource
-    private CompletionService<String> completionService;
+    private CompletionService completionService;
     @Resource
     private LagouOperationService lagouOperationService;
     @Resource
     private HttpClientService httpClientService;
+
     public String startGetDate(String apiUrl, Map<String,Object> param,String httpType) throws Exception{
         LaGouTask laGouTask = new LaGouTask(apiUrl,param, httpType);
         for (int i = 0; i < 5; i++) {
@@ -58,6 +64,9 @@ public class LagouService {
         return buffer.toString();
     }
 
+    /**
+     * 多线程执行数据
+     */
     public void initLagouInfo(){
         lagouPool.execute(()-> {
                 collectionJobInformation();
@@ -143,6 +152,63 @@ public class LagouService {
             }catch (Exception e){}
         }
     }
+    public void collectionCompanyInfomationV2(){
+        String apiUrl = "https://www.lagou.com/gongsi/";
+        String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);
+        List<City> cityByCompany = LagouHandler.getCityByCompany(html);
+        //去掉第一个和最后一个
+        for (int i = 1; i < cityByCompany.size()-1; i++) {
+            Gson gson = new Gson();
+            String url = apiUrl+cityByCompany.get(i).getLinkId()+"-0-0.json";
+            logger.info(url);
+            Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
+            lagouAjaxHeader.put("Referer",url.replace(".json",""));
+            String data = httpClientService.doPost(url, HttpHeaderConstant.compaanyParam, lagouAjaxHeader);
+            CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data, CompanyResultJsonVO.class);
+            int pageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
+            logger.info("-----------page:"+pageNo+"\n");
+            BaseTask companyTask = new CompanyExecute();
+            Map<String, Object> companyParam = HttpHeaderConstant.compaanyParam;
+            companyTask.setApiUrl(apiUrl);
+            companyTask.setHeaders(lagouAjaxHeader);
+            companyTask.setParams(companyParam);
+            List<CompanyVO> resultVOS = new LinkedList<>();
+            resultVOS.addAll(companyResultJsonVO.getResult());
+            for (int j = 2; j <= pageNo; j++) {
+                for (int k = 0; k < 10; k++) {
+                    companyParam.put("first",false);
+                    companyParam.put("pn",j);
+                    lagouAjaxHeader.put("Referer",url.replace(".json",""));
+                    String cookie = lagouAjaxHeader.get("Cookie").toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
+                    lagouAjaxHeader.put("Cookie",cookie);
+                    completionService.submit(companyTask);
+                    j++;
+                }
+                logger.info("-------------------------->"+j+"\n");
+                for (int k = 0; k < 10; k++) {
+                    try{
+                        Future<CompanyResultJsonVO> take = completionService.take();
+                        if(take.get()!=null){
+                            CompanyResultJsonVO companyResultJsonVO1 = take.get();
+                            List<CompanyVO> result = companyResultJsonVO1.getResult();
+                            resultVOS.addAll(result);
+                        }
+                    }catch (Exception e){
+                        logger.error(e.getMessage(),e);
+                    }
+                }
+
+                if (resultVOS.size() > 0) {
+                    handleCompany(resultVOS);
+                }else{
+                    break;
+                }
+            }
+            try {
+                Thread.sleep(3000);
+            }catch (Exception e){}
+        }
+    }
     void handleCompany(List<CompanyVO> companyVOS){
         if(!CollectionUtils.isEmpty(companyVOS)){
             List<Company> targetCompany = new LinkedList<>();
@@ -169,17 +235,43 @@ public class LagouService {
                 String positionName = position.getPositionName();
                 Map<String,Object> param = new LinkedHashMap<>();
                 param.put("first",false);
-                param.put("pn",3);
+                param.put("pn",1);
                 param.put("kd",positionName);
+                Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
                 citys.forEach(city -> {
-                   // String apiUrl = "https://www.lagou.com/jobs/companyAjax.json?px=default&city="+city.getCityName()+"&needAddtionalResult=false&isSchoolJob=0";
-                    String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city=%E6%9D%AD%E5%B7%9E&needAddtionalResult=false&isSchoolJob=0";
-                    String data = httpClientService.doPost(apiUrl, param, HttpHeaderConstant.lagouAjaxHeader);
-                    PositionDetailResultJsonVo positionDetailResultJsonVo = handlePositions(data);
-                    if(positionDetailResultJsonVo.getTotalCount() == 0){
+                    String apiUrl = "https://www.lagou.com/jobs/companyAjax.json?px=default&city="+city.getCityName()+"&needAddtionalResult=false&isSchoolJob=0";
+                    String data = httpClientService.doPost(apiUrl, param, lagouAjaxHeader);
+                    int pageSize = this.getPageSize(data);
+                    if(pageSize != 0){
+                        for(int i=1;i<=pageSize;i++){
+                            for (int j=1;j<10;j++){
+                                param.put("pn",i);
+                                lagouAjaxHeader.put("Referer",apiUrl);
+                                String cookie = lagouAjaxHeader.get("Cookie").toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
+                                lagouAjaxHeader.put("Cookie",cookie);
+                                BaseTask positonDetailTask = new PositionDetailExecute();
+                                positonDetailTask.setParams(param);
+                                positonDetailTask.setHeaders(lagouAjaxHeader);
+                                positonDetailTask.setApiUrl(apiUrl);
+                                completionService.submit(positonDetailTask);
+                                i++;
+                            }
+                            for (int k = 0; k < 10; k++) {
+                                try {
+                                    Future<PositionDetailResultJsonVo> take = completionService.take();
+                                    if(take.isCancelled() && take.get() != null){
+                                        PositionDetailResultJsonVo positionDetailResultJsonVo = take.get();
+                                        List<PositionDetailVo> result = positionDetailResultJsonVo.getResult();
+                                        lagouOperationService.batchAddPositionDetails(handlePositionDetails(result));
+                                    }
+                                }catch (Exception e){
+                                    logger.error("获取数据失败！",e);
+                                }
+                            }
+
+                          }
 
                     }
-return ;
 
                 });
 
@@ -188,22 +280,32 @@ return ;
         }
     }
 
-    private PositionDetailResultJsonVo handlePositions(String sourceJson){
-            String targetJson = null;
-            try {
-                JsonElement jsonElement = new JsonParser().parse(sourceJson);
-                targetJson =  jsonElement.getAsJsonObject().get("contet").getAsJsonObject().get("positionResult").toString();
-            }catch (Exception e){
-                logger.error("职位json获取值失败",e);
-            }
-            Gson gson = new Gson();
-            PositionDetailResultJsonVo positionDetailResultJsonVo = gson.fromJson(targetJson == null ? "{}" : targetJson, PositionDetailResultJsonVo.class);
-            if(positionDetailResultJsonVo ==null){
-                positionDetailResultJsonVo = new PositionDetailResultJsonVo();
-                positionDetailResultJsonVo.setResultSize(0);
-                positionDetailResultJsonVo.setTotalCount(0);
-            }
-            return positionDetailResultJsonVo;
+    private int getPageSize(String sourceJson){
+        String targetJson = null;
+        try {
+            JsonElement jsonElement = new JsonParser().parse(sourceJson);
+            targetJson =  jsonElement.getAsJsonObject().get("contet").getAsJsonObject().get("positionResult").toString();
+        }catch (Exception e){
+            logger.error("职位json获取值失败",e);
+        }
+        Gson gson = new Gson();
+        PositionDetailResultJsonVo positionDetailResultJsonVo = gson.fromJson(targetJson == null ? "{}" : targetJson, PositionDetailResultJsonVo.class);
+        if(positionDetailResultJsonVo !=null){
+            return positionDetailResultJsonVo.getTotalCount()/positionDetailResultJsonVo.getResultSize();
+        }
+        return 0;
 
+    }
+
+    private List<PositionDetail> handlePositionDetails(List<PositionDetailVo> positionDetailVos){
+        List<PositionDetail>   positionDetails = new LinkedList<>();
+        if(!CollectionUtils.isEmpty(positionDetailVos)){
+            positionDetails.forEach(positionDetailVo -> {
+                PositionDetail positionDetail = new PositionDetail();
+                positionDetails.add(positionDetail);
+                BeanUtils.copyProperties(positionDetailVo,positionDetail);
+            });
+        }
+        return positionDetails;
     }
 }

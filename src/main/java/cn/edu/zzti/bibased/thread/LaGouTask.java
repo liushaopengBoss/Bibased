@@ -10,6 +10,8 @@ import java.util.concurrent.Callable;
 /**
  * 拉钩网的获取数据线程
  * 有返回值的
+ * 不建议使用
+ *
  */
 public class LaGouTask implements Callable {
     private String apiUrl; //url

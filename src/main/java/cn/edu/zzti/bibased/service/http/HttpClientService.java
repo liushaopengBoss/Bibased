@@ -126,11 +126,6 @@ public class HttpClientService {
         String data = null;
         try {
             for (Map.Entry<String, Object> entry : headers.entrySet()) {
-                if("Cookie".equals(entry.getKey())){
-                    String cookie = entry.getValue().toString();//+ UUID.randomUUID().toString().replace("-","").toString()+";";
-                    httpPost.addHeader(entry.getKey(), cookie);
-                    continue;
-                }
                 httpPost.addHeader(entry.getKey(), entry.getValue().toString());
             }
             List<NameValuePair> pairList = new ArrayList<NameValuePair>(params.size());

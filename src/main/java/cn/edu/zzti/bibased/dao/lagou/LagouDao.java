@@ -2,9 +2,11 @@ package cn.edu.zzti.bibased.dao.lagou;
 
 import cn.edu.zzti.bibased.dao.mapper.CityMapper;
 import cn.edu.zzti.bibased.dao.mapper.CompanyMapper;
+import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
 import cn.edu.zzti.bibased.dao.mapper.PositionsMapper;
 import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.Company;
+import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.Positions;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
@@ -28,6 +30,9 @@ public class LagouDao {
     @Resource
     private CompanyMapper companyMapper;
 
+    @Resource
+    private PositionDetailMapper positionDetailMapper;
+
     public void insertJob(Positions position){
         positionsMapper.insert(position);
     }
@@ -50,4 +55,10 @@ public class LagouDao {
     public List<City> queryCitys(String include){
         return cityMapper.queryCity(include);
     }
+
+    public void batchInsertPositionDetails(List<PositionDetail> positionDetails){
+        positionDetailMapper.batchInsert(positionDetails);
+    }
+
+
 }
