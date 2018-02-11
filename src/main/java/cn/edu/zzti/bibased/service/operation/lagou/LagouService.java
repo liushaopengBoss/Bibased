@@ -226,28 +226,29 @@ public class LagouService {
         }
     }
 
-    public void connectionPositionInfomation(){
+    public void connectionPositionDeailsInfomation(){
         List<Positions> positions = lagouOperationService.queryLeftPositions();
         List<City> citys = lagouOperationService.queryCitys();
         if(!CollectionUtils.isEmpty(positions) && !CollectionUtils.isEmpty(citys)){
             positions.forEach(position -> {
                 String positionName = position.getPositionName();
                 Map<String,Object> param = new LinkedHashMap<>();
-                param.put("first",false);
+                param.put("first",true);
                 param.put("pn",1);
                 param.put("kd",positionName);
                 Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
                 citys.forEach(city -> {
-                    String apiUrl = "https://www.lagou.com/jobs/companyAjax.json?px=default&city="+city.getCityName()+"&needAddtionalResult=false&isSchoolJob=0";
+                    String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city="+city.getCityName()+"&needAddtionalResult=false&isSchoolJob=0";
+                    lagouAjaxHeader.put("Referer","https://www.lagou.com/jobs/list_"+position.getPositionName()+"?px=default&city="+city.getCityName());
+                    setCookie(lagouAjaxHeader);
                     String data = httpClientService.doPost(apiUrl, param, lagouAjaxHeader);
                     int pageSize = this.getPageSize(data);
                     if(pageSize != 0){
                         for(int i=1;i<=pageSize;i++){
                             for (int j=1;j<10;j++){
+                                param.put("first",false);
                                 param.put("pn",i);
-                                lagouAjaxHeader.put("Referer",apiUrl);
-                                String cookie = lagouAjaxHeader.get("Cookie").toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
-                                lagouAjaxHeader.put("Cookie",cookie);
+                                setCookie(lagouAjaxHeader);
                                 BaseExecuter positonDetailTask = new PositionDetailExecute();
                                 positonDetailTask.setParams(param);
                                 positonDetailTask.setHeaders(lagouAjaxHeader);
@@ -258,7 +259,7 @@ public class LagouService {
                             for (int k = 0; k < 10; k++) {
                                 try {
                                     Future<PositionDetailResultJsonVo> take = completionService.take();
-                                    if(take.isCancelled() && take.get() != null){
+                                    if(take.get() != null){
                                         PositionDetailResultJsonVo positionDetailResultJsonVo = take.get();
                                         List<PositionDetailVo> result = positionDetailResultJsonVo.getResult();
                                         lagouOperationService.batchAddPositionDetails(handlePositionDetails(result));
@@ -283,7 +284,7 @@ public class LagouService {
         String targetJson = null;
         try {
             JsonElement jsonElement = new JsonParser().parse(sourceJson);
-            targetJson =  jsonElement.getAsJsonObject().get("contet").getAsJsonObject().get("positionResult").toString();
+            targetJson =  jsonElement.getAsJsonObject().get("content").getAsJsonObject().get("positionResult").toString();
         }catch (Exception e){
             logger.error("职位json获取值失败",e);
         }
@@ -306,5 +307,10 @@ public class LagouService {
             });
         }
         return positionDetails;
+    }
+
+    private void setCookie(Map<String,Object> header){
+        String cookie = header.get("Cookie").toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
+        header.put("Cookie",cookie);
     }
 }

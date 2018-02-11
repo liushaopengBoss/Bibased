@@ -27,7 +27,7 @@ public class PositionDetailExecute extends BaseExecuter {
         String targetJson = null;
         try {
             JsonElement jsonElement = new JsonParser().parse(sourceJson);
-            targetJson =  jsonElement.getAsJsonObject().get("contet").getAsJsonObject().get("positionResult").toString();
+            targetJson =  jsonElement.getAsJsonObject().get("content").getAsJsonObject().get("positionResult").toString();
         }catch (Exception e){
             logger.error("职位json获取值失败",e);
         }
