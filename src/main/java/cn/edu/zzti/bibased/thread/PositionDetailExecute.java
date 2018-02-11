@@ -7,7 +7,7 @@ import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PositionDetailExecute extends  BaseTask {
+public class PositionDetailExecute extends BaseExecuter {
     private Logger logger = LoggerFactory.getLogger(PositionDetailExecute.class);
 
     @Override

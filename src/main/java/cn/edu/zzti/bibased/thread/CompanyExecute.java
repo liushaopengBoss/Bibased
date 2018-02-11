@@ -9,7 +9,7 @@ import com.google.gson.Gson;
  *
  * Created by huaidou on  2018/1/31
  */
-public class CompanyExecute extends BaseTask {
+public class CompanyExecute extends BaseExecuter {
 
 
     @Override

@@ -1,17 +1,14 @@
 package cn.edu.zzti.bibased.thread;
 
 import cn.edu.zzti.bibased.service.http.HttpClientService;
-import cn.edu.zzti.bibased.utils.SpringContextUtils;
 
 import javax.annotation.Resource;
 import java.util.Map;
-import java.util.concurrent.Callable;
-
 /**
- * 多线程抽象类
+ * 多线程抽象执行器类
  * create by huaidou on 2018/02/09
  */
-public abstract class BaseTask  implements Callable {
+public abstract class BaseExecuter implements AnsyTask.Executer {
     /**
      * 请求头
      */
@@ -24,13 +21,14 @@ public abstract class BaseTask  implements Callable {
      * post参数
      */
     protected  Map<String,Object> params;
-
+    @Resource
     protected HttpClientService httpClientService;
 
     @Override
     public Object call() throws Exception {
         return builderResult();
     }
+
 
     /**
      * 抽象的获取数据方法
@@ -62,11 +60,5 @@ public abstract class BaseTask  implements Callable {
 
     public void setParams(Map<String, Object> params) {
         this.params = params;
-    }
-
-
-    public void setHttpClientService(HttpClientService service) {
-        HttpClientService httpClientService =(HttpClientService) SpringContextUtils.getBean("httpClientService");
-        this.httpClientService = httpClientService;
     }
 }

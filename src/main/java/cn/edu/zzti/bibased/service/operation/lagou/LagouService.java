@@ -13,15 +13,10 @@ import cn.edu.zzti.bibased.dto.lagou.PositionDetailResultJsonVo;
 import cn.edu.zzti.bibased.dto.lagou.PositionDetailVo;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
-import cn.edu.zzti.bibased.thread.BaseTask;
-import cn.edu.zzti.bibased.thread.CompanyExecute;
-import cn.edu.zzti.bibased.thread.LaGouTask;
-import cn.edu.zzti.bibased.thread.PositionDetailExecute;
+import cn.edu.zzti.bibased.thread.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -167,7 +162,7 @@ public class LagouService {
             CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data, CompanyResultJsonVO.class);
             int pageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
             logger.info("-----------page:"+pageNo+"\n");
-            BaseTask companyTask = new CompanyExecute();
+            BaseExecuter companyTask = new CompanyExecute();
             Map<String, Object> companyParam = HttpHeaderConstant.compaanyParam;
             companyTask.setApiUrl(apiUrl);
             companyTask.setHeaders(lagouAjaxHeader);
@@ -181,7 +176,7 @@ public class LagouService {
                     lagouAjaxHeader.put("Referer",url.replace(".json",""));
                     String cookie = lagouAjaxHeader.get("Cookie").toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
                     lagouAjaxHeader.put("Cookie",cookie);
-                    completionService.submit(companyTask);
+                    completionService.submit(AnsyTask.newTask().registExecuter(companyTask));
                     j++;
                 }
                 logger.info("-------------------------->"+j+"\n");
@@ -200,6 +195,7 @@ public class LagouService {
 
                 if (resultVOS.size() > 0) {
                     handleCompany(resultVOS);
+                    return;
                 }else{
                     break;
                 }
@@ -249,11 +245,11 @@ public class LagouService {
                                 lagouAjaxHeader.put("Referer",apiUrl);
                                 String cookie = lagouAjaxHeader.get("Cookie").toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
                                 lagouAjaxHeader.put("Cookie",cookie);
-                                BaseTask positonDetailTask = new PositionDetailExecute();
+                                BaseExecuter positonDetailTask = new PositionDetailExecute();
                                 positonDetailTask.setParams(param);
                                 positonDetailTask.setHeaders(lagouAjaxHeader);
                                 positonDetailTask.setApiUrl(apiUrl);
-                                completionService.submit(positonDetailTask);
+                                completionService.submit(AnsyTask.newTask().registExecuter(positonDetailTask));
                                 i++;
                             }
                             for (int k = 0; k < 10; k++) {
