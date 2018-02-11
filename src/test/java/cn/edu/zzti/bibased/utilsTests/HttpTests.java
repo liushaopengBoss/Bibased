@@ -6,6 +6,8 @@ import cn.edu.zzti.bibased.dao.lagou.LagouDao;
 import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.Company;
 import cn.edu.zzti.bibased.dto.Positions;
+import cn.edu.zzti.bibased.execute.BaseExecuter;
+import cn.edu.zzti.bibased.execute.PositionDetailExecute;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouService;
@@ -16,8 +18,10 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class HttpTests extends BaseApplicationTests {
 
@@ -110,5 +114,22 @@ public class HttpTests extends BaseApplicationTests {
     @Test
     public void  positionDetailsTest(){
         lagouService.collectionCompanyInfomationV2();
+        String apiUrl = "https://www.lagou.com/jobs/companyAjax.json?px=default&city="+"北京"+"&needAddtionalResult=false&isSchoolJob=0";
+
+        Map<String,Object> param = new LinkedHashMap<>();
+        param.put("first",false);
+        param.put("pn",1);
+        param.put("kd","Java");
+        Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
+
+        lagouAjaxHeader.put("Referer",apiUrl);
+        String cookie = lagouAjaxHeader.get("Cookie").toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
+        lagouAjaxHeader.put("Cookie",cookie);
+        BaseExecuter positonDetailTask = new PositionDetailExecute();
+        positonDetailTask.setParams(param);
+        positonDetailTask.setHeaders(lagouAjaxHeader);
+        positonDetailTask.setApiUrl(apiUrl);
+
+
     }
 }

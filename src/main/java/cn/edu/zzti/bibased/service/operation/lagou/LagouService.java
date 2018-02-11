@@ -11,6 +11,9 @@ import cn.edu.zzti.bibased.dto.lagou.CompanyResultJsonVO;
 import cn.edu.zzti.bibased.dto.lagou.CompanyVO;
 import cn.edu.zzti.bibased.dto.lagou.PositionDetailResultJsonVo;
 import cn.edu.zzti.bibased.dto.lagou.PositionDetailVo;
+import cn.edu.zzti.bibased.execute.BaseExecuter;
+import cn.edu.zzti.bibased.execute.CompanyExecute;
+import cn.edu.zzti.bibased.execute.PositionDetailExecute;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.thread.*;
@@ -164,7 +167,7 @@ public class LagouService {
             logger.info("-----------page:"+pageNo+"\n");
             BaseExecuter companyTask = new CompanyExecute();
             Map<String, Object> companyParam = HttpHeaderConstant.compaanyParam;
-            companyTask.setApiUrl(apiUrl);
+            companyTask.setApiUrl(url);
             companyTask.setHeaders(lagouAjaxHeader);
             companyTask.setParams(companyParam);
             List<CompanyVO> resultVOS = new LinkedList<>();

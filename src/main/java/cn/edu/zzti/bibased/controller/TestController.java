@@ -42,7 +42,11 @@ public class TestController {
         lagouService.initLagouInfo();
         return "success";
     }
-
+    @RequestMapping("/position")
+    public String position(){
+        lagouService.collectionCompanyInfomationV2();
+        return "success";
+    }
 
 
 }

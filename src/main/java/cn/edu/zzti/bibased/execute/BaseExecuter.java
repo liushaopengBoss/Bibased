@@ -1,6 +1,9 @@
-package cn.edu.zzti.bibased.thread;
+package cn.edu.zzti.bibased.execute;
 
 import cn.edu.zzti.bibased.service.http.HttpClientService;
+import cn.edu.zzti.bibased.thread.AnsyTask;
+import cn.edu.zzti.bibased.utils.SpringContextUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -21,11 +24,12 @@ public abstract class BaseExecuter implements AnsyTask.Executer {
      * post参数
      */
     protected  Map<String,Object> params;
-    @Resource
-    protected HttpClientService httpClientService;
+
+    protected HttpClientService httpClientService ;
 
     @Override
     public Object call() throws Exception {
+        this.httpClientService =(HttpClientService) SpringContextUtils.getBean("httpClientService");
         return builderResult();
     }
 
