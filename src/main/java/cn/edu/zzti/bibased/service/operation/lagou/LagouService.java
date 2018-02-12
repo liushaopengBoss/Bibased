@@ -7,10 +7,7 @@ import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.Company;
 import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.Positions;
-import cn.edu.zzti.bibased.dto.lagou.CompanyResultJsonVO;
-import cn.edu.zzti.bibased.dto.lagou.CompanyVO;
-import cn.edu.zzti.bibased.dto.lagou.PositionDetailResultJsonVo;
-import cn.edu.zzti.bibased.dto.lagou.PositionDetailVo;
+import cn.edu.zzti.bibased.dto.lagou.*;
 import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.CompanyExecute;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
@@ -28,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.Future;
@@ -227,8 +225,14 @@ public class LagouService {
     }
 
     public void connectionPositionDeailsInfomation(){
-        List<Positions> positions = lagouOperationService.queryLeftPositions();
-        List<City> citys = lagouOperationService.queryCitys();
+        Future<List<Positions>> positionListFuter = lagouPool.submit(() -> {
+               return lagouOperationService.queryLeftPositions();
+        });
+        List<Positions> positions = null;
+        List<City> citys =lagouOperationService.queryCitys();
+        try{
+            positions = positionListFuter.get();
+        }catch (Exception e){}
         if(!CollectionUtils.isEmpty(positions) && !CollectionUtils.isEmpty(citys)){
             positions.forEach(position -> {
                 String positionName = position.getPositionName();
@@ -237,15 +241,18 @@ public class LagouService {
                 param.put("pn",1);
                 param.put("kd",positionName);
                 Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
-                citys.forEach(city -> {
+                citys.stream().forEach(city -> {
                     String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city="+city.getCityName()+"&needAddtionalResult=false&isSchoolJob=0";
+                    logger.info("---->  "+apiUrl);
                     lagouAjaxHeader.put("Referer","https://www.lagou.com/jobs/list_"+position.getPositionName()+"?px=default&city="+city.getCityName());
                     setCookie(lagouAjaxHeader);
                     String data = httpClientService.doPost(apiUrl, param, lagouAjaxHeader);
                     int pageSize = this.getPageSize(data);
                     if(pageSize != 0){
+                        logger.info("---->执行数据");
                         for(int i=1;i<=pageSize;i++){
-                            for (int j=1;j<10;j++){
+                            logger.info("---->  "+i);
+                            for (int j=0;j<10;j++){
                                 param.put("first",false);
                                 param.put("pn",i);
                                 setCookie(lagouAjaxHeader);
@@ -256,17 +263,30 @@ public class LagouService {
                                 completionService.submit(AnsyTask.newTask().registExecuter(positonDetailTask));
                                 i++;
                             }
-                            for (int k = 0; k < 10; k++) {
+                            boolean isGo = true;
+                            List<PositionDetail> positionDetails = new LinkedList<>();
+                            for (int k = 0; k <10; k++) {
                                 try {
                                     Future<PositionDetailResultJsonVo> take = completionService.take();
                                     if(take.get() != null){
                                         PositionDetailResultJsonVo positionDetailResultJsonVo = take.get();
                                         List<PositionDetailVo> result = positionDetailResultJsonVo.getResult();
-                                        lagouOperationService.batchAddPositionDetails(handlePositionDetails(result));
+                                        positionDetails.addAll(handlePositionDetails(result));
+                                        if(result !=null || result.size() == 0) {
+                                            isGo =false;
+                                        }
                                     }
                                 }catch (Exception e){
+                                    isGo = false;
                                     logger.error("获取数据失败！",e);
                                 }
+                            }
+
+                            if(positionDetails.size()>0 ){
+                                lagouOperationService.batchAddPositionDetails(positionDetails);
+                                logger.info("----写入数据>  ");
+                            }else if(!isGo || positionDetails.size() == 0){
+                                break;
                             }
 
                           }
@@ -300,10 +320,51 @@ public class LagouService {
     private List<PositionDetail> handlePositionDetails(List<PositionDetailVo> positionDetailVos){
         List<PositionDetail>   positionDetails = new LinkedList<>();
         if(!CollectionUtils.isEmpty(positionDetailVos)){
-            positionDetails.forEach(positionDetailVo -> {
+            positionDetailVos.forEach(positionDetailVo -> {
                 PositionDetail positionDetail = new PositionDetail();
                 positionDetails.add(positionDetail);
                 BeanUtils.copyProperties(positionDetailVo,positionDetail);
+                String gps = new Gson().toJson(new GPS(positionDetailVo.getLongitude(), positionDetailVo.getLatitude()));
+                positionDetail.setGps(gps);
+                String[] workYears = positionDetailVo.getWorkYear().replace("年", "").replace("不限","").split("-");
+                if(workYears==null || workYears.length==0 || workYears.length ==1){
+                    positionDetail.setWorkMaxYear(0);
+                    positionDetail.setWorkMinYear(0);
+                }else if(workYears.length ==1){
+                    positionDetail.setWorkMaxYear(Integer.valueOf(workYears[0]));
+                    positionDetail.setWorkMinYear(Integer.valueOf(workYears[0]));
+
+                }else{
+                    positionDetail.setWorkMaxYear(Integer.valueOf(workYears[1]));
+                    positionDetail.setWorkMinYear(Integer.valueOf(workYears[0]));
+                }
+                String []salary = positionDetailVo.getSalary() != null? positionDetail.getSalary().toLowerCase().replace("k","").split("-"): null;
+                if(salary ==null || salary.length ==0){
+                    positionDetail.setMinSalary(new BigDecimal(Double.valueOf(0)));
+                    positionDetail.setMaxSalary(new BigDecimal(Double.valueOf(0)));
+                }else if(salary.length ==1){
+                    positionDetail.setMinSalary(new BigDecimal(Double.valueOf(salary[0])));
+                    positionDetail.setMaxSalary(new BigDecimal(Double.valueOf(salary[0])));
+                }else{
+                    positionDetail.setMinSalary(new BigDecimal(Double.valueOf(salary[0])));
+                    positionDetail.setMaxSalary(new BigDecimal(Double.valueOf(salary[1])));
+                }
+                String []companySize =   positionDetailVo.getCompanySize() !=null ? positionDetailVo.getCompanySize().replace("少于","").replace("人以上","").replace("人","").split("-"):null;
+
+                if(companySize ==null || companySize.length==0){
+                    positionDetail.setCompanyMaxSize(0);
+                    positionDetail.setCompanyMinSize(0);
+                }else if(companySize.length ==1){
+                    positionDetail.setCompanyMaxSize(Integer.valueOf(companySize[0]));
+                    positionDetail.setCompanyMinSize(Integer.valueOf(companySize[0]));
+                }else{
+                    positionDetail.setCompanyMaxSize(Integer.valueOf(companySize[1]));
+                    positionDetail.setCompanyMinSize(Integer.valueOf(companySize[0]));
+                }
+                positionDetail.setCompanyLabelList(positionDetailVo.getCompanyLabelList() != null ?positionDetailVo.getCompanyLabelList().toString():null);
+                positionDetail.setBusinessZones(positionDetailVo.getBusinessZones() !=null ? positionDetailVo.getBusinessZones().toString() : null);
+                positionDetail.setPositionLables(positionDetailVo.getPositionLables() !=null ? positionDetailVo.getPositionLables().toString() : null);
+                positionDetail.setIndustryField(positionDetailVo.getIndustryField() !=null ? positionDetailVo.getIndustryField().toString() : null);
             });
         }
         return positionDetails;

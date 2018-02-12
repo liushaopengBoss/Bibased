@@ -41,7 +41,7 @@
         <include refid="valueFields" />
     </insert>
     <select id="queryLeafPositions" resultMap="BaseResultMap" parameterType="java.lang.String">
-        SELECT   position_url, position_name, include, parent_id, root_id, leaf from positions
+        SELECT   position_url, position_name, include from positions
         WHERE  include = #{include}  and leaf = 1
     </select>
 </mapper>

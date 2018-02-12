@@ -3,9 +3,7 @@ package cn.edu.zzti.bibased.execute;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.thread.AnsyTask;
 import cn.edu.zzti.bibased.utils.SpringContextUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
 
-import javax.annotation.Resource;
 import java.util.Map;
 /**
  * 多线程抽象执行器类
@@ -28,7 +26,7 @@ public abstract class BaseExecuter implements AnsyTask.Executer {
     protected HttpClientService httpClientService ;
 
     @Override
-    public Object call() throws Exception {
+    public Object executer() throws Exception {
         this.httpClientService =(HttpClientService) SpringContextUtils.getBean("httpClientService");
         return builderResult();
     }
