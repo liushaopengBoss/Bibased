@@ -26,6 +26,7 @@ public class PositionDetailExecute extends BaseExecuter {
     private PositionDetailResultJsonVo handlePositions(String sourceJson){
         String targetJson = null;
         try {
+            logger.info(sourceJson);
             JsonElement jsonElement = new JsonParser().parse(sourceJson);
             targetJson =  jsonElement.getAsJsonObject().get("content").getAsJsonObject().get("positionResult").toString();
         }catch (Exception e){

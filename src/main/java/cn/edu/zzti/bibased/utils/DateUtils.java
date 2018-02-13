@@ -1,5 +1,8 @@
 package cn.edu.zzti.bibased.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -282,4 +285,16 @@ public class DateUtils {
         return c.getTime();
     }
 
+
+
+    public static  Long parseInt(String dateStr){
+        if(StringUtils.isNotEmpty(dateStr)) {
+            try {
+                DateFormat format = new SimpleDateFormat(YYMMDD_HHmmSS);
+                return format.parse(dateStr).getTime();
+            } catch (Exception e) {
+            }
+        }
+        return 0L;
+    }
 }

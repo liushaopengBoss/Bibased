@@ -14,6 +14,7 @@ import cn.edu.zzti.bibased.execute.PositionDetailExecute;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.thread.*;
+import cn.edu.zzti.bibased.utils.DateUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -27,6 +28,7 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.Future;
 
@@ -148,7 +150,11 @@ public class LagouService {
             }catch (Exception e){}
         }
     }
-    public void collectionCompanyInfomationV2(){
+
+    /**
+     * 获取拉钩的公司信息 V2版本
+     */
+    public void getCompanyInfomationV2(){
         String apiUrl = "https://www.lagou.com/gongsi/";
         String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);
         List<City> cityByCompany = LagouHandler.getCityByCompany(html);
@@ -206,6 +212,11 @@ public class LagouService {
             }catch (Exception e){}
         }
     }
+
+    /**
+     * 拉钩城市信息 并且批量写入数据库
+     * @param companyVOS
+     */
     void handleCompany(List<CompanyVO> companyVOS){
         if(!CollectionUtils.isEmpty(companyVOS)){
             List<Company> targetCompany = new LinkedList<>();
@@ -224,12 +235,25 @@ public class LagouService {
         }
     }
 
-    public void connectionPositionDeailsInfomation(){
+    /**
+     * 获取拉钩网的职位详情信息
+     *
+     */
+    public void getPositionDeailsInfomation(){
         Future<List<Positions>> positionListFuter = lagouPool.submit(() -> {
                return lagouOperationService.queryLeftPositions();
         });
+
+        Future<Long> lastPositionCreateTime = lagouPool.submit(new Callable<Long>() {
+            @Override
+            public Long call() throws Exception {
+                return lagouOperationService.queryLastPositionCreateTime();
+            }
+        });
+
         List<Positions> positions = null;
         List<City> citys =lagouOperationService.queryCitys();
+
         try{
             positions = positionListFuter.get();
         }catch (Exception e){}
@@ -265,16 +289,23 @@ public class LagouService {
                             }
                             boolean isGo = true;
                             List<PositionDetail> positionDetails = new LinkedList<>();
+                            int  count = 0;
                             for (int k = 0; k <10; k++) {
                                 try {
+                                    Long  lastCreateTime  = lastPositionCreateTime.get();
                                     Future<PositionDetailResultJsonVo> take = completionService.take();
                                     if(take.get() != null){
                                         PositionDetailResultJsonVo positionDetailResultJsonVo = take.get();
                                         List<PositionDetailVo> result = positionDetailResultJsonVo.getResult();
-                                        positionDetails.addAll(handlePositionDetails(result));
                                         if(result !=null || result.size() == 0) {
                                             isGo =false;
                                         }
+                                        List<PositionDetail> positionDetailsList = handlePositionDetails(result, lastCreateTime);
+                                        if(positionDetailsList.size()<result.size()){
+                                            count++;
+                                        }
+                                        positionDetails.addAll(positionDetailsList);
+
                                     }
                                 }catch (Exception e){
                                     isGo = false;
@@ -285,7 +316,7 @@ public class LagouService {
                             if(positionDetails.size()>0 ){
                                 lagouOperationService.batchAddPositionDetails(positionDetails);
                                 logger.info("----写入数据>  ");
-                            }else if(!isGo || positionDetails.size() == 0){
+                            }else if(!isGo || positionDetails.size() == 0 || count ==2){//
                                 break;
                             }
 
@@ -300,6 +331,12 @@ public class LagouService {
         }
     }
 
+    /**
+     * 获取页数
+     *
+     * @param sourceJson
+     * @return
+     */
     private int getPageSize(String sourceJson){
         String targetJson = null;
         try {
@@ -317,16 +354,22 @@ public class LagouService {
 
     }
 
-    private List<PositionDetail> handlePositionDetails(List<PositionDetailVo> positionDetailVos){
+    /**
+     * 组装职位详情信息
+     * @param positionDetailVos
+     * @param lastCreateTime
+     * @return
+     */
+    private List<PositionDetail> handlePositionDetails(List<PositionDetailVo> positionDetailVos,Long  lastCreateTime){
         List<PositionDetail>   positionDetails = new LinkedList<>();
         if(!CollectionUtils.isEmpty(positionDetailVos)){
-            positionDetailVos.forEach(positionDetailVo -> {
+            for (int i = 0; i < positionDetailVos.size(); i++) {
+                PositionDetailVo positionDetailVo = positionDetailVos.get(i);
                 PositionDetail positionDetail = new PositionDetail();
-                positionDetails.add(positionDetail);
                 BeanUtils.copyProperties(positionDetailVo,positionDetail);
                 String gps = new Gson().toJson(new GPS(positionDetailVo.getLongitude(), positionDetailVo.getLatitude()));
                 positionDetail.setGps(gps);
-                String[] workYears = positionDetailVo.getWorkYear().replace("年", "").replace("不限","").split("-");
+                String[] workYears = positionDetailVo.getWorkYear().replace("年", "").replace("不限","").replace("以上","").split("-");
                 if(workYears==null || workYears.length==0 || workYears.length ==1){
                     positionDetail.setWorkMaxYear(0);
                     positionDetail.setWorkMinYear(0);
@@ -338,10 +381,10 @@ public class LagouService {
                     positionDetail.setWorkMaxYear(Integer.valueOf(workYears[1]));
                     positionDetail.setWorkMinYear(Integer.valueOf(workYears[0]));
                 }
-                String []salary = positionDetailVo.getSalary() != null? positionDetail.getSalary().toLowerCase().replace("k","").split("-"): null;
+                String []salary = positionDetailVo.getSalary() != null? positionDetail.getSalary().toLowerCase().replace("k","").replace("以上","").split("-"): null;
                 if(salary ==null || salary.length ==0){
-                    positionDetail.setMinSalary(new BigDecimal(Double.valueOf(0)));
-                    positionDetail.setMaxSalary(new BigDecimal(Double.valueOf(0)));
+                    positionDetail.setMinSalary(new BigDecimal(0));
+                    positionDetail.setMaxSalary(new BigDecimal(0));
                 }else if(salary.length ==1){
                     positionDetail.setMinSalary(new BigDecimal(Double.valueOf(salary[0])));
                     positionDetail.setMaxSalary(new BigDecimal(Double.valueOf(salary[0])));
@@ -349,8 +392,7 @@ public class LagouService {
                     positionDetail.setMinSalary(new BigDecimal(Double.valueOf(salary[0])));
                     positionDetail.setMaxSalary(new BigDecimal(Double.valueOf(salary[1])));
                 }
-                String []companySize =   positionDetailVo.getCompanySize() !=null ? positionDetailVo.getCompanySize().replace("少于","").replace("人以上","").replace("人","").split("-"):null;
-
+                String []companySize =   positionDetailVo.getCompanySize() !=null ? positionDetailVo.getCompanySize().replace("少于","").replace("以上","").replace("人","").split("-"):null;
                 if(companySize ==null || companySize.length==0){
                     positionDetail.setCompanyMaxSize(0);
                     positionDetail.setCompanyMinSize(0);
@@ -361,11 +403,17 @@ public class LagouService {
                     positionDetail.setCompanyMaxSize(Integer.valueOf(companySize[1]));
                     positionDetail.setCompanyMinSize(Integer.valueOf(companySize[0]));
                 }
+
+                positionDetail.setPositionCreateTime(DateUtils.parseInt(positionDetailVo.getCreateTime()));
                 positionDetail.setCompanyLabelList(positionDetailVo.getCompanyLabelList() != null ?positionDetailVo.getCompanyLabelList().toString():null);
                 positionDetail.setBusinessZones(positionDetailVo.getBusinessZones() !=null ? positionDetailVo.getBusinessZones().toString() : null);
                 positionDetail.setPositionLables(positionDetailVo.getPositionLables() !=null ? positionDetailVo.getPositionLables().toString() : null);
                 positionDetail.setIndustryField(positionDetailVo.getIndustryField() !=null ? positionDetailVo.getIndustryField().toString() : null);
-            });
+                positionDetail.setInclude(WebsiteEnum.LAGOU.getWebCode());
+                if(lastCreateTime < positionDetail.getPositionCreateTime()){
+                    positionDetails.add(positionDetail);
+                }
+            }
         }
         return positionDetails;
     }

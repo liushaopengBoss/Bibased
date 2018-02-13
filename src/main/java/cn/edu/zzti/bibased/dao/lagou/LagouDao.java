@@ -1,5 +1,6 @@
 package cn.edu.zzti.bibased.dao.lagou;
 
+import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dao.mapper.CityMapper;
 import cn.edu.zzti.bibased.dao.mapper.CompanyMapper;
 import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
@@ -58,6 +59,11 @@ public class LagouDao {
 
     public void batchInsertPositionDetails(List<PositionDetail> positionDetails){
         positionDetailMapper.batchInsert(positionDetails);
+    }
+
+    public Long queryLastPositionCreateTime(){
+        PositionDetail positionDetail = positionDetailMapper.selectLastPostionCreateTime(WebsiteEnum.LAGOU.getWebCode());
+        return positionDetail !=null?positionDetail.getPositionCreateTime():0L;
     }
 
 

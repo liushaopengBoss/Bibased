@@ -28,7 +28,7 @@ public class HttpTests extends BaseApplicationTests {
     @Resource
     private HttpClientService httpClientService;
     @Resource
-    private LagouDao lagouWriteDao;
+    private LagouDao lagouDao;
     @Resource
     LagouService lagouService;
     @Test
@@ -108,12 +108,12 @@ public class HttpTests extends BaseApplicationTests {
     }
     @Test
     public void positiionTests(){
-        lagouService.connectionPositionDeailsInfomation();
+        lagouService.getPositionDeailsInfomation();
     }
 
     @Test
     public void  positionDetailsTest(){
-        lagouService.collectionCompanyInfomationV2();
+        lagouService.getCompanyInfomationV2();
         String apiUrl = "https://www.lagou.com/jobs/companyAjax.json?px=default&city="+"北京"+"&needAddtionalResult=false&isSchoolJob=0";
 
         Map<String,Object> param = new LinkedHashMap<>();

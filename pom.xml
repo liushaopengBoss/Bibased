@@ -32,6 +32,7 @@
         <nekohtml_version>1.9.22</nekohtml_version>
         <guava_version>23.0</guava_version>
         <aspectj_version>1.8.2</aspectj_version>
+        <quartz_version>2.2.1</quartz_version>
         <skipTests>true</skipTests>
     </properties>
 
@@ -162,7 +163,7 @@
     <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
-            <version>2.2.1</version>
+            <version>${quartz_version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>c3p0</groupId>

@@ -78,4 +78,8 @@ public class LagouOperationService{
     public List<City> queryCitys(){
         return lagouDao.queryCitys(WebsiteEnum.LAGOU.getWebCode());
     }
+
+    public Long queryLastPositionCreateTime(){
+        return lagouDao.queryLastPositionCreateTime();
+    }
 }

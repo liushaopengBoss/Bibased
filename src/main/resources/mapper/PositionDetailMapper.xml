@@ -33,6 +33,7 @@
     <result column="linestaion" property="linestaion" jdbcType="VARCHAR" />
     <result column="last_login" property="lastLogin" jdbcType="BIGINT" />
     <result column="gps" property="gps" jdbcType="VARCHAR" />
+    <result column="include" property="include" jdbcType="VARCHAR" />
     <result column="cr_time" property="crTime" jdbcType="BIGINT" />
     <result column="op_time" property="opTime" jdbcType="BIGINT" />
     <result column="is_valid" property="isValid" jdbcType="TINYINT" />
@@ -43,7 +44,7 @@
     position_create_time, city, company_logo, industry_field, position_advantage, min_salary, 
     max_salary, company_short_name, company_min_size, company_max_size, position_lables, 
     industry_lables, finance_stage, company_label_List, district, business_zones, company_full_name, 
-    first_type, second_type, subwayline, stationname, linestaion, last_login, gps, cr_time, 
+    first_type, second_type, subwayline, stationname, linestaion, last_login, gps,include, cr_time,
     op_time, is_valid, last_ver
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -51,6 +52,13 @@
     <include refid="Base_Column_List" />
     from position_detail
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectLastPostionCreateTime" resultType="cn.edu.zzti.bibased.dto.PositionDetail"  parameterType="java.lang.String">
+    select
+    position_create_time
+    from position_detail
+    WHERE  include = #{include}
+    ORDER BY position_create_time desc limit 1;
   </select>
 
   <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.PositionDetail" >
@@ -64,7 +72,7 @@
       district, business_zones, company_full_name, 
       first_type, second_type, subwayline, 
       stationname, linestaion, last_login, 
-      gps, cr_time, op_time, 
+      gps,include, cr_time, op_time,
       is_valid, last_ver)
     values (#{id,jdbcType=INTEGER}, #{positionName,jdbcType=VARCHAR}, #{workMinYear,jdbcType=INTEGER}, 
       #{workMaxYear,jdbcType=INTEGER}, #{education,jdbcType=VARCHAR}, #{jobNature,jdbcType=VARCHAR}, 
@@ -76,7 +84,7 @@
       #{district,jdbcType=VARCHAR}, #{businessZones,jdbcType=VARCHAR}, #{companyFullName,jdbcType=VARCHAR}, 
       #{firstType,jdbcType=VARCHAR}, #{secondType,jdbcType=VARCHAR}, #{subwayline,jdbcType=VARCHAR}, 
       #{stationname,jdbcType=VARCHAR}, #{linestaion,jdbcType=VARCHAR}, #{lastLogin,jdbcType=BIGINT}, 
-      #{gps,jdbcType=VARCHAR}, UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()) ,
+      #{gps,jdbcType=VARCHAR},#{include,jdbcType=VARCHAR}, UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()) ,
       1, 0)
   </insert>
   <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.PositionDetail" >
@@ -90,7 +98,7 @@
     district, business_zones, company_full_name,
     first_type, second_type, subwayline,
     stationname, linestaion, last_login,
-    gps, cr_time, op_time,
+    gps, include,cr_time, op_time,
     is_valid, last_ver)
     values
     <foreach collection="list" item="position" index="index" separator="," >
@@ -104,10 +112,11 @@
       #{position.district,jdbcType=VARCHAR}, #{position.businessZones,jdbcType=VARCHAR}, #{position.companyFullName,jdbcType=VARCHAR},
       #{position.firstType,jdbcType=VARCHAR}, #{position.secondType,jdbcType=VARCHAR}, #{position.subwayline,jdbcType=VARCHAR},
       #{position.stationname,jdbcType=VARCHAR}, #{position.linestaion,jdbcType=VARCHAR}, #{position.lastLogin,jdbcType=BIGINT},
-      #{position.gps,jdbcType=VARCHAR}, UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()) ,
+      #{position.gps,jdbcType=VARCHAR},#{position.include,jdbcType=VARCHAR}, UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()) ,
       1, 0)
     </foreach>
 
   </insert>
+
 
 </mapper>

@@ -44,7 +44,7 @@ public class TestController {
     }
     @RequestMapping("/position")
     public String position(){
-        lagouService.collectionCompanyInfomationV2();
+        lagouService.getCompanyInfomationV2();
         return "success";
     }
 

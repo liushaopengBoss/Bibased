@@ -78,6 +78,7 @@ public class PositionDetail {
     private Long lastLogin;
 
     private String gps;
+    private String include;
 
     private Long crTime;
 
@@ -397,5 +398,13 @@ public class PositionDetail {
 
     public void setLastVer(Long lastVer) {
         this.lastVer = lastVer;
+    }
+
+    public String getInclude() {
+        return include;
+    }
+
+    public void setInclude(String include) {
+        this.include = include;
     }
 }
