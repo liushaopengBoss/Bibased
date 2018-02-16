@@ -66,10 +66,10 @@ public class LagouService {
      */
     public void initLagouInfo(){
         lagouPool.execute(()-> {
-                collectionJobInformation();
+                getJobInformation();
         });
         lagouPool.execute(()->{
-            collectionCityInformation();
+            getCityInformation();
         });
 
     }
@@ -77,7 +77,7 @@ public class LagouService {
      * 采集拉勾网的职位分类信息
      *
      */
-    private void collectionJobInformation(){
+    private void getJobInformation(){
         String url = "https://www.lagou.com";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
         List<Positions> jobs = LagouHandler.getJobs(html);
@@ -87,7 +87,7 @@ public class LagouService {
      * 采集拉勾网的城市信息
      *
      */
-    private void collectionCityInformation(){
+    private void getCityInformation(){
         String url = "https://www.lagou.com/zhaopin/Java/?labelWords=label";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
         List<City> jobs = LagouHandler.getCitys(html);
@@ -96,8 +96,7 @@ public class LagouService {
     /**
      * 采集拉勾网的公司信息
      */
-    public void
-    collectionCompanyInfomation(){
+    public void getCompanyInfomation(){
         String apiUrl = "https://www.lagou.com/gongsi/";
         String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);
         List<City> cityByCompany = LagouHandler.getCityByCompany(html);
