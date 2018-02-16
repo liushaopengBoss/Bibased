@@ -57,7 +57,7 @@ public class LongTimeAspect {
                 paramsStr = StringUtils.replace(paramsStr, "\"", "");
                 alertInfo.put("params", paramsStr);
             }
-            longTimeLogger.info(gson.toJson(alertInfo), "");
+            longTimeLogger.info(gson.toJson(alertInfo));
         }
         return rs;
     }

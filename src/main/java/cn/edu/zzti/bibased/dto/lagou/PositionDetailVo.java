@@ -1,23 +1,12 @@
-package cn.edu.zzti.bibased.dto;
+package cn.edu.zzti.bibased.dto.lagou;
 
-import java.math.BigDecimal;
+import java.util.List;
 
-/**
- * 职位详细信息
- *
- * Created by huaidou on  2018/1/15
- */
-public class PositionDetail {
-
-    private Integer id;
+public class PositionDetailVo {
 
     private String positionName;
 
     private String  workYear;
-
-    private Integer workMinYear;
-
-    private Integer workMaxYear;
 
     private String education;
 
@@ -26,8 +15,6 @@ public class PositionDetail {
     private Integer positionId;
 
     private String createTime;
-
-    private Long positionCreateTime;
 
     private String city;
 
@@ -39,29 +26,21 @@ public class PositionDetail {
 
     private String salary;
 
-    private BigDecimal minSalary;
-
-    private BigDecimal maxSalary;
-
     private String companyShortName;
 
     private String companySize;
 
-    private Integer companyMinSize;
+    private List<String> positionLables;
 
-    private Integer companyMaxSize;
-
-    private String positionLables;
-
-    private String industryLables;
+    private List<String> industryLables;
 
     private String financeStage;
 
-    private String companyLabelList;
+    private List<String> companyLabelList;
 
     private String district;
 
-    private String businessZones;
+    private List<String> businessZones;
 
     private String companyFullName;
 
@@ -77,24 +56,8 @@ public class PositionDetail {
 
     private Long lastLogin;
 
-    private String gps;
-    private String include;
-
-    private Long crTime;
-
-    private Long opTime;
-
-    private Byte isValid;
-
-    private Long lastVer;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private String longitude;
+    private String latitude;
 
     public String getPositionName() {
         return positionName;
@@ -110,22 +73,6 @@ public class PositionDetail {
 
     public void setWorkYear(String workYear) {
         this.workYear = workYear;
-    }
-
-    public Integer getWorkMinYear() {
-        return workMinYear;
-    }
-
-    public void setWorkMinYear(Integer workMinYear) {
-        this.workMinYear = workMinYear;
-    }
-
-    public Integer getWorkMaxYear() {
-        return workMaxYear;
-    }
-
-    public void setWorkMaxYear(Integer workMaxYear) {
-        this.workMaxYear = workMaxYear;
     }
 
     public String getEducation() {
@@ -158,14 +105,6 @@ public class PositionDetail {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
-    }
-
-    public Long getPositionCreateTime() {
-        return positionCreateTime;
-    }
-
-    public void setPositionCreateTime(Long positionCreateTime) {
-        this.positionCreateTime = positionCreateTime;
     }
 
     public String getCity() {
@@ -208,22 +147,6 @@ public class PositionDetail {
         this.salary = salary;
     }
 
-    public BigDecimal getMinSalary() {
-        return minSalary;
-    }
-
-    public void setMinSalary(BigDecimal minSalary) {
-        this.minSalary = minSalary;
-    }
-
-    public BigDecimal getMaxSalary() {
-        return maxSalary;
-    }
-
-    public void setMaxSalary(BigDecimal maxSalary) {
-        this.maxSalary = maxSalary;
-    }
-
     public String getCompanyShortName() {
         return companyShortName;
     }
@@ -240,35 +163,19 @@ public class PositionDetail {
         this.companySize = companySize;
     }
 
-    public Integer getCompanyMinSize() {
-        return companyMinSize;
-    }
-
-    public void setCompanyMinSize(Integer companyMinSize) {
-        this.companyMinSize = companyMinSize;
-    }
-
-    public Integer getCompanyMaxSize() {
-        return companyMaxSize;
-    }
-
-    public void setCompanyMaxSize(Integer companyMaxSize) {
-        this.companyMaxSize = companyMaxSize;
-    }
-
-    public String getPositionLables() {
+    public List<String> getPositionLables() {
         return positionLables;
     }
 
-    public void setPositionLables(String positionLables) {
+    public void setPositionLables(List<String> positionLables) {
         this.positionLables = positionLables;
     }
 
-    public String getIndustryLables() {
+    public List<String> getIndustryLables() {
         return industryLables;
     }
 
-    public void setIndustryLables(String industryLables) {
+    public void setIndustryLables(List<String> industryLables) {
         this.industryLables = industryLables;
     }
 
@@ -280,11 +187,11 @@ public class PositionDetail {
         this.financeStage = financeStage;
     }
 
-    public String getCompanyLabelList() {
+    public List<String> getCompanyLabelList() {
         return companyLabelList;
     }
 
-    public void setCompanyLabelList(String companyLabelList) {
+    public void setCompanyLabelList(List<String> companyLabelList) {
         this.companyLabelList = companyLabelList;
     }
 
@@ -296,11 +203,11 @@ public class PositionDetail {
         this.district = district;
     }
 
-    public String getBusinessZones() {
+    public List<String> getBusinessZones() {
         return businessZones;
     }
 
-    public void setBusinessZones(String businessZones) {
+    public void setBusinessZones(List<String> businessZones) {
         this.businessZones = businessZones;
     }
 
@@ -360,51 +267,19 @@ public class PositionDetail {
         this.lastLogin = lastLogin;
     }
 
-    public String getGps() {
-        return gps;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setGps(String gps) {
-        this.gps = gps;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
-    public Long getCrTime() {
-        return crTime;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setCrTime(Long crTime) {
-        this.crTime = crTime;
-    }
-
-    public Long getOpTime() {
-        return opTime;
-    }
-
-    public void setOpTime(Long opTime) {
-        this.opTime = opTime;
-    }
-
-    public Byte getIsValid() {
-        return isValid;
-    }
-
-    public void setIsValid(Byte isValid) {
-        this.isValid = isValid;
-    }
-
-    public Long getLastVer() {
-        return lastVer;
-    }
-
-    public void setLastVer(Long lastVer) {
-        this.lastVer = lastVer;
-    }
-
-    public String getInclude() {
-        return include;
-    }
-
-    public void setInclude(String include) {
-        this.include = include;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 }

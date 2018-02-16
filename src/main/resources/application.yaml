@@ -7,9 +7,12 @@ spring:
     username: huaidou
     password: lsp763498085
     hikari:
-      maximum-pool-size: 15
-      max-lifetime: 1765000
+      maximum-pool-size: 15  #推荐的公式：((core_count * 2) + effective_spindle_count) -->
+      max-lifetime: 1765000  #一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired）
       connection-timeout: 6000
+      idle-timeout: 600000  #一个连接idle状态的最大时长（毫秒），超时则被释放（retired）
+      read-only: false
+      connection-test-query: SELECT 1
 
 
 #mvc

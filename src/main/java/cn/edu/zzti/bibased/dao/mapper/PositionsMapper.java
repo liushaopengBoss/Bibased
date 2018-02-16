@@ -21,4 +21,6 @@ public interface PositionsMapper {
      * @param positionList
      */
      void batchInsert(List<Positions> positionList);
+
+     List<Positions>  queryLeafPositions(String include);
 }

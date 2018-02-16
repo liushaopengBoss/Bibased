@@ -16,4 +16,6 @@ public interface PositionDetailMapper {
 
     PositionDetail selectByPrimaryKey(Integer id);
 
+    PositionDetail selectLastPostionCreateTime(String include);
+
 }

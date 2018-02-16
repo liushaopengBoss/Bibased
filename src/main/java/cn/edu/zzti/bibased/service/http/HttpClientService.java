@@ -5,10 +5,7 @@ import org.apache.http.*;
 
 import java.net.URI;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -78,6 +75,10 @@ public class HttpClientService {
         HttpGet httpGet = new HttpGet(uri);
         try {
             for (Map.Entry<String, Object> entry : HttpHeaderConstant.lagouGetHeader.entrySet()) {
+                if("Cookie".equals(entry.getKey())){
+                    httpGet.addHeader(entry.getKey(), entry.getValue().toString()+ UUID.randomUUID().toString().replace("-","").toString());
+                    continue;
+                }
                 httpGet.addHeader(entry.getKey(), entry.getValue().toString());
             }
             if(uri.toString().contains("https://")){
@@ -89,11 +90,12 @@ public class HttpClientService {
                 //获取返回数据
                 HttpEntity entity = response.getEntity();
                 data = getDate(response.getEntity());
-                //获取header头
+                //获取header头 REQUEST_ID: 6a9fd580-7ec2-445b-a55d-2f96bbc80290
                 // Set-Cookie: SEARCH_ID=1b772ae7995c4065ba144eeea6d02636; Version=1; Max-Age=86400; Expires=Tue, 05-Dec-2017 05:37:10 GMT; Path=/
                 Header[] allHeaders = response.getAllHeaders();
                 Header[] resultHeaders = response.getHeaders("Set-Cookie");
-                Locale locale = response.getLocale();
+                setCookieValue(response.getHeaders("Set-Cookie"));
+                setCookieValue(response.getHeaders("REQUEST_ID"));
             }else{
                 httpGet.abort();
                 return data;
@@ -181,6 +183,14 @@ public class HttpClientService {
             }
         }
         return null;
+    }
+
+    private void setCookieValue(Header[] cookieHeaders){
+        if(cookieHeaders!=null){
+            String value = cookieHeaders[0].getValue();
+            HttpHeaderConstant.setJSESSIONID("");
+            HttpHeaderConstant.setUser_trace_token("");
+        }
     }
 
 //    private static String getContentCharSet(final HttpEntity entity) {
