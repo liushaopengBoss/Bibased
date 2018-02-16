@@ -4,6 +4,7 @@ import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.thread.AnsyTask;
 import cn.edu.zzti.bibased.utils.SpringContextUtils;
 
+import javax.annotation.Resource;
 import java.util.Map;
 /**
  * 多线程抽象执行器类
@@ -23,23 +24,31 @@ public abstract class BaseExecuter implements AnsyTask.Executer {
      */
     protected  Map<String,Object> params;
 
-    protected HttpClientService httpClientService ;
+    @Resource
+    protected HttpClientService httpClientService;
 
     @Override
     public Object executer() throws Exception {
-        this.httpClientService =(HttpClientService) SpringContextUtils.getBean("httpClientService");
         return builderResult();
     }
 
-
+   //抽象的获取数据方法
     /**
-     * 抽象的获取数据方法
+     * 获取数据方法
+     *
      * @param <T>
      * @return
      */
     protected abstract  <T> T  builderResult();
 
-
+    /**
+     * 获取页面数
+     *
+     * @return
+     */
+    public  int getPageSize(){
+        return 0;
+    }
     public Map<String, Object> getHeaders() {
         return headers;
     }
@@ -63,4 +72,5 @@ public abstract class BaseExecuter implements AnsyTask.Executer {
     public void setParams(Map<String, Object> params) {
         this.params = params;
     }
+
 }

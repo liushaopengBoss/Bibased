@@ -92,16 +92,6 @@
 	<!--解决多线程下无法注入Service问题-->
 	<bean  class="cn.edu.zzti.bibased.utils.SpringContextUtils"/>
 
-
-	<!-- 定义调度器 -->
-	<bean name="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<property name="triggers">
-			<list>
-				<ref bean="cronTrigger" />
-			</list>
-		</property>
-	</bean>
-
 	<!-- 定义任务bean -->
 	<bean name="lagouJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<!-- 指定具体的job类 -->
@@ -120,6 +110,16 @@
 	<bean name="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="lagouJobDetail" />
 		<!-- 每天的14点执行 -->
-		<property name="cronExpression" value="0 5 22 * * ?" />
+		<property name="cronExpression" value="0 5 14 * * ?" />
 	</bean>
+
+	<!--&lt;!&ndash; 定义调度器 &ndash;&gt;-->
+	<!--<bean name="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
+		<!--<property name="triggers">-->
+			<!--<list>-->
+				<!--<ref bean="cronTrigger" />-->
+			<!--</list>-->
+		<!--</property>-->
+	<!--</bean>-->
+
 </beans>

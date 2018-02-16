@@ -57,7 +57,7 @@
     select
     position_create_time
     from position_detail
-    WHERE  include = #{include}
+    WHERE  include = #{include} AND is_valid = 1
     ORDER BY position_create_time desc limit 1;
   </select>
 

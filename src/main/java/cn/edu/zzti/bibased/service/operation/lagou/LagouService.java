@@ -15,9 +15,8 @@ import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.thread.*;
 import cn.edu.zzti.bibased.utils.DateUtils;
+import cn.edu.zzti.bibased.utils.SpringContextUtils;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -169,7 +168,7 @@ public class LagouService {
             CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data, CompanyResultJsonVO.class);
             int pageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
             logger.info("-----------page:"+pageNo+"\n");
-            BaseExecuter companyTask = new CompanyExecute();
+            BaseExecuter companyTask = (CompanyExecute)SpringContextUtils.getBean(CompanyExecute.class);
             Map<String, Object> companyParam = HttpHeaderConstant.compaanyParam;
             companyTask.setApiUrl(url);
             companyTask.setHeaders(lagouAjaxHeader);
@@ -268,26 +267,34 @@ public class LagouService {
                 citys.stream().forEach(city -> {
                     String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city="+city.getCityName()+"&needAddtionalResult=false&isSchoolJob=0";
                     logger.info("---->  "+apiUrl);
-                    lagouAjaxHeader.put("Referer","https://www.lagou.com/jobs/list_"+position.getPositionName()+"?px=default&city="+city.getCityName());
+                    logger.info("---->  https://www.lagou.com/jobs/list_"+positionName.trim()+"?px=default&city="+city.getCityName());
+                    lagouAjaxHeader.put("Referer","https://www.lagou.com/jobs/list_"+positionName.trim()+"?px=default&city="+city.getCityName());
                     setCookie(lagouAjaxHeader);
-                    String data = httpClientService.doPost(apiUrl, param, lagouAjaxHeader);
-                    int pageSize = this.getPageSize(data);
+                    BaseExecuter executer = (PositionDetailExecute)SpringContextUtils.getBean(PositionDetailExecute.class);
+                    executer.setApiUrl(apiUrl);
+                    executer.setHeaders(lagouAjaxHeader);
+                    executer.setParams(param);
+                    int pageSize = executer.getPageSize() ;
+                      pageSize = pageSize >20 ? 20:pageSize;
+                    isSleep(pageSize);
                     if(pageSize != 0){
                         logger.info("---->执行数据");
                         for(int i=1;i<=pageSize;i++){
-                            logger.info("---->  "+i);
                             for (int j=0;j<10;j++){
-                                param.put("first",false);
-                                param.put("pn",i);
+                                Map<String,Object> param2 = new LinkedHashMap<>();
+                                param2.put("first",false);
+                                param2.put("pn",i);
+                                param2.put("kd",positionName);
+                                logger.info("页数为---->  "+i);
                                 setCookie(lagouAjaxHeader);
-                                BaseExecuter positonDetailTask = new PositionDetailExecute();
-                                positonDetailTask.setParams(param);
+                                BaseExecuter positonDetailTask = (PositionDetailExecute)SpringContextUtils.getBean(PositionDetailExecute.class);
+                                positonDetailTask.setParams(param2);
                                 positonDetailTask.setHeaders(lagouAjaxHeader);
                                 positonDetailTask.setApiUrl(apiUrl);
                                 completionService.submit(AnsyTask.newTask().registExecuter(positonDetailTask));
                                 i++;
                             }
-                            boolean isGo = true;
+                            boolean isBreak = false;
                             List<PositionDetail> positionDetails = new LinkedList<>();
                             int  count = 0;
                             for (int k = 0; k <10; k++) {
@@ -298,7 +305,7 @@ public class LagouService {
                                         PositionDetailResultJsonVo positionDetailResultJsonVo = take.get();
                                         List<PositionDetailVo> result = positionDetailResultJsonVo.getResult();
                                         if(result !=null || result.size() == 0) {
-                                            isGo =false;
+                                            isBreak =true;
                                         }
                                         List<PositionDetail> positionDetailsList = handlePositionDetails(result, lastCreateTime);
                                         if(positionDetailsList.size()<result.size()){
@@ -308,15 +315,16 @@ public class LagouService {
 
                                     }
                                 }catch (Exception e){
-                                    isGo = false;
+                                    isBreak = true;
                                     logger.error("获取数据失败！",e);
                                 }
                             }
 
                             if(positionDetails.size()>0 ){
                                 lagouOperationService.batchAddPositionDetails(positionDetails);
+                                i--;
                                 logger.info("----写入数据>  ");
-                            }else if(!isGo || positionDetails.size() == 0 || count ==2){//
+                            }else if(isBreak || positionDetails.size() == 0 || count ==2){//
                                 break;
                             }
 
@@ -332,28 +340,16 @@ public class LagouService {
     }
 
     /**
-     * 获取页数
-     *
-     * @param sourceJson
-     * @return
+     * 数据页为0 拉钩没有数据  所以选择睡10秒
+     * @param pageSize
      */
-    private int getPageSize(String sourceJson){
-        String targetJson = null;
-        try {
-            JsonElement jsonElement = new JsonParser().parse(sourceJson);
-            targetJson =  jsonElement.getAsJsonObject().get("content").getAsJsonObject().get("positionResult").toString();
-        }catch (Exception e){
-            logger.error("职位json获取值失败",e);
+    private void isSleep(int pageSize){
+        if(pageSize ==0){
+            try {
+                Thread.sleep(60000);
+            }catch (Exception e){}
         }
-        Gson gson = new Gson();
-        PositionDetailResultJsonVo positionDetailResultJsonVo = gson.fromJson(targetJson == null ? "{}" : targetJson, PositionDetailResultJsonVo.class);
-        if(positionDetailResultJsonVo !=null){
-            return positionDetailResultJsonVo.getTotalCount()/positionDetailResultJsonVo.getResultSize();
-        }
-        return 0;
-
     }
-
     /**
      * 组装职位详情信息
      * @param positionDetailVos

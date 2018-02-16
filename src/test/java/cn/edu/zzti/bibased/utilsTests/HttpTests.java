@@ -71,7 +71,7 @@ public class HttpTests extends BaseApplicationTests {
 
     @Test
     public void tt563() throws Exception {
-        String url = "https://www.lagou.com/gongsi/184-0-0";
+        String url = "https://www.lagou.com/gongsi";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
         int totalPageNum = LagouHandler.getTotalPageNum(html);
         System.out.printf(""+totalPageNum);
@@ -79,7 +79,9 @@ public class HttpTests extends BaseApplicationTests {
     }
     @Test
     public void textCompany(){
-        lagouService.collectionCompanyInfomation();
+        String apiUrl = "https://www.zhilian.com/";
+        String html = httpClientService.doGet(apiUrl, null, null);
+//        lagouService.collectionCompanyInfomation();
         try {
             Thread.sleep(300000);
         }catch (Exception e){}

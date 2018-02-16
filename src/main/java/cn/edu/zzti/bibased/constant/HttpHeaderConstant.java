@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  */
 public class HttpHeaderConstant {
 
-    private static final String user_trace_token = "20171126164429-0464ac5c-d286-11e7-ab32-525400f775ce";
+    private static  String user_trace_token = "20171126164429-0464ac5c-d286-11e7-ab32-525400f775ce";
     private static String JSESSIONID = "ABAAABAAAGGABCB3A386C1E352571F93EF1CA0E3DC60C8E";
 
     /**
@@ -76,5 +76,13 @@ public class HttpHeaderConstant {
     public static final Map<String,String>  jobHeader = new ConcurrentHashMap<>();
     static {
 
+    }
+
+    public static void setJSESSIONID(String JSESSIONID) {
+        HttpHeaderConstant.JSESSIONID = JSESSIONID;
+    }
+
+    public static void setUser_trace_token(String user_trace_token) {
+        HttpHeaderConstant.user_trace_token = user_trace_token;
     }
 }
