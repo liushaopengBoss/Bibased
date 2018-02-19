@@ -21,7 +21,7 @@ public class DateUtils {
     public static String HHmmSS = "HH:mm:ss";
     public static String YYMMDDHHmmssSSS = "yyyyMMddHHmmssSSS";
     public static String HHmm = "HH:mm";
-
+    public static String YYMMDD_HHmmStr = "yyyy年MM月dd日 HH时mm分";
     public static String HHMMSS_000000= " 00:00:00";
 
     /**
@@ -113,6 +113,14 @@ public class DateUtils {
             return null;
         }
 
+    }
+    public static String formatStr(Date date, String format)  {
+        SimpleDateFormat formater = new SimpleDateFormat(format);
+        try {
+            return formater.format(date);
+        } catch (Exception e) {
+            return null;
+        }
     }
     /**
      * 获取星期名称

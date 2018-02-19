@@ -1,5 +1,6 @@
 package cn.edu.zzti.bibased.controller;
 
+import cn.edu.zzti.bibased.aspect.ActionLog;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,7 +23,18 @@ public class PageController {
      *
      * @return
      */
+    @RequestMapping(value = "/")
+    public String index() {
+        return "forward:/index.html";
+    }
+
+    /**
+     * 首页查询{主页}
+     *
+     * @return
+     */
     @RequestMapping(value = "/index")
+    @ActionLog("首页数据Index")
     public String homepageIndex() {
         return INDEX;
     }
@@ -33,6 +45,7 @@ public class PageController {
      * @return
      */
     @RequestMapping(value = "/index_homepage")
+    @ActionLog("首页数据HomePage")
     public String homepage() {
         return INDEHOMEPAGE;
     }
