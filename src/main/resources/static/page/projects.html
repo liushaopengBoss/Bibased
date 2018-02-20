@@ -64,7 +64,8 @@
                                             <span class="label label-primary">进行中</span>
                                         </td>
                                         <td class="project-actions">
-                                            <a href="projects.html" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
+                                            <a href="/v1/company_search" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
+                                            <a href="project_detail.html" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -86,6 +87,7 @@
                                             <span class="label label-primary">进行中</span>
                                         </td>
                                         <td class="project-actions">
+                                            <a href="projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
                                             <a href="projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
                                         </td>
                                     </tr>
@@ -108,7 +110,8 @@
                                             <span class="label label-default">已取消</span>
                                         </td>
                                         <td class="project-actions">
-                                            <a href="projects.html" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情  </a>
+                                            <a href="projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
+                                            <a href="projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情  </a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -130,6 +133,7 @@
                                             <span class="label label-default">已取消</span>
                                         </td>
                                         <td class="project-actions">
+                                            <a href="javascript:getCompany()" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
                                             <a href="projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
                                         </td>
                                     </tr>
@@ -182,14 +186,10 @@
             $('#loading-example-btn').click(function () {
                 btn = $(this);
                 simpleLoad(btn, true)
-
-                // Ajax example
-//                $.ajax().always(function () {
-//                    simpleLoad($(this), false)
-//                });
-
                 simpleLoad(btn, false)
             });
+
+
         });
 
         function simpleLoad(btn, state) {
@@ -203,9 +203,23 @@
                 }, 2000);
             }
         }
-    </script>
 
-    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script><!--统计代码，可删除-->
+        function getCompany() {
+            $.ajax({
+                url : "http://localhost:8081/v1/company_search",
+                dataType : "jsonp",
+                type : "GET",
+                jsonpCallback:'jsonp'
+            });
+        }
+        
+        function jsonp(data) {
+            alert(data);
+            if(data.code == 200){
+                alert("OK")
+            }
+        }
+    </script>
 
     </body>
 </html>
