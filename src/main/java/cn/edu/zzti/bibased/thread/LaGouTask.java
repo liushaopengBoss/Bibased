@@ -26,8 +26,11 @@ public class LaGouTask implements Callable {
         HttpClientService httpClientService =(HttpClientService) SpringContextUtils.getBean("httpClientService");
         String data = null;
         switch (httpType){
-            case HttpType.GET:data =  httpClientService.doGet(apiUrl, param, HttpHeaderConstant.lagouGetHeader);break;
-            case HttpType.POST:data =  httpClientService.doPost(apiUrl, param, HttpHeaderConstant.lagouAjaxHeader);break;
+            case HttpType.GET:
+                data =  httpClientService.doGet(apiUrl, param, HttpHeaderConstant.lagouGetHeader);break;
+            case HttpType.POST:
+                data =  httpClientService.doPost(apiUrl, param, HttpHeaderConstant.lagouAjaxHeader);
+                break;
         }
         return data;
     }
