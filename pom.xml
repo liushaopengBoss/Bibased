@@ -32,6 +32,7 @@
         <nekohtml_version>1.9.22</nekohtml_version>
         <guava_version>23.0</guava_version>
         <aspectj_version>1.8.2</aspectj_version>
+        <quartz_version>2.2.1</quartz_version>
         <logback_version>1.2.3</logback_version>
         <gson_version>2.2.4</gson_version>
         <skipTests>true</skipTests>
@@ -67,10 +68,16 @@
             <version>${nekohtml_version}</version>
         </dependency>
         <!-- 添加 log4j 依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j</artifactId>
+            <version>${log4j_version}</version>
+        </dependency>
+        <!-- logback -->
         <!--<dependency>-->
             <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-log4j</artifactId>-->
-            <!--<version>${log4j_version}</version>-->
+            <!--<artifactId>spring-boot-starter-logging</artifactId>-->
+            <!--<version>${spring_boot_version}</version>-->
         <!--</dependency>-->
         <!-- logback -->
         <dependency>
@@ -169,7 +176,7 @@
     <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
-            <version>2.2.1</version>
+            <version>${quartz_version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>c3p0</groupId>

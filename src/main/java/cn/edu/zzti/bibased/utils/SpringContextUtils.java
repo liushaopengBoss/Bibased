@@ -38,7 +38,15 @@ public class SpringContextUtils implements ApplicationContextAware {//Spring的�
     public static Object getBean(String name, Class requiredType) throws BeansException {
         return applicationContext.getBean(name, requiredType);
     }
-
+    /***
+     * 通过class获取bean
+     * @param requiredType
+     * @return
+     * @throws BeansException
+     */
+    public static Object getBean(Class requiredType) throws BeansException {
+        return applicationContext.getBean(requiredType);
+    }
     /**
      * 如果BeanFactory包含一个与所给名称匹配的bean定义，则返回true
      * @param name

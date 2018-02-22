@@ -1,6 +1,5 @@
 package cn.edu.zzti.bibased.dto.lagou;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class PositionDetailVo {
@@ -33,7 +32,7 @@ public class PositionDetailVo {
 
     private List<String> positionLables;
 
-    private String industryLables;
+    private List<String> industryLables;
 
     private String financeStage;
 
@@ -57,8 +56,8 @@ public class PositionDetailVo {
 
     private Long lastLogin;
 
-    private BigDecimal longitude;
-    private BigDecimal latitude;
+    private String longitude;
+    private String latitude;
 
     public String getPositionName() {
         return positionName;
@@ -172,11 +171,11 @@ public class PositionDetailVo {
         this.positionLables = positionLables;
     }
 
-    public String getIndustryLables() {
+    public List<String> getIndustryLables() {
         return industryLables;
     }
 
-    public void setIndustryLables(String industryLables) {
+    public void setIndustryLables(List<String> industryLables) {
         this.industryLables = industryLables;
     }
 
@@ -268,19 +267,19 @@ public class PositionDetailVo {
         this.lastLogin = lastLogin;
     }
 
-    public BigDecimal getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(BigDecimal longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
-    public BigDecimal getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(BigDecimal latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 }

@@ -4,6 +4,7 @@ import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dao.lagou.LagouDao;
 import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.Company;
+import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.Positions;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -56,11 +57,29 @@ public class LagouOperationService{
         logger.info("批处理执行时间:"+time+"\n");
     }
 
+    /**
+     * 批量数据写入职位详情信息  并且异步操作
+     */
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    @Async
+    public void batchAddPositionDetails(List<PositionDetail> positionDetails){
+        StopWatch clock = new StopWatch();
+        clock.start(); //计时开始
+        lagouDao.batchInsertPositionDetails(positionDetails);
+        clock.stop();
+        long time = clock.getTime();
+        logger.info("批处理执行时间:"+time+"\n");
+    }
+
     public List<Positions> queryLeftPositions(){
         return  lagouDao.queryLeafPositions(WebsiteEnum.LAGOU.getWebCode());
     }
 
     public List<City> queryCitys(){
         return lagouDao.queryCitys(WebsiteEnum.LAGOU.getWebCode());
+    }
+
+    public Long queryLastPositionCreateTime(){
+        return lagouDao.queryLastPositionCreateTime();
     }
 }

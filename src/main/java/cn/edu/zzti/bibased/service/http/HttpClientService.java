@@ -90,11 +90,12 @@ public class HttpClientService {
                 //获取返回数据
                 HttpEntity entity = response.getEntity();
                 data = getDate(response.getEntity());
-                //获取header头
+                //获取header头 REQUEST_ID: 6a9fd580-7ec2-445b-a55d-2f96bbc80290
                 // Set-Cookie: SEARCH_ID=1b772ae7995c4065ba144eeea6d02636; Version=1; Max-Age=86400; Expires=Tue, 05-Dec-2017 05:37:10 GMT; Path=/
                 Header[] allHeaders = response.getAllHeaders();
                 Header[] resultHeaders = response.getHeaders("Set-Cookie");
-                Locale locale = response.getLocale();
+                setCookieValue(response.getHeaders("Set-Cookie"));
+                setCookieValue(response.getHeaders("REQUEST_ID"));
             }else{
                 httpGet.abort();
                 return data;
@@ -126,11 +127,6 @@ public class HttpClientService {
         String data = null;
         try {
             for (Map.Entry<String, Object> entry : headers.entrySet()) {
-                if("Cookie".equals(entry.getKey())){
-                    String cookie = entry.getValue().toString();//+ UUID.randomUUID().toString().replace("-","").toString()+";";
-                    httpPost.addHeader(entry.getKey(), cookie);
-                    continue;
-                }
                 httpPost.addHeader(entry.getKey(), entry.getValue().toString());
             }
             List<NameValuePair> pairList = new ArrayList<NameValuePair>(params.size());
@@ -187,6 +183,14 @@ public class HttpClientService {
             }
         }
         return null;
+    }
+
+    private void setCookieValue(Header[] cookieHeaders){
+        if(cookieHeaders!=null){
+            String value = cookieHeaders[0].getValue();
+            HttpHeaderConstant.setJSESSIONID("");
+            HttpHeaderConstant.setUser_trace_token("");
+        }
     }
 
 //    private static String getContentCharSet(final HttpEntity entity) {
