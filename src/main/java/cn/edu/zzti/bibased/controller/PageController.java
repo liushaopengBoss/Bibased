@@ -35,7 +35,6 @@ public class PageController {
      * @return
      */
     @RequestMapping(value = "/index")
-    @ActionLog("首页数据Index")
     public String homepageIndex() {
         return INDEX;
     }
@@ -46,7 +45,6 @@ public class PageController {
      * @return
      */
     @RequestMapping(value = "/index_homepage")
-    @ActionLog("首页数据HomePage")
     public String homepage() {
         return INDEHOMEPAGE;
     }

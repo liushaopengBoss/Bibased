@@ -1,9 +1,9 @@
 package cn.edu.zzti.bibased.constant;
 
 public enum ProjectItem {
-    CITY("城市",1)
+    CITY("获取城市信息",1)
     ,POSITION("职位",2),
-    COMPANY("公司",3),
+    COMPANY("获取公司信息",3),
     POSITIONDETAIL("职位详情",4);
 
     private String name;
@@ -30,12 +30,12 @@ public enum ProjectItem {
         this.code = code;
     }
 
-    public static  int getProjectItemCode(String name){
+    public static  String getProjectItemCode(int code){
         for(ProjectItem item :ProjectItem.values()){
-            if(item.getName().equals(name)){
-                return item.getCode();
+            if(item.getCode() == code){
+                return item.getName();
             }
         }
-        return -1;
+        return null;
     }
 }
