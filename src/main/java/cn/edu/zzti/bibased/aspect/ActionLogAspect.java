@@ -35,7 +35,7 @@ public class ActionLogAspect {
 
     private Object addActionLog(ProceedingJoinPoint joinPoint) throws Throwable{
         Signature signature = joinPoint.getSignature();
-        String  actionLogName = null ;
+        ProjectItem  actionLogName = null ;
         if (signature instanceof MethodSignature) {
             Method method = ((MethodSignature) signature).getMethod();
             ActionLog actionLog = method.getAnnotation(ActionLog.class);
@@ -43,16 +43,16 @@ public class ActionLogAspect {
                 actionLogName = actionLog.value();
             }
         }
-        if(StringUtils.isNotBlank(actionLogName)){
+        if(actionLogName != null){
             String start = DateUtils.formatStr(new Date(), DateUtils.YYMMDD_HHmmStr);
             Object rs = joinPoint.proceed();
             String end = DateUtils.formatStr(new Date(), DateUtils.YYMMDD_HHmmStr);
             ActionLogDO actionLogDO = new ActionLogDO();
-            actionLogDO.setActionName(actionLogName);
+            actionLogDO.setActionName(actionLogName.getName());
             actionLogDO.setEndDate(end);
             actionLogDO.setStartDate(start);
             actionLogDO.setStatus(1);
-            actionLogDO.setTypeCode(ProjectItem.getProjectItemCode(actionLogName));
+            actionLogDO.setTypeCode(actionLogName.getCode());
             actionLogService.addLog(actionLogDO);
             return rs;
         }

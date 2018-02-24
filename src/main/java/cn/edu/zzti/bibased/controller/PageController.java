@@ -18,6 +18,7 @@ public class PageController {
     private static final String CHARTS= PAGE_HOME + "charts";
     private static final String PROJECT= PAGE_HOME + "projects";
     private static final String PROJECT_DETAIL= PAGE_HOME + "project_detail";
+    private static final String COMPANY_SEARCH = PAGE_HOME + "company_search";
     /**
      * 首页查询{主页}
      *
@@ -34,7 +35,6 @@ public class PageController {
      * @return
      */
     @RequestMapping(value = "/index")
-    @ActionLog("首页数据Index")
     public String homepageIndex() {
         return INDEX;
     }
@@ -45,7 +45,6 @@ public class PageController {
      * @return
      */
     @RequestMapping(value = "/index_homepage")
-    @ActionLog("首页数据HomePage")
     public String homepage() {
         return INDEHOMEPAGE;
     }
@@ -76,4 +75,16 @@ public class PageController {
     public String projectDetail() {
         return PROJECT_DETAIL;
     }
+
+
+    /**
+     *公司搜索
+     *
+     * @return
+     */
+    @RequestMapping(value = "/company_search")
+    public String companySearch() {
+        return COMPANY_SEARCH;
+    }
+
 }

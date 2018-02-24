@@ -1,5 +1,7 @@
 package cn.edu.zzti.bibased.aspect;
 
+import cn.edu.zzti.bibased.constant.ProjectItem;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -15,5 +17,5 @@ public @interface ActionLog {
      * 名称
      * @return
      */
-    String  value() default "";
+    ProjectItem value() ;
 }

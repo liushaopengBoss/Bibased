@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -153,6 +154,7 @@ public class LagouService {
     /**
      * 获取拉钩的公司信息 V2版本
      */
+    @Async
     public void getCompanyInfomationV2(){
         String apiUrl = "https://www.lagou.com/gongsi/";
         String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);

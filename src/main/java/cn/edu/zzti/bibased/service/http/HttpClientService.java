@@ -75,10 +75,6 @@ public class HttpClientService {
         HttpGet httpGet = new HttpGet(uri);
         try {
             for (Map.Entry<String, Object> entry : HttpHeaderConstant.lagouGetHeader.entrySet()) {
-                if("Cookie".equals(entry.getKey())){
-                    httpGet.addHeader(entry.getKey(), entry.getValue().toString()+ UUID.randomUUID().toString().replace("-","").toString());
-                    continue;
-                }
                 httpGet.addHeader(entry.getKey(), entry.getValue().toString());
             }
             if(uri.toString().contains("https://")){
@@ -94,8 +90,8 @@ public class HttpClientService {
                 // Set-Cookie: SEARCH_ID=1b772ae7995c4065ba144eeea6d02636; Version=1; Max-Age=86400; Expires=Tue, 05-Dec-2017 05:37:10 GMT; Path=/
                 Header[] allHeaders = response.getAllHeaders();
                 Header[] resultHeaders = response.getHeaders("Set-Cookie");
-                setCookieValue(response.getHeaders("Set-Cookie"));
-                setCookieValue(response.getHeaders("REQUEST_ID"));
+//                setCookieValue(response.getHeaders("Set-Cookie"));
+//                setCookieValue(response.getHeaders("REQUEST_ID"));
             }else{
                 httpGet.abort();
                 return data;
@@ -193,25 +189,4 @@ public class HttpClientService {
         }
     }
 
-//    private static String getContentCharSet(final HttpEntity entity) {
-//
-//        if (entity == null) {
-//            throw new IllegalArgumentException("HTTP entity may not be null");
-//        }
-//        String charset = null;
-//        if (entity.getContentType() != null) {
-//            HeaderElement[] values = entity.getContentType().getElements();
-//            if (values.length > 0) {
-//                org.apache.http.NameValuePair param = values[0].getParameterByName("charset");
-//                if (param != null) {
-//                    charset = param.getValue();
-//                }
-//            }
-//        }
-//
-//        if(StringUtils.isEmpty(charset)){
-//            charset = "UTF-8";
-//        }
-//        return charset;
-//    }
 }

@@ -134,4 +134,20 @@ public class HttpTests extends BaseApplicationTests {
 
 
     }
+
+    @Test
+    public void dFireTests(){
+
+         Map<String, Object> compaanyParam = new LinkedHashMap<>();
+        compaanyParam.put("app_version","5.6.48");
+        compaanyParam.put("device_id","3702341F583243739068247228F37D65");
+        compaanyParam.put("result_id","9993447161bc9a940161bc9deca20001");
+        compaanyParam.put("session_key","10000899934471938975bc0a7b40c98794ae1e66919abe");
+        compaanyParam.put("sign","0cc44440fd625ab28de578ba5ede004f");
+        compaanyParam.put("timestamp","1519288972.98673");
+        compaanyParam.put("version_code","5064800");
+        String get_history_result = "http://10.1.24.205:8080/boss-api/health_check/v2/get_history_result?app_key=200041&s_os=ios&s_sc=375x667&s_apv=5.6.48&s_uid=48f36dc57881409c854ac6170b44d43b&s_net=6&ip=223.93.161.98&format=json&ttm=901e1952207ff2058e711d23047b2487&s_osv=10.3.3&s_br=iphone&s_eid=99934471&s_did=118df65d929d490b9274c011a94996a3";
+        String json = httpClientService.doGet(get_history_result, compaanyParam, compaanyParam);
+    }
+
 }
