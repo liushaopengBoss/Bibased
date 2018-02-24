@@ -90,8 +90,8 @@ public class HttpClientService {
                 // Set-Cookie: SEARCH_ID=1b772ae7995c4065ba144eeea6d02636; Version=1; Max-Age=86400; Expires=Tue, 05-Dec-2017 05:37:10 GMT; Path=/
                 Header[] allHeaders = response.getAllHeaders();
                 Header[] resultHeaders = response.getHeaders("Set-Cookie");
-//                setCookieValue(response.getHeaders("Set-Cookie"));
-//                setCookieValue(response.getHeaders("REQUEST_ID"));
+                setCookieValue(response.getHeaders("Set-Cookie"));
+                setCookieValue(response.getHeaders("REQUEST_ID"));
             }else{
                 httpGet.abort();
                 return data;
@@ -141,6 +141,7 @@ public class HttpClientService {
                 httpPost.abort();
                 return null;
             }
+            setCookieValue(response.getHeaders("Set-Cookie"));
             data = getDate(response.getEntity());
         } catch (Exception e) {
             httpPost.abort();
@@ -182,10 +183,10 @@ public class HttpClientService {
     }
 
     private void setCookieValue(Header[] cookieHeaders){
-        if(cookieHeaders!=null){
+        if(cookieHeaders !=  null && cookieHeaders.length!=0){
             String value = cookieHeaders[0].getValue();
-            HttpHeaderConstant.setJSESSIONID("");
-            HttpHeaderConstant.setUser_trace_token("");
+//            HttpHeaderConstant.setJSESSIONID(value);
+//            HttpHeaderConstant.setUser_trace_token(value);
         }
     }
 

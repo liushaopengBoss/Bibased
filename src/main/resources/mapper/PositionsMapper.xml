@@ -13,15 +13,16 @@
         <result column="create_time" property="createTime" jdbcType="BIGINT" />
         <result column="op_time" property="opTime" jdbcType="BIGINT" />
         <result column="last_ver" property="lastVer" jdbcType="BIGINT" />
+        <result column="date_version" property="dateVersion" jdbcType="VARCHAR" />
     </resultMap>
     <sql id="fields">
         <![CDATA[
-            id, position_url, position_name, include, parent_id, root_id, leaf, create_time, op_time,is_valid, last_ver
+            id, position_url, position_name, include, parent_id, root_id, leaf, create_time, op_time,is_valid, last_ver,date_version
         ]]>
     </sql>
     <sql id="valueFields">
         <![CDATA[
-        (#{position.id},#{position.positionUrl},#{position.positionName},#{position.include},#{position.parentId},#{position.rootId},#{position.leaf},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),1,0)
+        (#{position.id},#{position.positionUrl},#{position.positionName},#{position.include},#{position.parentId},#{position.rootId},#{position.leaf},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),1,0,#{#{position.dateVersion}})
           ]]>
     </sql>
     <sql id="selectSql">
@@ -42,6 +43,8 @@
     </insert>
     <select id="queryLeafPositions" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT   position_url, position_name, include from positions
-        WHERE  include = #{include}  and leaf = 1
+        WHERE  include = #{include}  and leaf = 1 and date_version = (
+          SELECT date_version from positions ORDER BY date_version Desc limit 1
+        )
     </select>
 </mapper>

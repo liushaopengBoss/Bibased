@@ -18,16 +18,19 @@
     <result column="op_time" property="opTime" jdbcType="BIGINT" />
     <result column="is_valid" property="isValid" jdbcType="TINYINT" />
     <result column="last_ver" property="lastVer" jdbcType="BIGINT" />
+    <result column="date_version" property="dateVersion" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     company_name,company_full_name, company_url,company_logo, city,industry_field, finance_stage, position_num, resume_rate,
-    position_slogan, include
+    position_slogan, include,date_version
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from company
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} AND  date_version = (
+      SELECT  date_version  from company order BY date_version Desc limit 1
+    )
   </select>
 
   <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.Company" >
