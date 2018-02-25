@@ -49,10 +49,11 @@ public class ActionLogAspect {
             String end = DateUtils.formatStr(new Date(), DateUtils.YYMMDD_HHmmStr);
             ActionLogDO actionLogDO = new ActionLogDO();
             actionLogDO.setActionName(actionLogName.getName());
-            actionLogDO.setEndDate(end);
-            actionLogDO.setStartDate(start);
+            actionLogDO.setEndTime(end);
+            actionLogDO.setStartTime(start);
             actionLogDO.setStatus(1);
             actionLogDO.setTypeCode(actionLogName.getCode());
+            actionLogDO.setInclude("lagou");
             actionLogService.addLog(actionLogDO);
             return rs;
         }

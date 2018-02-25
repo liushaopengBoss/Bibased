@@ -1,17 +1,8 @@
 package cn.edu.zzti.bibased.dao.lagou;
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
-import cn.edu.zzti.bibased.dao.mapper.CityMapper;
-import cn.edu.zzti.bibased.dao.mapper.CompanyMapper;
-import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
-import cn.edu.zzti.bibased.dao.mapper.PositionsMapper;
-import cn.edu.zzti.bibased.dto.City;
-import cn.edu.zzti.bibased.dto.Company;
-import cn.edu.zzti.bibased.dto.PositionDetail;
-import cn.edu.zzti.bibased.dto.Positions;
-import com.google.gson.Gson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.edu.zzti.bibased.dao.mapper.*;
+import cn.edu.zzti.bibased.dto.*;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -34,6 +25,8 @@ public class LagouDao {
     @Resource
     private PositionDetailMapper positionDetailMapper;
 
+    @Resource
+    private ActionLogDao actionLogDao;
     public void insertJob(Positions position){
         positionsMapper.insert(position);
     }
@@ -65,6 +58,8 @@ public class LagouDao {
         PositionDetail positionDetail = positionDetailMapper.selectLastPostionCreateTime(WebsiteEnum.LAGOU.getWebCode());
         return positionDetail !=null?positionDetail.getPositionCreateTime():0L;
     }
-
+    private List<ActionLogDO> queryActionLog(int typeCode){
+        return actionLogDao.queryActionLog(WebsiteEnum.LAGOU.getWebCode(),typeCode);
+    }
 
 }

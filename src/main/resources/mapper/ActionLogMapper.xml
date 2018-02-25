@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.zzti.bibased.dao.mapper.ActionLogMapper" >
+  <resultMap id="BaseResultMap" type="cn.edu.zzti.bibased.dto.ActionLogDO" >
+    <result column="action_name" property="actionName" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+    <result column="include" property="include" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="type_code" property="typeCode" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="op_time" property="opTime" jdbcType="BIGINT" />
+    <result column="is_valid" property="isValid" jdbcType="TINYINT" />
+    <result column="last_ver" property="lastVer" jdbcType="BIGINT" />
+  </resultMap>
+  <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.ActionLogDO" >
+    insert into action_log (action_name, start_time, end_time, 
+      include, status, type_code,
+      create_time, op_time, is_valid, 
+      last_ver)
+    values (#{actionName,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, 
+      #{include,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{typeCode,jdbcType=INTEGER},
+      UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),1,0)
+  </insert>
+  <select id="queryActionLog" resultMap="BaseResultMap">
+    SELECT action_name, start_time, end_time,
+      include, status, type_code,
+      create_time, op_time, is_valid,
+      last_ver from action_log WHERE  include = #{include,jdbcType=VARCHAR}
+       and type_code = #{typeCode,jdbcType=INTEGER}
+        and is_valid = 1
+
+  </select>
+</mapper>
