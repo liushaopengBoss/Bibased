@@ -24,7 +24,7 @@
   </select>
 
   <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.City" >
-    insert into city (id, city_name, include, date_version
+    insert into city (id, city_name, include, date_version,
       is_valid, create_time, op_time, 
       last_ver) values
     <foreach collection="list" item="city" index="index" separator="," >
@@ -35,7 +35,7 @@
   </insert>
 
   <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.City" >
-    insert into city (id, city_name, include,
+    insert into city (id, city_name, include,date_version,
     is_valid, create_time, op_time,
     last_ver) values (#{id,jdbcType=INTEGER}, #{cityName,jdbcType=VARCHAR}, #{include,jdbcType=VARCHAR},#{dateVersion,jdbcType=VARCHAR},
       1,UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),0)
