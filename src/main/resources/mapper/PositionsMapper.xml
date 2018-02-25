@@ -22,7 +22,7 @@
     </sql>
     <sql id="valueFields">
         <![CDATA[
-        (#{position.id},#{position.positionUrl},#{position.positionName},#{position.include},#{position.parentId},#{position.rootId},#{position.leaf},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),1,0,#{#{position.dateVersion}})
+        (#{position.id},#{position.positionUrl},#{position.positionName},#{position.include},#{position.parentId},#{position.rootId},#{position.leaf},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),1,0,#{position.dateVersion})
           ]]>
     </sql>
     <sql id="selectSql">
