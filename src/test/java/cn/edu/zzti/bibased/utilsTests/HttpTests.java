@@ -11,20 +11,20 @@ import cn.edu.zzti.bibased.execute.PositionDetailExecute;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouService;
+import cn.edu.zzti.bibased.utils.DateUtils;
 import cn.edu.zzti.bibased.utils.IDUtils;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class HttpTests extends BaseApplicationTests {
-
+    private Logger logger = LoggerFactory.getLogger(HttpTests.class);
     @Resource
     private HttpClientService httpClientService;
     @Resource
@@ -149,5 +149,8 @@ public class HttpTests extends BaseApplicationTests {
         String get_history_result = "http://10.1.24.205:8080/boss-api/health_check/v2/get_history_result?app_key=200041&s_os=ios&s_sc=375x667&s_apv=5.6.48&s_uid=48f36dc57881409c854ac6170b44d43b&s_net=6&ip=223.93.161.98&format=json&ttm=901e1952207ff2058e711d23047b2487&s_osv=10.3.3&s_br=iphone&s_eid=99934471&s_did=118df65d929d490b9274c011a94996a3";
         String json = httpClientService.doGet(get_history_result, compaanyParam, compaanyParam);
     }
-
+    @Test
+    public void dateTets(){
+        logger.error(DateUtils.formatStr(new Date(),DateUtils.YYMMDDHHmmssSSS));
+    }
 }

@@ -11,6 +11,7 @@ public class City implements Serializable {
     private Integer id;
     private String cityName;
     private String include;
+    private String dateVersion;
     private long createTime;//创建时间
     private long opTime;//修改时间
     private long lastVer;// 版本
@@ -82,5 +83,13 @@ public class City implements Serializable {
 
     public void setLinkId(String linkId) {
         this.linkId = linkId;
+    }
+
+    public String getDateVersion() {
+        return dateVersion;
+    }
+
+    public void setDateVersion(String dateVersion) {
+        this.dateVersion = dateVersion;
     }
 }

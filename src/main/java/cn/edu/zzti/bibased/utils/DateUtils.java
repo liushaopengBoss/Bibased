@@ -19,7 +19,7 @@ public class DateUtils {
     public static String YYMMDD_HHmm = "yyyy-MM-dd HH:mm";
     public static String YYMMDD_HHmmSS = "yyyy-MM-dd HH:mm:ss";
     public static String HHmmSS = "HH:mm:ss";
-    public static String YYMMDDHHmmssSSS = "yyyyMMddHHmmssSSS";
+    public static String YYMMDDHHmmssSSS = "yyyyMMddHHmmss";
     public static String HHmm = "HH:mm";
     public static String YYMMDD_HHmmStr = "yyyy年MM月dd日 HH时mm分";
     public static String HHMMSS_000000= " 00:00:00";

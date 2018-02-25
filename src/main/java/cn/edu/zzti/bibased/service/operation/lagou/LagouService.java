@@ -101,6 +101,7 @@ public class LagouService {
         String apiUrl = "https://www.lagou.com/gongsi/";
         String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);
         List<City> cityByCompany = LagouHandler.getCityByCompany(html);
+        String dateVersion = DateUtils.formatStr(new Date(), DateUtils.YYMMDDHHmmssSSS);
         //去掉第一个和最后一个
         for (int i = 1; i < cityByCompany.size()-1; i++) {
             Gson gson = new Gson();

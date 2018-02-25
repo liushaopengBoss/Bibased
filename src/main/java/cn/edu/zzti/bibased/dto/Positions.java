@@ -15,6 +15,7 @@ public class Positions implements Serializable {
     private long parentId;//父id  如果父节点为0 则为根节点
     private long rootId;//根节点
     private boolean leaf = true;//是否为叶子节点
+    private String dateVersion;
     private long createTime;//创建时间
     private long opTime;//修改时间
     private long lastVer;// 版本
@@ -106,5 +107,13 @@ public class Positions implements Serializable {
 
     public void setIsValid(int isValid) {
         this.isValid = isValid;
+    }
+
+    public String getDateVersion() {
+        return dateVersion;
+    }
+
+    public void setDateVersion(String dateVersion) {
+        this.dateVersion = dateVersion;
     }
 }
