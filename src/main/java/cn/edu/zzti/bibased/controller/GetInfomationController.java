@@ -16,7 +16,6 @@ public class GetInfomationController{
     @Resource
     private LagouService lagouService;
 
-
     @RequestMapping(value = "/v1/company_search")
     public Object companyOperation(String code){
         lagouService.getCompanyInfomationV2();
@@ -28,12 +27,28 @@ public class GetInfomationController{
 
 
     @RequestMapping(value = "/v1/get_company")
-    @ActionLog(ProjectItem.COMPANY)
     public Object getCompanyInfo(String code){
         lagouService.getCompanyInfomationV2();
+        return this.result();
+    }
+    @RequestMapping(value = "/v1/get_city")
+    public Object getCityInfo(String code){
+        lagouService.getCityInformation();
+        return this.result();
+    }
+    @RequestMapping(value = "/v1/get_positions")
+    public Object getPositionsInfo(String code){
+        lagouService.getJobInformation();
+        return this.result();
+    }
+    @RequestMapping(value = "/v1/get_position_details")
+    public Object getPositionDetailsInfo(String code){
+        lagouService.getPositionDeailsInfomation();
+        return this.result();
+    }
+    private Object result(){
         MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(new ResultMap());
         mappingJacksonValue.setJsonpFunction("callback");
         return mappingJacksonValue;
     }
-
 }

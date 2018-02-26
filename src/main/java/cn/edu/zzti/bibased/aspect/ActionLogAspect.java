@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
 import java.util.Date;
 
 /**
- * INFO:行为数据统计
+ * INFO:行为数据统计 lagou
  */
 @Aspect
 @Component
@@ -28,7 +28,7 @@ public class ActionLogAspect {
     @Resource
     private ActionLogService actionLogService;
 
-    @Around("execution(public * cn.edu.zzti.bibased.controller.*.*(..))")
+    @Around("execution(public * cn.edu.zzti.bibased.service.operation.lagou.*.*(..))")
     public Object aroundService(ProceedingJoinPoint pjp) throws Throwable {
         return addActionLog(pjp);
     }

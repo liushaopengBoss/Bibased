@@ -52,19 +52,19 @@
                                         <td class="project-title">
                                             <a href="project_detail.html">城市信息</a>
                                             <br/>
-                                            <small>创建于 2014.08.15</small>
+                                            <small>创建于 2018.03.15</small>
                                         </td>
                                         <td class="project-completion">
-                                                <small>当前进度： 48%</small>
+                                                <small>当前进度： 0%</small>
                                                 <div class="progress progress-mini">
-                                                    <div style="width: 48%;" class="progress-bar"></div>
+                                                    <div style="width: 0%;" class="progress-bar"></div>
                                                 </div>
                                         </td>
                                         <td class="project-people">
-                                            <span class="label label-primary">进行中</span>
+                                            <span class="label label-default">未开始</span>
                                         </td>
                                         <td class="project-actions">
-                                            <a href="javascript:getCompany('lagou')" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
+                                            <a href="javascript:getWebInfo(3,'lagou')" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
                                             <a href="project_detail.html" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
                                         </td>
                                     </tr>
@@ -75,19 +75,19 @@
                                         <td class="project-title">
                                             <a href="project_detail.html">公司信息</a>
                                             <br/>
-                                            <small>创建于 2014.08.15</small>
+                                            <small>创建于 2018.03.15</small>
                                         </td>
                                         <td class="project-completion">
-                                            <small>当前进度： 82%</small>
+                                            <small>当前进度： 0%</small>
                                             <div class="progress progress-mini">
-                                                <div style="width: 82%;" class="progress-bar"></div>
+                                                <div style="width: 0%;" class="progress-bar"></div>
                                             </div>
                                         </td>
                                         <td class="project-people">
-                                            <span class="label label-primary">进行中</span>
+                                            <span class="label label-default ">未开始</span>
                                         </td>
                                         <td class="project-actions">
-                                            <a href="projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
+                                            <a href="javascript:getWebInfo(4,'lagou')" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
                                             <a href="projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
                                         </td>
                                     </tr>
@@ -98,19 +98,19 @@
                                         <td class="project-title">
                                             <a href="project_detail.html">职位信息</a>
                                             <br/>
-                                            <small>创建于 2014.08.15</small>
+                                            <small>创建于 2018.03.15</small>
                                         </td>
                                         <td class="project-completion">
-                                            <small>当前进度： 8%</small>
+                                            <small>当前进度： 0%</small>
                                             <div class="progress progress-mini">
-                                                <div style="width: 8%;" class="progress-bar"></div>
+                                                <div style="width: 0%;" class="progress-bar"></div>
                                             </div>
                                         </td>
                                         <td class="project-people">
-                                            <span class="label label-default">已取消</span>
+                                            <span class="label label-default">未开始</span>
                                         </td>
                                         <td class="project-actions">
-                                            <a href="projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
+                                            <a href="javascript:getWebInfo(2,'lagou')" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
                                             <a href="projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情  </a>
                                         </td>
                                     </tr>
@@ -121,19 +121,19 @@
                                         <td class="project-title">
                                             <a href="project_detail.html">职位详情</a>
                                             <br/>
-                                            <small>创建于 2014.08.15</small>
+                                            <small>创建于 2018.03.15</small>
                                         </td>
                                         <td class="project-completion">
-                                            <small>当前进度： 83%</small>
+                                            <small>当前进度： 0%</small>
                                             <div class="progress progress-mini">
-                                                <div style="width: 83%;" class="progress-bar"></div>
+                                                <div style="width: 0%;" class="progress-bar"></div>
                                             </div>
                                         </td>
                                         <td class="project-people">
-                                            <span class="label label-default">已取消</span>
+                                            <span class="label label-default">未开始</span>
                                         </td>
                                         <td class="project-actions">
-                                            <a href="javascript:getCompany()" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
+                                            <a href="javascript:javascript:getWebInfo(1,'lagou')" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
                                             <a href="projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
                                         </td>
                                     </tr>
@@ -203,10 +203,16 @@
                 }, 2000);
             }
         }
-
-        function getCompany(type) {
+        function getWebInfo(webType,type) {
+            var url ;
+            switch (webType){
+                case 1: url = "/v1/get_position_details?code="+type; break;
+                case 2: url ="/v1/get_positions?code="+type; break;
+                case 3: url = "/v1/get_city?code="+type;break;
+                case 4: url = "/v1/get_company?code="+type;break;
+            }
             $.ajax({
-                url : "/v1/get_company?code="+type,
+                url : url,
                 dataType : "jsonp",
                 type : "GET",
                 jsonpCallback:'callback'
@@ -214,7 +220,6 @@
         }
         
         function callback(data) {
-            alert(data);
             if(data.code == 200){
                 alert("OK")
             }

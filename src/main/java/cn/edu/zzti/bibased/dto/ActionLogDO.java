@@ -94,4 +94,19 @@ public class ActionLogDO implements Serializable {
         this.include = include;
     }
 
+    @Override
+    public String toString() {
+        return "ActionLogDO{" +
+                "status=" + status +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", actionName='" + actionName + '\'' +
+                ", include='" + include + '\'' +
+                ", typeCode=" + typeCode +
+                ", createTime=" + createTime +
+                ", opTime=" + opTime +
+                ", lastVer=" + lastVer +
+                ", isValid=" + isValid +
+                '}';
+    }
 }

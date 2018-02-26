@@ -1,7 +1,9 @@
 package cn.edu.zzti.bibased.service.operation.lagou;
 
+import cn.edu.zzti.bibased.aspect.ActionLog;
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
 import cn.edu.zzti.bibased.constant.HttpType;
+import cn.edu.zzti.bibased.constant.ProjectItem;
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.Company;
@@ -78,7 +80,9 @@ public class LagouService {
      * 采集拉勾网的职位分类信息
      *
      */
-    private void getJobInformation(){
+    @Async
+    @ActionLog(ProjectItem.POSITION)
+    public void getJobInformation(){
         String url = "https://www.lagou.com";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
         List<Positions> jobs = LagouHandler.getJobs(html);
@@ -88,7 +92,9 @@ public class LagouService {
      * 采集拉勾网的城市信息
      *
      */
-    private void getCityInformation(){
+    @Async
+    @ActionLog(ProjectItem.CITY)
+    public void getCityInformation(){
         String url = "https://www.lagou.com/zhaopin/Java/?labelWords=label";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
         List<City> jobs = LagouHandler.getCitys(html);
@@ -156,6 +162,7 @@ public class LagouService {
      * 获取拉钩的公司信息 V2版本
      */
     @Async
+    @ActionLog(ProjectItem.COMPANY)
     public void getCompanyInfomationV2(){
         String apiUrl = "https://www.lagou.com/gongsi/";
         String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);
@@ -241,6 +248,8 @@ public class LagouService {
      * 获取拉钩网的职位详情信息
      *
      */
+    @Async
+    @ActionLog(ProjectItem.POSITIONDETAIL)
     public void getPositionDeailsInfomation(){
         Future<List<Positions>> positionListFuter = lagouPool.submit(() -> {
                return lagouOperationService.queryLeftPositions();
