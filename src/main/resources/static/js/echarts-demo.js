@@ -599,8 +599,8 @@ $(function () {
     var mapChart = echarts.init(document.getElementById("echarts-map-chart"));
     var mapoption = {
         title : {
-            text: 'iphone销量',
-            subtext: '纯属虚构',
+            text: '全国职位概况图',
+            subtext: '',
             x:'center'
         },
         tooltip : {
@@ -609,11 +609,11 @@ $(function () {
         legend: {
             orient: 'vertical',
             x:'left',
-            data:['iphone3','iphone4','iphone5']
+            data:['拉钩','Boss直聘','智联招聘']
         },
         dataRange: {
             min: 0,
-            max: 2500,
+            max: 5000,
             x: 'left',
             y: 'bottom',
             text:['高','低'],           // 文本，默认为数值文本
@@ -640,7 +640,7 @@ $(function () {
         },
         series : [
             {
-                name: 'iphone3',
+                name: '拉钩',
                 type: 'map',
                 mapType: 'china',
                 roam: false,
@@ -679,14 +679,11 @@ $(function () {
                     {name: '西藏',value: Math.round(Math.random()*1000)},
                     {name: '四川',value: Math.round(Math.random()*1000)},
                     {name: '宁夏',value: Math.round(Math.random()*1000)},
-                    {name: '海南',value: Math.round(Math.random()*1000)},
-                    {name: '台湾',value: Math.round(Math.random()*1000)},
-                    {name: '香港',value: Math.round(Math.random()*1000)},
-                    {name: '澳门',value: Math.round(Math.random()*1000)}
+                    {name: '海南',value: Math.round(Math.random()*1000)}
                 ]
             },
             {
-                name: 'iphone4',
+                name: 'Boss直聘',
                 type: 'map',
                 mapType: 'china',
                 itemStyle:{
@@ -710,13 +707,11 @@ $(function () {
                     {name: '广东',value: Math.round(Math.random()*1000)},
                     {name: '西藏',value: Math.round(Math.random()*1000)},
                     {name: '四川',value: Math.round(Math.random()*1000)},
-                    {name: '宁夏',value: Math.round(Math.random()*1000)},
-                    {name: '香港',value: Math.round(Math.random()*1000)},
-                    {name: '澳门',value: Math.round(Math.random()*1000)}
+                    {name: '宁夏',value: Math.round(Math.random()*1000)}
                 ]
             },
             {
-                name: 'iphone5',
+                name: '智联招聘',
                 type: 'map',
                 mapType: 'china',
                 itemStyle:{
@@ -727,10 +722,7 @@ $(function () {
                     {name: '北京',value: Math.round(Math.random()*1000)},
                     {name: '天津',value: Math.round(Math.random()*1000)},
                     {name: '上海',value: Math.round(Math.random()*1000)},
-                    {name: '广东',value: Math.round(Math.random()*1000)},
-                    {name: '台湾',value: Math.round(Math.random()*1000)},
-                    {name: '香港',value: Math.round(Math.random()*1000)},
-                    {name: '澳门',value: Math.round(Math.random()*1000)}
+                    {name: '广东',value: Math.round(Math.random()*1000)}
                 ]
             }
         ]

@@ -46,6 +46,32 @@ public class GetInfomationController{
         lagouService.getPositionDeailsInfomation();
         return this.result();
     }
+
+    /**
+     * 进度
+     *
+     * @param time
+     * @return
+     */
+    @RequestMapping(value = "/v1/get_Speed_of_progress")
+    public Object getSpeedOfProgress(Integer time){
+        return this.result(100);
+    }
+    /**
+     * 项目的详情
+     *
+     * @return
+     */
+    @RequestMapping(value = "/v1/get_project_detail")
+    public Object getProjectDetail(){
+
+        return this.result(100);
+    }
+    private Object result(int data){
+        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(new ResultMap(data));
+        mappingJacksonValue.setJsonpFunction("callback");
+        return mappingJacksonValue;
+    }
     private Object result(){
         MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(new ResultMap());
         mappingJacksonValue.setJsonpFunction("callback");
