@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html>
-
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 
     <meta charset="utf-8">
@@ -8,11 +7,11 @@
 
 
     <title>采集项目详情</title>
-    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico"> <link href="../../css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../../css/font-awesome.css?v=4.4.0" rel="stylesheet">
 
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../../css/animate.css" rel="stylesheet">
+    <link href="../../css/style.css?v=4.1.0" rel="stylesheet">
 
 </head>
 
@@ -26,7 +25,7 @@
                             <div class="col-sm-12">
                                 <div class="m-b-md">
                                     <a href="project_detail.html#" class="btn btn-white btn-xs pull-right btn-outline btn-danger">停止获取数据</a>
-                                    <h2>职位信息采集</h2>
+                                    <h2 th:text="${projectName}"></h2>
                                 </div>
                                 <dl class="dl-horizontal">
                                     <dt>状态：</dt>
@@ -40,18 +39,18 @@
                                 <dl class="dl-horizontal">
 
                                     <dt>项目名称：</dt>
-                                    <dd>Beaut-zihan</dd>
+                                    <dd th:text="${projectName}"></dd>
                                     <dt>版本：</dt>
-                                    <dd>v1.4.2</dd>
+                                    <dd>v1.0.0</dd>
                                 </dl>
                             </div>
                             <div class="col-sm-7" id="cluster_info">
                                 <dl class="dl-horizontal">
 
                                     <dt>最后更新：</dt>
-                                    <dd>2014年 11月7日 22:03</dd>
+                                    <dd>2018年 04月10日 22:03</dd>
                                     <dt>创建于：</dt>
-                                    <dd>2014年 2月16日 03:01</dd>
+                                    <dd>2018年 03月16日 03:01</dd>
                                 </dl>
                             </div>
                         </div>
@@ -61,9 +60,9 @@
                                     <dt>当前进度</dt>
                                     <dd>
                                         <div class="progress progress-striped active m-b-sm">
-                                            <div style="width: 60%;" class="progress-bar"></div>
+                                            <div style="width: 100%;" class="progress-bar"></div>
                                         </div>
-                                        <small>当前已完成项目总进度的 <strong>60%</strong></small>
+                                        <small>当前已完成项目总进度的 <strong>100%</strong></small>
                                     </dd>
                                 </dl>
                             </div>
@@ -88,76 +87,34 @@
                                                 <table class="table table-striped">
                                                     <thead>
                                                         <tr>
-                                                            <th>状态</th>
                                                             <th>标题</th>
                                                             <th>开始时间</th>
                                                             <th>结束时间</th>
+                                                            <th>状态</th>
                                                             <th>说明</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                <span class="label label-primary"><i class="fa fa-check"></i> 已完成</span>
+                                                        <tr th:each="actionLog : ${actionLogs}">
+                                                            <td  th:text="${actionLog.actionName}">
+
                                                             </td>
-                                                            <td>
-                                                                文档在线预览功能
+                                                            <td  th:text="${actionLog.startTime}">
+
                                                             </td>
-                                                            <td>
-                                                                11月7日 22:03
+                                                            <td  th:text="${actionLog.endTime}">
                                                             </td>
-                                                            <td>
-                                                                11月7日 20:11
+                                                            <td th:switch="${actionLog.status}">
+                                                                <span th:case="1" class="label label-primary"><i class="fa fa-check"></i> 已完成</span>
+                                                                <span th:case="*" class="label label-danger"><i class="fa fa-check"></i> 失败</span>
                                                             </td>
                                                             <td>
                                                                 <p class="small">
-                                                                    已经测试通过
+                                                                    通过
                                                                 </p>
                                                             </td>
 
                                                         </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <span class="label label-primary"><i class="fa fa-check"></i> 解决中</span>
-                                                            </td>
-                                                            <td>
-                                                                会员登录
-                                                            </td>
-                                                            <td>
-                                                                11月7日 22:03
-                                                            </td>
-                                                            <td>
-                                                                11月7日 20:11
-                                                            </td>
-                                                            <td>
-                                                                <p class="small">
-                                                                    测试中
-                                                                </p>
-                                                            </td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <span class="label label-primary"><i class="fa fa-check"></i> 解决中</span>
-                                                            </td>
-                                                            <td>
-                                                                会员积分
-                                                            </td>
-                                                            <td>
-                                                                11月7日 22:03
-                                                            </td>
-                                                            <td>
-                                                                11月7日 20:11
-                                                            </td>
-                                                            <td>
-                                                                <p class="small">
-                                                                    未测试
-                                                                </p>
-                                                            </td>
-
-                                                        </tr>
-
-
                                                     </tbody>
                                                 </table>
 
@@ -176,13 +133,13 @@
     </div>
 
     <!-- 全局js -->
-    <script src="js/jquery.min.js?v=2.1.4"></script>
-    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="../../js/jquery.min.js?v=2.1.4"></script>
+    <script src="../../js/bootstrap.min.js?v=3.3.6"></script>
 
 
 
     <!-- 自定义js -->
-    <script src="js/content.js?v=1.0.0"></script>
+    <script src="../../js/content.js?v=1.0.0"></script>
 
 
     <script>

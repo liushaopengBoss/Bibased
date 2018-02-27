@@ -4,6 +4,7 @@ import cn.edu.zzti.bibased.aspect.ActionLog;
 import cn.edu.zzti.bibased.constant.ProjectItem;
 import cn.edu.zzti.bibased.dto.ResultMap;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouService;
+import cn.edu.zzti.bibased.service.operation.other.ActionLogService;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,10 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
+@RequestMapping("/rest")
 public class GetInfomationController{
 
     @Resource
     private LagouService lagouService;
+
+    @Resource
+    private ActionLogService actionLogService;
 
     @RequestMapping(value = "/v1/company_search")
     public Object companyOperation(String code){
@@ -63,7 +68,9 @@ public class GetInfomationController{
      * @return
      */
     @RequestMapping(value = "/v1/get_project_detail")
-    public Object getProjectDetail(){
+    public Object getProjectDetail(String webType,Integer typeCode){
+
+        actionLogService.queryActionLog(webType,typeCode);
 
         return this.result(100);
     }

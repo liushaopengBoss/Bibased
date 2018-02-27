@@ -65,7 +65,7 @@
                                         </td>
                                         <td class="project-actions">
                                             <a href="javascript:getWebInfo(3,'lagou')" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
-                                            <a href="project_detail.html" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
+                                            <a href="/view/v1/get_project_detail?webType=lagou&typeCode=1" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -88,7 +88,7 @@
                                         </td>
                                         <td class="project-actions">
                                             <a href="javascript:getWebInfo(4,'lagou')" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
-                                            <a href="projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
+                                            <a href="/view/v1/get_project_detail?webType=lagou&typeCode=3" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -111,7 +111,7 @@
                                         </td>
                                         <td class="project-actions">
                                             <a href="javascript:getWebInfo(2,'lagou')" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
-                                            <a href="projects.html" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情  </a>
+                                            <a href="/view/v1/get_project_detail?webType=lagou&typeCode=2" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情  </a>
                                         </td>
                                     </tr>
                                     <tr>
@@ -134,7 +134,7 @@
                                         </td>
                                         <td class="project-actions">
                                             <a href="javascript:javascript:getWebInfo(1,'lagou')" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
-                                            <a href="projects.html" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
+                                            <a href="/view/v1/get_project_detail?webType=lagou&typeCode=4" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
                                         </td>
                                     </tr>
                                     <!--
@@ -188,7 +188,33 @@
                 simpleLoad(btn, true)
                 simpleLoad(btn, false)
             });
+            $.ajax({
+                url : "/rest/v1/get_Speed_of_progress?time=0",
+                dataType : "jsonp",
+                type : "POST",
+                jsonpCallback:'callback',
+                success : function(resultData){
+                    if(resultData.data >= 100){
+                        var status = $("<span class=\"label label-success\">成 &nbsp;&nbsp;功</span>");
+                        $("#positionDetail").html(status);
+                        $("#position").html(status);
+                        $("#city").html(status);
+                        $("#company").html(status);
+                        $("#positionDetailProgressBar").width('100%');
+                        $("#positionProgressBar").width('100%');
+                        $("#cityProgressBar").width('100%');
+                        $("#companyProgressBar").width('100%');
+                        $("#positionDetailLabel").text("当前进度： 100%")
+                        $("#cityLabel").text("当前进度： 100%")
+                        $("#companyLabel").text("当前进度： 100%")
+                        $("#positionLabel").text("当前进度： 100%")
+                    }
+                },
+                error:function(){
 
+                }
+
+            });
 
         });
 
@@ -206,10 +232,10 @@
         function getWebInfo(webType,type) {
             var url ;
             switch (webType){
-                case 1: url = "/v1/get_position_details?code="+type; break;
-                case 2: url ="/v1/get_positions?code="+type; break;
-                case 3: url = "/v1/get_city?code="+type;break;
-                case 4: url = "/v1/get_company?code="+type;break;
+                case 1: url = "/rest/v1/get_position_details?code="+type; break;
+                case 2: url ="/rest/v1/get_positions?code="+type; break;
+                case 3: url = "/rest/v1/get_city?code="+type;break;
+                case 4: url = "/rest/v1/get_company?code="+type;break;
             }
             $.ajax({
                 url : url,
@@ -250,7 +276,7 @@
             init(id);
             var interva = setInterval(function() {
                     $.ajax({
-                        url : "/v1/get_Speed_of_progress?time=0",
+                        url : "/rest/v1/get_Speed_of_progress?time=0",
                         dataType : "jsonp",
                         type : "POST",
                         jsonpCallback:'callback',

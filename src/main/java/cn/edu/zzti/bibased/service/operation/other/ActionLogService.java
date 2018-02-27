@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class ActionLogService {
@@ -20,4 +21,9 @@ public class ActionLogService {
         actionLogDao.insert(actionLogDO);
         lgger.info("actionLog"+actionLogDO);
     }
+
+    public List<ActionLogDO> queryActionLog(String include,int typeCode){
+       return  actionLogDao.queryActionLog(include,typeCode);
+    }
+
 }
