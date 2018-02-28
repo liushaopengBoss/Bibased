@@ -101,7 +101,7 @@
                                             <small>创建于 2018.03.15</small>
                                         </td>
                                         <td class="project-completion">
-                                            <small id = "positionLable">当前进度： 0%</small>
+                                            <small id = "positionLabel">当前进度： 0%</small>
                                             <div class="progress progress-mini">
                                                 <div style="width: 0%;" class="progress-bar" id = "positionProgressBar"></div>
                                             </div>
@@ -195,19 +195,22 @@
                 jsonpCallback:'callback',
                 success : function(resultData){
                     if(resultData.data >= 100){
-                        var status = $("<span class=\"label label-success\">成 &nbsp;&nbsp;功</span>");
-                        $("#positionDetail").html(status);
-                        $("#position").html(status);
-                        $("#city").html(status);
-                        $("#company").html(status);
+
                         $("#positionDetailProgressBar").width('100%');
                         $("#positionProgressBar").width('100%');
                         $("#cityProgressBar").width('100%');
                         $("#companyProgressBar").width('100%');
+
                         $("#positionDetailLabel").text("当前进度： 100%")
                         $("#cityLabel").text("当前进度： 100%")
                         $("#companyLabel").text("当前进度： 100%")
                         $("#positionLabel").text("当前进度： 100%")
+
+                        $("#position").html($("<span class=\"label label-success\">成 &nbsp;&nbsp;功</span>"));
+                        $("#positionDetail").html($("<span class=\"label label-success\">成 &nbsp;&nbsp;功</span>"));
+                        $("#city").html($("<span class=\"label label-success\">成 &nbsp;&nbsp;功</span>"));
+                        $("#company").html($("<span class=\"label label-success\">成 &nbsp;&nbsp;功</span>"));
+
                     }
                 },
                 error:function(){

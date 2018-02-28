@@ -54,7 +54,7 @@ public class LagouOperationService{
         lagouDao.batchInsertCompanys(companies);
         clock.stop();
         long time = clock.getTime();
-        logger.info("批处理执行时间:"+time+"\n");
+        logger.info("批处理执行时间:"+time+"\n"+"数量：:"+companies.size());
     }
 
     /**
