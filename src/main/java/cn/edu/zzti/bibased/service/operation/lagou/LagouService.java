@@ -171,14 +171,14 @@ public class LagouService {
         for (int i = 1; i < cityByCompany.size()-1; i++) {
             Gson gson = new Gson();
             String url = apiUrl+cityByCompany.get(i).getLinkId()+"-0-0.json";
-            logger.warn("num:"+i+" "+cityByCompany.get(i).getCityName()+"  "+url);
+            logger.debug("num:"+i+" "+cityByCompany.get(i).getCityName()+"  "+url);
             Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
             setCookie(lagouAjaxHeader);
             lagouAjaxHeader.put("Referer",url.replace(".json",""));
             String data = httpClientService.doPost(url, HttpHeaderConstant.compaanyParam, lagouAjaxHeader);
-            logger.error(data);
+            logger.debug(data);
             if(data == null){
-                logger.info("-----------获取数据出现异常------出现null-------");
+                logger.error("-----------获取数据出现异常------出现null-------");
                 try {
                     Thread.sleep(60000);
                     cityByCompany.add(cityByCompany.get(i));
@@ -187,7 +187,7 @@ public class LagouService {
             }
             CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data!=null?data:"{}", CompanyResultJsonVO.class);
             int totalPageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
-            logger.info("-----------page:"+totalPageNo+"\n");
+            logger.debug("-----------page:"+totalPageNo+"\n");
             BaseExecuter companyTask = (CompanyExecute)SpringContextUtils.getBean(CompanyExecute.class);
             companyTask.setApiUrl(url);
             companyTask.setHeaders(lagouAjaxHeader);
@@ -285,8 +285,8 @@ public class LagouService {
                 Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
                 citys.stream().forEach(city -> {
                     String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city="+city.getCityName()+"&needAddtionalResult=false&isSchoolJob=0";
-                    logger.info("---->  "+apiUrl);
-                    logger.info("---->  https://www.lagou.com/jobs/list_"+positionName.trim()+"?px=default&city="+city.getCityName());
+                    logger.debug("---->  "+apiUrl);
+                    logger.debug("---->  https://www.lagou.com/jobs/list_"+positionName.trim()+"?px=default&city="+city.getCityName());
                     lagouAjaxHeader.put("Referer","https://www.lagou.com/jobs/list_"+positionName.trim()+"?px=default&city="+city.getCityName());
                     setCookie(lagouAjaxHeader);
                     BaseExecuter executer = (PositionDetailExecute)SpringContextUtils.getBean(PositionDetailExecute.class);
@@ -304,7 +304,7 @@ public class LagouService {
                                 param2.put("first",false);
                                 param2.put("pn",i);
                                 param2.put("kd",positionName);
-                                logger.info("页数为---->  "+i);
+                                logger.debug("页数为---->  "+i);
                                 setCookie(lagouAjaxHeader);
                                 BaseExecuter positonDetailTask = (PositionDetailExecute)SpringContextUtils.getBean(PositionDetailExecute.class);
                                 positonDetailTask.setParams(param2);
@@ -332,6 +332,8 @@ public class LagouService {
                                         }
                                         positionDetails.addAll(positionDetailsList);
 
+                                    }else{
+                                        logger.error("future -->获取数据失败！");
                                     }
                                 }catch (Exception e){
                                     isBreak = true;
@@ -343,7 +345,7 @@ public class LagouService {
                                 lagouOperationService.batchAddPositionDetails(positionDetails);
                                 i--;
                                 logger.info("----写入数据>  ");
-                            }else if(isBreak || positionDetails.size() == 0 || count ==2){//
+                            }else if(isBreak || positionDetails.size() == 0 || count ==2){
                                 break;
                             }
 

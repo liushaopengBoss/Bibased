@@ -34,7 +34,6 @@ public class IdleConnectionEvictor extends Thread {
 					// 选择关闭 空闲15秒的链接
 					connMgr.closeIdleConnections(15, TimeUnit.SECONDS);
 				}
-				System.out.printf("clear Thread!!!!");
 			}
 		} catch (InterruptedException ex) {
 		}

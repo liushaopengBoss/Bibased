@@ -27,7 +27,7 @@ public class PositionDetailExecute extends BaseExecuter {
         if (StringUtils.isNotBlank(sourceJson)) {
             String targetJson = null;
             try {
-//                logger.info("职位信息json" + sourceJson);
+                logger.debug("职位信息json" + sourceJson);
                 JsonElement jsonElement = new JsonParser().parse(sourceJson);
                 targetJson = jsonElement.getAsJsonObject().get("content").getAsJsonObject().get("positionResult").toString();
             } catch (Exception e) {
@@ -53,7 +53,7 @@ public class PositionDetailExecute extends BaseExecuter {
     public int getPageSize(){
         try {
             String data = httpClientService.doPost(apiUrl, this.params, this.headers);
-//            logger.info("页面数json："+data);
+            logger.debug("页面数json："+data);
             PositionDetailResultJsonVo positionDetailResultJsonVo= handlePositions(data);
             if(positionDetailResultJsonVo !=null){
                 return positionDetailResultJsonVo.getTotalCount()/positionDetailResultJsonVo.getResultSize();
