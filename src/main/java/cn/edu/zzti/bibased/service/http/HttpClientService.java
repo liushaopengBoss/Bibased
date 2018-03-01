@@ -42,9 +42,6 @@ public class HttpClientService {
     @Resource(name = "httpClient")
     private CloseableHttpClient httpClient;
 
-    @Resource
-    private BasicCookieStore cookieStore;
-
 
     /**
      * get请求
@@ -105,6 +102,7 @@ public class HttpClientService {
             logger.error("https get请求失败：uri:"+apiUrl+"\n"+e);
             e.printStackTrace();
         } finally {
+            changeStatus(data);
             closeConnection(response,httpGet);
         }
         return data;
@@ -145,9 +143,10 @@ public class HttpClientService {
             data = getDate(response.getEntity());
         } catch (Exception e) {
             httpPost.abort();
-            logger.error("post请求异常：uri:"+apiUrl+"\n"+e.toString());
+            logger.error("post请求异常：uri:"+apiUrl+"\n",e);
             e.printStackTrace();
         } finally {
+            changeStatus(data);
             closeConnection(response,httpPost);
         }
         return data;
@@ -189,5 +188,9 @@ public class HttpClientService {
 //            HttpHeaderConstant.setUser_trace_token(value);
         }
     }
-
+    private void changeStatus(String data){
+        if(org.apache.commons.lang3.StringUtils.isBlank(data)){
+            HttpHeaderConstant.setStatus();
+        }
+    }
 }

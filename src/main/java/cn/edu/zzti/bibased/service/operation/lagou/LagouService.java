@@ -171,16 +171,16 @@ public class LagouService {
         for (int i = 1; i < cityByCompany.size()-1; i++) {
             Gson gson = new Gson();
             String url = apiUrl+cityByCompany.get(i).getLinkId()+"-0-0.json";
-            logger.info(cityByCompany.get(i).getCityName()+"  "+url);
+            logger.warn("num:"+i+" "+cityByCompany.get(i).getCityName()+"  "+url);
             Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
             setCookie(lagouAjaxHeader);
             lagouAjaxHeader.put("Referer",url.replace(".json",""));
             String data = httpClientService.doPost(url, HttpHeaderConstant.compaanyParam, lagouAjaxHeader);
-            logger.info("data"+data);
-            if(data ==null){
+            logger.error(data);
+            if(data == null){
                 logger.info("-----------获取数据出现异常------出现null-------");
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(60000);
                     cityByCompany.add(cityByCompany.get(i));
                     continue;
                 }catch (Exception e){}
@@ -188,16 +188,15 @@ public class LagouService {
             CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data!=null?data:"{}", CompanyResultJsonVO.class);
             int totalPageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
             logger.info("-----------page:"+totalPageNo+"\n");
-
+            BaseExecuter companyTask = (CompanyExecute)SpringContextUtils.getBean(CompanyExecute.class);
+            companyTask.setApiUrl(url);
+            companyTask.setHeaders(lagouAjaxHeader);
+            companyTask.setParams(HttpHeaderConstant.compaanyParam);
             List<CompanyVO> resultVOS = new LinkedList<>();
             resultVOS.addAll(companyResultJsonVO.getResult());
             for (int j = 2; j <= 20; j++) {
                 for (int k = 0; k < 10; k++) {
-                    BaseExecuter companyTask = (CompanyExecute)SpringContextUtils.getBean(CompanyExecute.class);
                     Map<String, Object> companyParam = HttpHeaderConstant.compaanyParam;
-                    companyTask.setApiUrl(url);
-                    companyTask.setHeaders(lagouAjaxHeader);
-                    companyTask.setParams(companyParam);
                     companyParam.put("first",false);
                     companyParam.put("pn",j);
                     lagouAjaxHeader.put("Referer",url.replace(".json",""));
@@ -220,6 +219,7 @@ public class LagouService {
                 }
 
                 if (resultVOS.size() > 0) {
+                    j--;
                     handleCompany(resultVOS);
                 }else{
                     break;
@@ -365,7 +365,7 @@ public class LagouService {
     private void isSleep(int pageSize){
         if(pageSize ==0){
             try {
-                Thread.sleep(60000);
+                Thread.sleep(10000);
             }catch (Exception e){}
         }
     }
@@ -434,7 +434,8 @@ public class LagouService {
     }
 
     private void setCookie(Map<String,Object> header){
-        String cookie = header.get("Cookie").toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
+        String cookie = header.get("Cookie").toString().substring(0,header.get("Cookie").toString().indexOf("SEARCH_ID=")+10).toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
+        logger.info(cookie);
         header.put("Cookie",cookie);
     }
 }

@@ -22,7 +22,7 @@ public class CompanyExecute extends BaseExecuter {
     @Override
     protected CompanyResultJsonVO builderResult() {
         String data = httpClientService.doPost(this.apiUrl, this.params, this.headers);
-        logger.info(data);
+        logger.error(data);
         CompanyResultJsonVO companyResultJsonVO =  new Gson().fromJson(data, CompanyResultJsonVO.class);
         return companyResultJsonVO;
     }

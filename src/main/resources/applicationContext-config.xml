@@ -53,7 +53,7 @@
 	<bean class="cn.edu.zzti.bibased.utils.IdleConnectionEvictor" destroy-method="shutdown">
 		<constructor-arg index="0" ref="httpClientConnectionManager" />
 		<!-- 间隔一分钟清理一次 -->
-		<constructor-arg index="1" value="36000" />
+		<constructor-arg index="1" value="6000" />
 	</bean>
 	
 	<!-- 定义requestConfig的工厂 -->
@@ -113,13 +113,13 @@
 		<property name="cronExpression" value="0 5 14 * * ?" />
 	</bean>
 
-	<!--&lt;!&ndash; 定义调度器 &ndash;&gt;-->
-	<!--<bean name="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
-		<!--<property name="triggers">-->
-			<!--<list>-->
-				<!--<ref bean="cronTrigger" />-->
-			<!--</list>-->
-		<!--</property>-->
-	<!--</bean>-->
+	<!-- 定义调度器 -->
+	<bean name="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="cronTrigger" />
+			</list>
+		</property>
+	</bean>
 
 </beans>

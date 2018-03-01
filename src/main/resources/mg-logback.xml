@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true" scan="true" scanPeriod="30 seconds">
-    <property name="LOG_PATH" value="logs" />
+    <property name="LOG_PATH" value="/opt/logs" />
     <timestamp key="timestamp-by-second" datePattern="yyyyMMdd'T'HHmmss"/>
     <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{32}.%M:%L %msg%n%xException%n"/>
     <!-- 输出到控制台-->
