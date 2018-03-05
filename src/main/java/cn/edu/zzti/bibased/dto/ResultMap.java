@@ -11,7 +11,10 @@ public class ResultMap  implements Serializable{
         code = 200;
         data = "success";
     }
-
+    public ResultMap(Object data) {
+        code = 200;
+        this.data = data;
+    }
     public ResultMap(int code, String message, Object data) {
         this.code = code;
         this.message = message;

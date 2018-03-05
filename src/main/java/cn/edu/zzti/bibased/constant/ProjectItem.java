@@ -1,10 +1,10 @@
 package cn.edu.zzti.bibased.constant;
 
 public enum ProjectItem {
-    CITY("获取城市信息",1)
-    ,POSITION("职位",2),
-    COMPANY("获取公司信息",3),
-    POSITIONDETAIL("职位详情",4);
+    CITY("城市详情信息",1)
+    ,POSITION("职位类别信息",2),
+    COMPANY("公司详情信息",3),
+    POSITIONDETAIL("职位详情信息",4);
 
     private String name;
     private int code;

@@ -31,8 +31,8 @@ public class IdleConnectionEvictor extends Thread {
 					this.wait(waitTime);
 					//关闭无效的连接
 					connMgr.closeExpiredConnections();
-					// 选择关闭 空闲20秒的链接
-					connMgr.closeIdleConnections(20, TimeUnit.SECONDS);
+					// 选择关闭 空闲15秒的链接
+					connMgr.closeIdleConnections(15, TimeUnit.SECONDS);
 				}
 			}
 		} catch (InterruptedException ex) {

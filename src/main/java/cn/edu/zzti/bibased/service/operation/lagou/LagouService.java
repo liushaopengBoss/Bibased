@@ -103,60 +103,60 @@ public class LagouService {
     /**
      * 采集拉勾网的公司信息
      */
-    public void getCompanyInfomation(){
-        String apiUrl = "https://www.lagou.com/gongsi/";
-        String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);
-        List<City> cityByCompany = LagouHandler.getCityByCompany(html);
-        String dateVersion = DateUtils.formatStr(new Date(), DateUtils.YYMMDDHHmmssSSS);
-        //去掉第一个和最后一个
-        for (int i = 1; i < cityByCompany.size()-1; i++) {
-            Gson gson = new Gson();
-            String url = apiUrl+cityByCompany.get(i).getLinkId()+"-0-0.json";
-            logger.info(url);
-            Map<String,Object> param = new LinkedHashMap<>();
-            param.put("first",false);
-            param.put("pn",1);
-            param.put("sortField",0);
-            param.put("havemark",0);
-            String data = httpClientService.doPost(url, param, HttpHeaderConstant.lagouAjaxHeader);
-            CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data, CompanyResultJsonVO.class);
-            int pageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
-            logger.info("-----------page:"+pageNo+"\n");
-            LaGouTask laGouTask = new LaGouTask(url,param, HttpType.POST);
-            List<CompanyVO> resultVOS = new LinkedList<>();
-            resultVOS.addAll(companyResultJsonVO.getResult());
-            for (int j = 2; j <= pageNo; j++) {
-                for (int k = 0; k < 10; k++) {
-                    param.put("first",false);
-                    param.put("pn",j);
-                    completionService.submit(laGouTask);
-                    j++;
-                }
-                logger.info("-------------------------->"+j+"\n");
-                for (int k = 0; k < 10; k++) {
-                    try{
-                        Future<String> take = completionService.take();
-                        if(take.get()!=null){
-                            CompanyResultJsonVO companyResultJsonVO1 = gson.fromJson(take.get(), CompanyResultJsonVO.class);
-                            List<CompanyVO> result = companyResultJsonVO1.getResult();
-                            resultVOS.addAll(result);
-                        }
-                    }catch (Exception e){
-                        logger.error(e.getMessage(),e);
-                    }
-                }
-
-                if (resultVOS.size() > 0) {
-                    handleCompany(resultVOS);
-                }else{
-                    break;
-                }
-            }
-            try {
-                Thread.sleep(3000);
-            }catch (Exception e){}
-        }
-    }
+//    public void getCompanyInfomation(){
+//        String apiUrl = "https://www.lagou.com/gongsi/";
+//        String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);
+//        List<City> cityByCompany = LagouHandler.getCityByCompany(html);
+//        String dateVersion = DateUtils.formatStr(new Date(), DateUtils.YYMMDDHHmmssSSS);
+//        //去掉第一个和最后一个
+//        for (int i = 1; i < cityByCompany.size()-1; i++) {
+//            Gson gson = new Gson();
+//            String url = apiUrl+cityByCompany.get(i).getLinkId()+"-0-0.json";
+//            logger.info(url);
+//            Map<String,Object> param = new LinkedHashMap<>();
+//            param.put("first",false);
+//            param.put("pn",1);
+//            param.put("sortField",0);
+//            param.put("havemark",0);
+//            String data = httpClientService.doPost(url, param, HttpHeaderConstant.lagouAjaxHeader);
+//            CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data, CompanyResultJsonVO.class);
+//            int pageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
+//            logger.info("-----------page:"+pageNo+"\n");
+//            LaGouTask laGouTask = new LaGouTask(url,param, HttpType.POST);
+//            List<CompanyVO> resultVOS = new LinkedList<>();
+//            resultVOS.addAll(companyResultJsonVO.getResult());
+//            for (int j = 2; j <= pageNo; j++) {
+//                for (int k = 0; k < 10; k++) {
+//                    param.put("first",false);
+//                    param.put("pn",j);
+//                    completionService.submit(laGouTask);
+//                    j++;
+//                }
+//                logger.info("-------------------------->"+j+"\n");
+//                for (int k = 0; k < 10; k++) {
+//                    try{
+//                        Future<String> take = completionService.take();
+//                        if(take.get()!=null){
+//                            CompanyResultJsonVO companyResultJsonVO1 = gson.fromJson(take.get(), CompanyResultJsonVO.class);
+//                            List<CompanyVO> result = companyResultJsonVO1.getResult();
+//                            resultVOS.addAll(result);
+//                        }
+//                    }catch (Exception e){
+//                        logger.error(e.getMessage(),e);
+//                    }
+//                }
+//
+//                if (resultVOS.size() > 0) {
+//                    handleCompany(resultVOS);
+//                }else{
+//                    break;
+//                }
+//            }
+//            try {
+//                Thread.sleep(3000);
+//            }catch (Exception e){}
+//        }
+//    }
 
     /**
      * 获取拉钩的公司信息 V2版本
@@ -171,27 +171,36 @@ public class LagouService {
         for (int i = 1; i < cityByCompany.size()-1; i++) {
             Gson gson = new Gson();
             String url = apiUrl+cityByCompany.get(i).getLinkId()+"-0-0.json";
-            logger.info(url);
+            logger.debug("num:"+i+" "+cityByCompany.get(i).getCityName()+"  "+url);
             Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
+            setCookie(lagouAjaxHeader);
             lagouAjaxHeader.put("Referer",url.replace(".json",""));
             String data = httpClientService.doPost(url, HttpHeaderConstant.compaanyParam, lagouAjaxHeader);
-            CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data, CompanyResultJsonVO.class);
-            int pageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
-            logger.info("-----------page:"+pageNo+"\n");
+            logger.debug(data);
+            if(data == null){
+                logger.error("-----------获取数据出现异常------出现null-------");
+                try {
+                    Thread.sleep(60000);
+                    cityByCompany.add(cityByCompany.get(i));
+                    continue;
+                }catch (Exception e){}
+            }
+            CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data!=null?data:"{}", CompanyResultJsonVO.class);
+            int totalPageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
+            logger.debug("-----------page:"+totalPageNo+"\n");
             BaseExecuter companyTask = (CompanyExecute)SpringContextUtils.getBean(CompanyExecute.class);
-            Map<String, Object> companyParam = HttpHeaderConstant.compaanyParam;
             companyTask.setApiUrl(url);
             companyTask.setHeaders(lagouAjaxHeader);
-            companyTask.setParams(companyParam);
+            companyTask.setParams(HttpHeaderConstant.compaanyParam);
             List<CompanyVO> resultVOS = new LinkedList<>();
             resultVOS.addAll(companyResultJsonVO.getResult());
-            for (int j = 2; j <= pageNo; j++) {
+            for (int j = 2; j <= 20; j++) {
                 for (int k = 0; k < 10; k++) {
+                    Map<String, Object> companyParam = HttpHeaderConstant.compaanyParam;
                     companyParam.put("first",false);
                     companyParam.put("pn",j);
                     lagouAjaxHeader.put("Referer",url.replace(".json",""));
-                    String cookie = lagouAjaxHeader.get("Cookie").toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
-                    lagouAjaxHeader.put("Cookie",cookie);
+                    setCookie(lagouAjaxHeader);
                     completionService.submit(AnsyTask.newTask().registExecuter(companyTask));
                     j++;
                 }
@@ -210,15 +219,13 @@ public class LagouService {
                 }
 
                 if (resultVOS.size() > 0) {
+                    j--;
                     handleCompany(resultVOS);
-                    return;
                 }else{
                     break;
                 }
             }
-            try {
-                Thread.sleep(3000);
-            }catch (Exception e){}
+
         }
     }
 
@@ -278,8 +285,8 @@ public class LagouService {
                 Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
                 citys.stream().forEach(city -> {
                     String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city="+city.getCityName()+"&needAddtionalResult=false&isSchoolJob=0";
-                    logger.info("---->  "+apiUrl);
-                    logger.info("---->  https://www.lagou.com/jobs/list_"+positionName.trim()+"?px=default&city="+city.getCityName());
+                    logger.debug("---->  "+apiUrl);
+                    logger.debug("---->  https://www.lagou.com/jobs/list_"+positionName.trim()+"?px=default&city="+city.getCityName());
                     lagouAjaxHeader.put("Referer","https://www.lagou.com/jobs/list_"+positionName.trim()+"?px=default&city="+city.getCityName());
                     setCookie(lagouAjaxHeader);
                     BaseExecuter executer = (PositionDetailExecute)SpringContextUtils.getBean(PositionDetailExecute.class);
@@ -297,7 +304,7 @@ public class LagouService {
                                 param2.put("first",false);
                                 param2.put("pn",i);
                                 param2.put("kd",positionName);
-                                logger.info("页数为---->  "+i);
+                                logger.debug("页数为---->  "+i);
                                 setCookie(lagouAjaxHeader);
                                 BaseExecuter positonDetailTask = (PositionDetailExecute)SpringContextUtils.getBean(PositionDetailExecute.class);
                                 positonDetailTask.setParams(param2);
@@ -325,6 +332,8 @@ public class LagouService {
                                         }
                                         positionDetails.addAll(positionDetailsList);
 
+                                    }else{
+                                        logger.error("future -->获取数据失败！");
                                     }
                                 }catch (Exception e){
                                     isBreak = true;
@@ -336,7 +345,7 @@ public class LagouService {
                                 lagouOperationService.batchAddPositionDetails(positionDetails);
                                 i--;
                                 logger.info("----写入数据>  ");
-                            }else if(isBreak || positionDetails.size() == 0 || count ==2){//
+                            }else if(isBreak || positionDetails.size() == 0 || count ==2){
                                 break;
                             }
 
@@ -358,7 +367,7 @@ public class LagouService {
     private void isSleep(int pageSize){
         if(pageSize ==0){
             try {
-                Thread.sleep(60000);
+                Thread.sleep(10000);
             }catch (Exception e){}
         }
     }
@@ -427,7 +436,8 @@ public class LagouService {
     }
 
     private void setCookie(Map<String,Object> header){
-        String cookie = header.get("Cookie").toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
+        String cookie = header.get("Cookie").toString().substring(0,header.get("Cookie").toString().indexOf("SEARCH_ID=")+10).toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
+        logger.info(cookie);
         header.put("Cookie",cookie);
     }
 }

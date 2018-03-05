@@ -59,8 +59,9 @@
             <maxHistory>10</maxHistory>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>${PATTERN}</pattern>
+            <charset>utf-8</charset>
             <immediateFlush>true</immediateFlush>
+            <pattern>${PATTERN}</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>DEBUG</level>
@@ -149,7 +150,7 @@
     <logger name="longTime" level="INFO" additivity="false">
         <appender-ref ref="LONGTIME"/>
     </logger>
-    <root level="info">
+    <root level="DEBUG">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE_INFO"/>
         <appender-ref ref="FILE_DEBUG"/>

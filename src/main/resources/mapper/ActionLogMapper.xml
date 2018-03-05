@@ -28,7 +28,7 @@
       create_time, op_time, is_valid,
       last_ver from action_log WHERE  include = #{include,jdbcType=VARCHAR}
        and type_code = #{typeCode,jdbcType=INTEGER}
-        and is_valid = 1
+        and is_valid = 1 ORDER  BY  create_time DESC limit 10
 
   </select>
 </mapper>

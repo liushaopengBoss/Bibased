@@ -153,4 +153,11 @@ public class HttpTests extends BaseApplicationTests {
     public void dateTets(){
         logger.error(DateUtils.formatStr(new Date(),DateUtils.YYMMDDHHmmssSSS));
     }
+
+    @Test
+    public void subString(){
+        Map<String, Object> header = HttpHeaderConstant.lagouAjaxHeader;
+
+        logger.info(header.get("Cookie").toString().substring(0,header.get("Cookie").toString().indexOf("SEARCH_ID=")+10));
+    }
 }
