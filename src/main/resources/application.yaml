@@ -14,7 +14,6 @@ spring:
       read-only: false
       connection-test-query: SELECT 1
 
-
 #mvc
   thymeleaf:
     prefix: classpath:/static/
@@ -24,6 +23,19 @@ spring:
     content-type: text/html
     check-template: true
     mode: LEGACYHTML5
+#Mail
+  mail:
+    host: smtp.163.com
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls: true
+          required: true
+
+
 ##热部署
 #  devtools:
 #    restart:
