@@ -3,6 +3,7 @@ package cn.edu.zzti.bibased.dao.lagou;
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dao.mapper.*;
 import cn.edu.zzti.bibased.dto.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -61,5 +62,24 @@ public class LagouDao {
     private List<ActionLogDO> queryActionLog(int typeCode){
         return actionLogDao.queryActionLog(WebsiteEnum.LAGOU.getWebCode(),typeCode);
     }
+    /**
+     * 1.分析各个城市的公司数量 去重
+     */
+    public List<Company> queryCityCompanNum(){
+        return companyMapper.queryCityCompanNum(WebsiteEnum.LAGOU.getWebCode());
+    }
+    /**
+     * 1.各个城市融资情况公司数量
+     */
+    public List<Company> queryFinanceStageCompanNum(){
+        return companyMapper.queryFinanceStageCompanNum(WebsiteEnum.LAGOU.getWebCode());
+    }
+    /**
+     * 1.分析各个城市行业领域公司数量 去重
+     */
+    public List<Company> queryIndustryCompanNum(){
+        return companyMapper.queryIndustryCompanNum(WebsiteEnum.LAGOU.getWebCode());
+    }
+
 
 }

@@ -82,4 +82,25 @@ public class LagouOperationService{
     public Long queryLastPositionCreateTime(){
         return lagouDao.queryLastPositionCreateTime();
     }
+
+    /**
+     * 1.分析各个城市的公司数量 去重
+     */
+    public List<Company> queryCityCompanNum(){
+        return lagouDao.queryCityCompanNum();
+    }
+    /**
+     * 1.各个城市融资情况公司数量
+     */
+    public List<Company> queryFinanceStageCompanNum(){
+        return lagouDao.queryFinanceStageCompanNum();
+    }
+    /**
+     * 1.分析各个城市行业领域公司数量 去重
+     */
+    public List<Company> queryIndustryCompanNum(){
+        return lagouDao.queryIndustryCompanNum();
+    }
+
+
 }
