@@ -53,7 +53,7 @@ http:
         maxTotal: 200     #设置连接总数
         defaultMaxPerRoute: 100  #设置每个地址的并发数
 logging:
-  config: classpath:mg-logback.xml
+  config: classpath:biased-logback.xml
 log:
     dir: opt/logs
     leavel: info
