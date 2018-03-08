@@ -20,6 +20,10 @@ public class Positions implements Serializable {
     private long opTime;//修改时间
     private long lastVer;// 版本
     private int isValid;//是否有效
+    /**
+     * 数据分析使用
+     */
+    private int num;
 
     public long getId() {
         return id;
@@ -115,5 +119,13 @@ public class Positions implements Serializable {
 
     public void setDateVersion(String dateVersion) {
         this.dateVersion = dateVersion;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
     }
 }

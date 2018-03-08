@@ -8,7 +8,7 @@ $(function () {
         return array;
     }
 
-    function  companyNum(result) {
+    function  positionNum(result) {
         var array = [];
         for(var i=0;i<result.length;i++){
             array.push(result[i].positionNum)
@@ -53,7 +53,75 @@ $(function () {
                 {
                     name:'公司的数量',
                     type:'bar',
-                    data:companyNum(resultData),
+                    data:positionNum(resultData),
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name: '平均值'}
+                        ]
+                    }
+                }
+            ]
+        };
+        barChart.hideLoading();
+        barChart.setOption(baroption);
+
+        window.onresize = barChart.resize;
+    });
+    function industryName(result) {
+        var array = [];
+        for(var i=0;i<result.length;i++){
+            array.push(result[i].industryField)
+        }
+        return array;
+    }
+    /**
+     * 全国行业信息
+     */
+    $.post("/rest/v1/queryIndustryCompanNum",function(resultData){
+        /**
+         * 柱状图
+         */
+        var barChart = echarts.init(document.getElementById("echarts-industry-chart"));
+        barChart.showLoading();
+        var baroption = {
+            title : {
+                text: '行业中公司数量'
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['公司的数量']
+            },
+            grid:{
+                x:40,
+                x2:24,
+                y2:24
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    data : industryName(resultData)
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    scale:true
+                }
+            ],
+            series : [
+                {
+                    name:'公司的数量',
+                    type:'bar',
+                    data:positionNum(resultData),
                     markPoint : {
                         data : [
                             {type : 'max', name: '最大值'},
@@ -90,6 +158,8 @@ $(function () {
         }
         return arr;
     }
+
+
     $.post("/rest/v1/queryFinanceStageCompanNum",function(resultData){
     /**
      * 饼状图
@@ -149,6 +219,89 @@ $(function () {
                     radius : '55%',
                     center: ['50%', '60%'],
                     data:financeStageList(resultData)
+                }
+            ]
+        };
+        funnelChart.hideLoading();
+        funnelChart.setOption(funneloption);
+        $(window).resize(funnelChart.resize);
+
+    });
+
+    function positionTypeName(result) {
+        var arr=[];
+        for(var i=0;i<result.length;i++){
+            arr.push(result[i].positionName);
+        }
+        return arr;
+    }
+
+    function  positionTypeNum(result) {
+        var array = [];
+        for(var i=0;i<result.length;i++){
+            array.push(result[i].num)
+        }
+        return array;
+    }
+
+    /**
+     * 职位情况图
+     */
+    $.post("/rest/v1/queryPositionTypeNums",function(resultData){
+        /**
+         * 饼状图
+         */
+        var pieChart = echarts.init(document.getElementById("positionsType"));
+        pieChart.showLoading();
+        var pieoption = {
+            title : {
+                text: '融资情况',
+                subtext: '',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient : 'vertical',
+                x : 'left',
+                data:positionTypeName(resultData)
+            },
+            calculable : true,
+            series : [
+                {
+                    name:'融资情况',
+                    type:'pie',
+                    data:positionTypeNum(resultData)
+                }
+            ]
+        };
+        pieChart.hideLoading();
+        pieChart.setOption(pieoption);
+        $(window).resize(pieChart.resize);
+
+        var funnelChart = echarts.init(document.getElementById("positionsType2"));
+        funnelChart.showLoading();
+        var funneloption = {
+            title : {
+                text: '漏斗图',
+                subtext: '',
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c}%"
+            },
+            legend: {
+                data : positionTypeName(resultData)
+            },
+            calculable : true,
+            series : [
+                {
+                    name:'融资情况',
+                    type:'funnel',
+                    sort : 'ascending',
+                    data:positionTypeName(resultData)
                 }
             ]
         };

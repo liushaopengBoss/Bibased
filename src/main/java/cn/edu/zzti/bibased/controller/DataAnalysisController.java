@@ -1,6 +1,7 @@
 package cn.edu.zzti.bibased.controller;
 
 import cn.edu.zzti.bibased.dto.Company;
+import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouOperationService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,9 +32,15 @@ public class DataAnalysisController {
     public List<Company> queryFinanceStageCompanNum(){
         return lagouOperationService.queryFinanceStageCompanNum();
     }
-    @RequestMapping("/v1/")
+    @RequestMapping("/v1/queryIndustryCompanNum")
     @ResponseBody
     public List<Company> queryIndustryCompanNum(){
         return lagouOperationService.queryIndustryCompanNum();
     }
+    @RequestMapping("/v1/queryPositionTypeNums")
+    @ResponseBody
+    public List<Positions> queryPositionTypeNums(){
+        return lagouOperationService.queryPositionTypeNums();
+    }
+
 }

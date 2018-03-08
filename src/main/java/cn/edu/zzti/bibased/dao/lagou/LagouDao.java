@@ -80,6 +80,13 @@ public class LagouDao {
     public List<Company> queryIndustryCompanNum(){
         return companyMapper.queryIndustryCompanNum(WebsiteEnum.LAGOU.getWebCode());
     }
-
+    /**
+     * 查询职位类型数据统计
+     *
+     * @return
+     */
+    public List<Positions> queryPositionTypeNums(){
+        return positionsMapper.queryPositionTypeNums();
+    }
 
 }

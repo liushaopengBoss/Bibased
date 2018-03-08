@@ -101,6 +101,13 @@ public class LagouOperationService{
     public List<Company> queryIndustryCompanNum(){
         return lagouDao.queryIndustryCompanNum();
     }
-
+    /**
+     * 分析 职位类型数据统计
+     *
+     * @return
+     */
+    public List<Positions> queryPositionTypeNums(){
+        return lagouDao.queryPositionTypeNums();
+    }
 
 }
