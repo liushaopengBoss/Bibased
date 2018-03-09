@@ -165,7 +165,6 @@ $(function () {
      * 饼状图
      */
     var pieChart = echarts.init(document.getElementById("echarts-pie-chart"));
-    pieChart.showLoading();
     var pieoption = {
         title : {
             text: '融资情况',
@@ -192,7 +191,7 @@ $(function () {
             }
         ]
     };
-     pieChart.hideLoading();
+
     pieChart.setOption(pieoption);
     $(window).resize(pieChart.resize);
 
@@ -223,8 +222,8 @@ $(function () {
             ]
         };
         funnelChart.hideLoading();
-        funnelChart.setOption(funneloption);
-        $(window).resize(funnelChart.resize);
+        funnelChart.setOption(pieoption);
+        $(window).resize(pieoption.resize);
 
     });
 
@@ -280,7 +279,6 @@ $(function () {
         pieChart.hideLoading();
         pieChart.setOption(pieoption);
         $(window).resize(pieChart.resize);
-
 
     });
 
