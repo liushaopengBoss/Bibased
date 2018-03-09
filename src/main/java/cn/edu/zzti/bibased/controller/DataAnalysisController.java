@@ -37,6 +37,11 @@ public class DataAnalysisController {
     public List<Company> queryIndustryCompanNum(){
         return lagouOperationService.queryIndustryCompanNum();
     }
+
+    /**
+     * 职位类型数据
+     * @return
+     */
     @RequestMapping("/v1/queryPositionTypeNums")
     @ResponseBody
     public List<Positions> queryPositionTypeNums(){

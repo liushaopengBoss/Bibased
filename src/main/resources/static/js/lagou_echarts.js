@@ -251,7 +251,7 @@ $(function () {
         /**
          * 饼状图
          */
-        var pieChart = echarts.init(document.getElementById("positionsType"));
+        var pieChart = echarts.init(document.getElementById("echarts-force-chart"));
         pieChart.showLoading();
         var pieoption = {
             title : {
@@ -281,33 +281,6 @@ $(function () {
         pieChart.setOption(pieoption);
         $(window).resize(pieChart.resize);
 
-        var funnelChart = echarts.init(document.getElementById("positionsType2"));
-        funnelChart.showLoading();
-        var funneloption = {
-            title : {
-                text: '漏斗图',
-                subtext: '',
-            },
-            tooltip : {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c}%"
-            },
-            legend: {
-                data : positionTypeName(resultData)
-            },
-            calculable : true,
-            series : [
-                {
-                    name:'融资情况',
-                    type:'funnel',
-                    sort : 'ascending',
-                    data:positionTypeName(resultData)
-                }
-            ]
-        };
-        funnelChart.hideLoading();
-        funnelChart.setOption(funneloption);
-        $(window).resize(funnelChart.resize);
 
     });
 
