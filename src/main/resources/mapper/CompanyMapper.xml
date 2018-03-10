@@ -58,4 +58,14 @@
       UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()), 1, 0)
     </foreach>
   </insert>
+
+  <select id="queryCityCompanNum" resultMap="BaseResultMap">
+     SELECT city,count(distinct company_name) as position_num from company  where include = #{include} GROUP BY city
+  </select>
+  <select id="queryFinanceStageCompanNum" resultMap="BaseResultMap">
+     SELECT finance_stage ,count(distinct company_name) as position_num from company  where include = #{include} GROUP BY finance_stage
+  </select>
+  <select id="queryIndustryCompanNum" resultMap="BaseResultMap">
+    SELECT industry_field ,count(distinct company_name) as position_num from company where include = #{include} GROUP BY industry_field
+  </select>
 </mapper>

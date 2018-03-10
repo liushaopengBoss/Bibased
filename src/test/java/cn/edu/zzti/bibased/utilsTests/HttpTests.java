@@ -10,6 +10,7 @@ import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
+import cn.edu.zzti.bibased.service.operation.lagou.LagouOperationService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouService;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import cn.edu.zzti.bibased.utils.IDUtils;
@@ -27,6 +28,8 @@ public class HttpTests extends BaseApplicationTests {
     private Logger logger = LoggerFactory.getLogger(HttpTests.class);
     @Resource
     private HttpClientService httpClientService;
+    @Resource
+    private LagouOperationService lagouOperationService;
     @Resource
     private LagouDao lagouDao;
     @Resource
@@ -159,5 +162,11 @@ public class HttpTests extends BaseApplicationTests {
         Map<String, Object> header = HttpHeaderConstant.lagouAjaxHeader;
 
         logger.info(header.get("Cookie").toString().substring(0,header.get("Cookie").toString().indexOf("SEARCH_ID=")+10));
+    }
+
+
+    @Test
+    public void lastCreatTime(){
+        Long aLong = lagouOperationService.queryLastPositionCreateTime();
     }
 }

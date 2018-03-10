@@ -437,7 +437,7 @@ public class LagouService {
 
     private void setCookie(Map<String,Object> header){
         String cookie = header.get("Cookie").toString().substring(0,header.get("Cookie").toString().indexOf("SEARCH_ID=")+10).toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
-        logger.info(cookie);
+        logger.debug(cookie);
         header.put("Cookie",cookie);
     }
 }

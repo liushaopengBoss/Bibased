@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="true" scan="true" scanPeriod="30 seconds">
+<configuration debug="false" scan="true" scanPeriod="30 seconds" >
     <property name="LOG_PATH" value="logs" />
     <timestamp key="timestamp-by-second" datePattern="yyyyMMdd'T'HHmmss"/>
     <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{32}.%M:%L %msg%n%xException%n"/>
@@ -150,9 +150,19 @@
     <logger name="longTime" level="INFO" additivity="false">
         <appender-ref ref="LONGTIME"/>
     </logger>
+    <logger name="java.sql.PreparedStatement" value="FILE_DEBUG" />
+    <logger name="java.sql.Connection" value="FILE_DEBUG" />
+    <logger name="java.sql.Statement" value="FILE_DEBUG" />
+    <logger name="com.ibatis" value="FILE_DEBUG" />
+    <logger name="com.ibatis.common.jdbc.SimpleDataSource" value="FILE_DEBUG" />
+    <logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG"/>
+    <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" value="FILE_DEBUG" />
+
     <root level="DEBUG">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE_INFO"/>
+        <appender-ref ref="ACCESS"/>
+        <appender-ref ref="SQL"/>
         <appender-ref ref="FILE_DEBUG"/>
         <appender-ref ref="FILE_WARN"/>
         <appender-ref ref="ASYNC_FILE_ERROR"/>

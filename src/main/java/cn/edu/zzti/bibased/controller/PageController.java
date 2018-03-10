@@ -18,6 +18,7 @@ public class PageController {
     private static final String PROJECT= PAGE_HOME + "projects";
     private static final String PROJECT_DETAIL= PAGE_HOME + "project_detail";
     private static final String COMPANY_SEARCH = PAGE_HOME + "company_search";
+    private static final String LAGOU_ANALYSIS = PAGE_HOME + "lagou_analysis";
     /**
      * 首页查询{主页}
      *
@@ -85,5 +86,13 @@ public class PageController {
     public String companySearch() {
         return COMPANY_SEARCH;
     }
-
+    /**
+     *lagou 数据分析
+     *
+     * @return
+     */
+    @RequestMapping(value = "/lagou_analysis")
+    public String lagouAnalysis() {
+        return LAGOU_ANALYSIS;
+    }
 }

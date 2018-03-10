@@ -8,7 +8,7 @@ import java.util.TreeSet;
 
 /**
  * ID生成器
- * <p>
+ *
  * Created by huaidou on  2018/1/13
  */
 public class IDUtils {
