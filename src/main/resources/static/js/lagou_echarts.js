@@ -15,6 +15,7 @@ $(function () {
         }
         return array;
     }
+    //1.各城市公司数量信息
     $.post("/rest/v1/queryCityCompanNum",function(resultData){
         /**
          * 柱状图

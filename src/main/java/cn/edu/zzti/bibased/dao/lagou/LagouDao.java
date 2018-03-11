@@ -55,9 +55,9 @@ public class LagouDao {
         positionDetailMapper.batchInsert(positionDetails);
     }
 
-    public Long queryLastPositionCreateTime(){
-        PositionDetail positionDetail = positionDetailMapper.selectLastPostionCreateTime(WebsiteEnum.LAGOU.getWebCode());
-        return positionDetail !=null?positionDetail.getPositionCreateTime():0L;
+    public Long queryLastPositionCreateTime(String city,String thirdType){
+        Long positionDetail = positionDetailMapper.selectLastPostionCreateTime(WebsiteEnum.LAGOU.getWebCode(),city,thirdType);
+        return positionDetail !=null?positionDetail:0L;
     }
     private List<ActionLogDO> queryActionLog(int typeCode){
         return actionLogDao.queryActionLog(WebsiteEnum.LAGOU.getWebCode(),typeCode);

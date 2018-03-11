@@ -109,7 +109,7 @@ public class LagouHandler {
             List<City> cityList = new LinkedList<>();
             for (int i = 0; i <aTags.size() ; i++) {
                 String cityName = aTags.get(i).text().replace(">","");
-                if(!"全部信息".equals(cityName) && !"全部城市".equals(cityName)){
+                if(!"全部信息".equals(cityName) && !"全部城市".equals(cityName) && !"全国".equals(cityName) && !"不限".equals(cityName)){
                     City city = new City();
                     cityList.add(city);
                     city.setCityName(cityName);

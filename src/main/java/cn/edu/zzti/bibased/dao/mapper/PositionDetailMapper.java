@@ -1,6 +1,7 @@
 package cn.edu.zzti.bibased.dao.mapper;
 
 import cn.edu.zzti.bibased.dto.PositionDetail;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 /**
@@ -16,6 +17,6 @@ public interface PositionDetailMapper {
 
     PositionDetail selectByPrimaryKey(Integer id);
 
-    PositionDetail selectLastPostionCreateTime(String include);
+    Long selectLastPostionCreateTime(@Param("include") String include, @Param("city") String city, @Param("thirdType") String thirdType);
 
 }

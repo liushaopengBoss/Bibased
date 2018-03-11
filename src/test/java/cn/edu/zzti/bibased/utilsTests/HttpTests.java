@@ -8,6 +8,7 @@ import cn.edu.zzti.bibased.dto.Company;
 import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
+import cn.edu.zzti.bibased.service.email.EmailService;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouOperationService;
@@ -34,6 +35,8 @@ public class HttpTests extends BaseApplicationTests {
     private LagouDao lagouDao;
     @Resource
     LagouService lagouService;
+    @Resource
+    private EmailService emailService;
     @Test
     public void getService() throws Exception {
         // String url = "http://search.51job.com/list/080200,000000,0000,00,9,99,Java%2B%25E5%25BC%2580%25E5%258F%2591,2,1.html?lang=c&stype=1&postchannel=0000&workyear=99&cotype=99&degreefrom=99&jobterm=99&companysize=99&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=1&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=";
@@ -164,9 +167,15 @@ public class HttpTests extends BaseApplicationTests {
         logger.info(header.get("Cookie").toString().substring(0,header.get("Cookie").toString().indexOf("SEARCH_ID=")+10));
     }
 
+    @Test
+    public void sendMail(){
+        emailService.sendSimpleMail("采集系统告警！","请尽快处理！");
+    }
+
 
     @Test
     public void lastCreatTime(){
-        Long aLong = lagouOperationService.queryLastPositionCreateTime();
+        Long aLong = lagouOperationService.queryLastPositionCreateTime("北京","Java");
+        logger.info(aLong+"");
     }
 }

@@ -171,7 +171,7 @@ public class LagouService {
         for (int i = 1; i < cityByCompany.size()-1; i++) {
             Gson gson = new Gson();
             String url = apiUrl+cityByCompany.get(i).getLinkId()+"-0-0.json";
-            logger.debug("num:"+i+" "+cityByCompany.get(i).getCityName()+"  "+url);
+            logger.info("num:"+i+" "+cityByCompany.get(i).getCityName()+"  "+url);
             Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
             setCookie(lagouAjaxHeader);
             lagouAjaxHeader.put("Referer",url.replace(".json",""));
@@ -187,7 +187,7 @@ public class LagouService {
             }
             CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data!=null?data:"{}", CompanyResultJsonVO.class);
             int totalPageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
-            logger.debug("-----------page:"+totalPageNo+"\n");
+            logger.info("-----------page:"+totalPageNo+"\n");
             BaseExecuter companyTask = (CompanyExecute)SpringContextUtils.getBean(CompanyExecute.class);
             companyTask.setApiUrl(url);
             companyTask.setHeaders(lagouAjaxHeader);
@@ -262,16 +262,8 @@ public class LagouService {
                return lagouOperationService.queryLeftPositions();
         });
 
-        Future<Long> lastPositionCreateTime = lagouPool.submit(new Callable<Long>() {
-            @Override
-            public Long call() throws Exception {
-                return lagouOperationService.queryLastPositionCreateTime();
-            }
-        });
-
         List<Positions> positions = null;
         List<City> citys =lagouOperationService.queryCitys();
-
         try{
             positions = positionListFuter.get();
         }catch (Exception e){}
@@ -285,7 +277,7 @@ public class LagouService {
                 Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
                 citys.stream().forEach(city -> {
                     String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city="+city.getCityName()+"&needAddtionalResult=false&isSchoolJob=0";
-                    logger.debug("---->  "+apiUrl);
+                    logger.info("---->  "+apiUrl);
                     logger.debug("---->  https://www.lagou.com/jobs/list_"+positionName.trim()+"?px=default&city="+city.getCityName());
                     lagouAjaxHeader.put("Referer","https://www.lagou.com/jobs/list_"+positionName.trim()+"?px=default&city="+city.getCityName());
                     setCookie(lagouAjaxHeader);
@@ -296,6 +288,7 @@ public class LagouService {
                     int pageSize = executer.getPageSize() ;
                       pageSize = pageSize >20 ? 20:pageSize;
                     isSleep(pageSize);
+                    Long  lastCreateTime  = lagouOperationService.queryLastPositionCreateTime(city.getCityName(),positionName);
                     if(pageSize != 0){
                         logger.info("---->执行数据");
                         for(int i=1;i<=pageSize;i++){
@@ -318,7 +311,6 @@ public class LagouService {
                             int  count = 0;
                             for (int k = 0; k <10; k++) {
                                 try {
-                                    Long  lastCreateTime  = lastPositionCreateTime.get();
                                     Future<PositionDetailResultJsonVo> take = completionService.take();
                                     if(take.get() != null){
                                         PositionDetailResultJsonVo positionDetailResultJsonVo = take.get();
@@ -326,7 +318,7 @@ public class LagouService {
                                         if(result !=null || result.size() == 0) {
                                             isBreak =true;
                                         }
-                                        List<PositionDetail> positionDetailsList = handlePositionDetails(result, lastCreateTime);
+                                        List<PositionDetail> positionDetailsList = handlePositionDetails(result, lastCreateTime,positionName);
                                         if(positionDetailsList.size()<result.size()){
                                             count++;
                                         }
@@ -377,7 +369,7 @@ public class LagouService {
      * @param lastCreateTime
      * @return
      */
-    private List<PositionDetail> handlePositionDetails(List<PositionDetailVo> positionDetailVos,Long  lastCreateTime){
+    private List<PositionDetail> handlePositionDetails(List<PositionDetailVo> positionDetailVos,Long  lastCreateTime,String positionName){
         List<PositionDetail>   positionDetails = new LinkedList<>();
         if(!CollectionUtils.isEmpty(positionDetailVos)){
             for (int i = 0; i < positionDetailVos.size(); i++) {
@@ -386,6 +378,7 @@ public class LagouService {
                 BeanUtils.copyProperties(positionDetailVo,positionDetail);
                 String gps = new Gson().toJson(new GPS(positionDetailVo.getLongitude(), positionDetailVo.getLatitude()));
                 positionDetail.setGps(gps);
+                positionDetail.setThirdType(positionName);
                 String[] workYears = positionDetailVo.getWorkYear().replace("年", "").replace("不限","").replace("以上","").split("-");
                 if(workYears==null || workYears.length==0 || workYears.length ==1){
                     positionDetail.setWorkMaxYear(0);

@@ -13,7 +13,6 @@ spring:
       idle-timeout: 600000  #一个连接idle状态的最大时长（毫秒），超时则被释放（retired）
       read-only: false
       connection-test-query: SELECT 1
-
 #mvc
   thymeleaf:
     prefix: classpath:/static/
@@ -26,8 +25,9 @@ spring:
 #Mail
   mail:
     host: smtp.163.com
-    username:
-    password:
+    username: liushaopeng186@163.com
+    sendusername: 1396647019@qq.com
+    password: lsp123456789
     properties:
       mail:
         smtp:

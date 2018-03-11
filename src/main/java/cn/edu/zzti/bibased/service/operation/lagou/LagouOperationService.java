@@ -79,8 +79,14 @@ public class LagouOperationService{
         return lagouDao.queryCitys(WebsiteEnum.LAGOU.getWebCode());
     }
 
-    public Long queryLastPositionCreateTime(){
-        return lagouDao.queryLastPositionCreateTime();
+    /**
+     * 获取最后一起信息抓取的时间
+     * @param city
+     * @param thirdType
+     * @return
+     */
+    public Long queryLastPositionCreateTime(String city,String thirdType){
+        return lagouDao.queryLastPositionCreateTime(city,thirdType);
     }
 
     /**

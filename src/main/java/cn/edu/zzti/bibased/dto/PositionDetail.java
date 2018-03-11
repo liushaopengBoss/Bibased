@@ -79,6 +79,7 @@ public class PositionDetail {
 
     private String gps;
     private String include;
+    private String thirdType;
 
     private Long crTime;
 
@@ -406,5 +407,13 @@ public class PositionDetail {
 
     public void setInclude(String include) {
         this.include = include;
+    }
+
+    public String getThirdType() {
+        return thirdType;
+    }
+
+    public void setThirdType(String thirdType) {
+        this.thirdType = thirdType;
     }
 }
