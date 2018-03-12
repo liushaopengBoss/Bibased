@@ -276,7 +276,7 @@ public class LagouService {
                 param.put("kd", positionName);
                 Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
                 for (City city : citys) {
-                    if (city.getCityName().equals("城市")) {
+                    if (city.getCityName().contains("城市")) {
                         continue;
                     }
                     String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city=" + city.getCityName() + "&needAddtionalResult=false&isSchoolJob=0";
