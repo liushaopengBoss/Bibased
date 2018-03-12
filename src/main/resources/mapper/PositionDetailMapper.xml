@@ -100,7 +100,7 @@
     first_type, second_type, subwayline,
     stationname, linestaion, last_login,
     gps, include,cr_time, op_time,
-    is_valid, last_ver)
+    is_valid, last_ver, third_type)
     values
     <foreach collection="list" item="position" index="index" separator="," >
       ( #{position.positionName,jdbcType=VARCHAR}, #{position.workMinYear,jdbcType=INTEGER},

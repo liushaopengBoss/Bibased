@@ -27,6 +27,7 @@ public class PositionDetailExecute extends BaseExecuter {
         if (StringUtils.isNotBlank(sourceJson)) {
             String targetJson = null;
             try {
+
                 logger.debug("职位信息json" + sourceJson);
                 JsonElement jsonElement = new JsonParser().parse(sourceJson);
                 targetJson = jsonElement.getAsJsonObject().get("content").getAsJsonObject().get("positionResult").toString();
@@ -39,7 +40,7 @@ public class PositionDetailExecute extends BaseExecuter {
         if (positionDetailResultJsonVo == null) {
             positionDetailResultJsonVo = new PositionDetailResultJsonVo();
             positionDetailResultJsonVo.setResultSize(1);
-            positionDetailResultJsonVo.setTotalCount(0);
+            positionDetailResultJsonVo.setTotalCount(1);
         }
         return positionDetailResultJsonVo;
     }
