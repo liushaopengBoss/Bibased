@@ -46,7 +46,6 @@ public class LagouOperationService{
     /**
      * 批量数据写入公司信息  并且异步操作
      */
-    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
     @Async
     public void batchAddCompany(List<Company> companies){
         StopWatch clock = new StopWatch();
@@ -60,7 +59,6 @@ public class LagouOperationService{
     /**
      * 批量数据写入职位详情信息  并且异步操作
      */
-    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
     @Async
     public void batchAddPositionDetails(List<PositionDetail> positionDetails){
         StopWatch clock = new StopWatch();
