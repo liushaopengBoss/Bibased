@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 数据分析服务
@@ -22,16 +24,30 @@ public class DataAnalysisController {
     @Resource
     private LagouOperationService lagouOperationService;
 
+    /**
+     * 每个城市的公司数量
+     * @return
+     */
     @RequestMapping("/v1/queryCityCompanNum")
     @ResponseBody
     public List<Company> queryCityCompanNum(){
         return lagouOperationService.queryCityCompanNum();
     }
+
+    /**
+     * 全国公司融资情况图 和 职位类型数据
+     * @return
+     */
     @RequestMapping("/v1/queryFinanceStageCompanNum")
     @ResponseBody
-    public List<Company> queryFinanceStageCompanNum(){
-        return lagouOperationService.queryFinanceStageCompanNum();
+    public Map queryFinanceStageCompanNum(){
+        Map map = new HashMap();
+        map.put("FinanceStage",lagouOperationService.queryFinanceStageCompanNum());
+        map.put("PositionType",lagouOperationService.queryPositionTypeNums());
+        return map;
     }
+
+
     @RequestMapping("/v1/queryIndustryCompanNum")
     @ResponseBody
     public List<Company> queryIndustryCompanNum(){

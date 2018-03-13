@@ -15,13 +15,17 @@ $(function () {
         }
         return array;
     }
-    //1.各城市公司数量信息
+    var cityNumBarChart = echarts.init(document.getElementById("echarts-bar-chart"));
+    cityNumBarChart.showLoading({
+        text: "正在加载中...请稍后"
+    });
+    /**
+     *  1.各城市公司数量信息
+     */
     $.post("/rest/v1/queryCityCompanNum",function(resultData){
         /**
          * 柱状图
          */
-        var barChart = echarts.init(document.getElementById("echarts-bar-chart"));
-        barChart.showLoading();
         var baroption = {
             title : {
                 text: '公司的数量信息'
@@ -69,10 +73,9 @@ $(function () {
                 }
             ]
         };
-        barChart.hideLoading();
-        barChart.setOption(baroption);
-
-        window.onresize = barChart.resize;
+        cityNumBarChart.hideLoading();
+        cityNumBarChart.setOption(baroption);
+        window.onresize = cityNumBarChart.resize;
     });
     function industryName(result) {
         var array = [];
@@ -82,14 +85,16 @@ $(function () {
         return array;
     }
     /**
-     * 全国行业信息
+     * 分析各个行业领域公司数量
      */
+    var industryCompanNumBarChart = echarts.init(document.getElementById("echarts-industry-chart"));
+    industryCompanNumBarChart.showLoading({
+        text: "正在加载中...请稍后"
+    });
     $.post("/rest/v1/queryIndustryCompanNum",function(resultData){
         /**
          * 柱状图
          */
-        var barChart = echarts.init(document.getElementById("echarts-industry-chart"));
-        barChart.showLoading();
         var baroption = {
             title : {
                 text: '行业中公司数量'
@@ -137,11 +142,11 @@ $(function () {
                 }
             ]
         };
-        barChart.hideLoading();
-        barChart.setOption(baroption);
-
-        window.onresize = barChart.resize;
+        industryCompanNumBarChart.hideLoading();
+        industryCompanNumBarChart.setOption(baroption);
+        $(window).resize(industryCompanNumBarChart.resize);
     });
+
     function  financeStageList(result) {
         var arr=[];
         for(var i=0;i<result.length;i++){
@@ -160,12 +165,62 @@ $(function () {
         return arr;
     }
 
+    /**
+     * 职位情况图
+     */
+    // var PositionTypeNumsPieChart = echarts.init(document.getElementById("echarts-funnel-chart"));
+    // PositionTypeNumsPieChart.showLoading();
+    // $.post("/rest/v1/queryPositionTypeNums",function(resultData){
+    //     /**
+    //      * 饼状图
+    //      */
+    //     var pieoption = {
+    //         title : {
+    //             text: '职位情况图',
+    //             subtext: '',
+    //             x:'center'
+    //         },
+    //         tooltip : {
+    //             trigger: 'item',
+    //             formatter: "{a} <br/>{b} : {c} ({d}%)"
+    //         },
+    //         legend: {
+    //             orient : 'vertical',
+    //             x : 'left',
+    //             data:positionTypeName(resultData)
+    //         },
+    //         calculable : true,
+    //         series : [
+    //             {
+    //                 name:'职位情况图',
+    //                 type:'pie',
+    //                 radius : '55%',
+    //                 center: ['50%', '60%'],
+    //                 data:positionTypeNum(resultData)
+    //             }
+    //         ]
+    //     };
+    //     PositionTypeNumsPieChart.hideLoading();
+    //     PositionTypeNumsPieChart.setOption(pieoption);
+    //     $(window).resize(PositionTypeNumsPieChart.resize);
+    // });
 
+    /**
+     * 融资情况
+     */
+    var PositionTypeNumsPieChart = echarts.init(document.getElementById("echarts-funnel-chart"));
+    PositionTypeNumsPieChart.showLoading({
+        text: "正在加载中...请稍后"
+    });
+    var FinanceStageCompanNumChart = echarts.init(document.getElementById("echarts-pie-chart"));
+    FinanceStageCompanNumChart.showLoading({
+        text: "正在加载中...请稍后"
+    });
     $.post("/rest/v1/queryFinanceStageCompanNum",function(resultData){
+
     /**
      * 饼状图
      */
-    var pieChart = echarts.init(document.getElementById("echarts-pie-chart"));
     var pieoption = {
         title : {
             text: '融资情况',
@@ -179,7 +234,7 @@ $(function () {
         legend: {
             orient : 'vertical',
             x : 'left',
-            data:financeStageName(resultData)
+            data:financeStageName(resultData.FinanceStage)
         },
         calculable : true,
         series : [
@@ -188,44 +243,76 @@ $(function () {
                 type:'pie',
                 radius : '55%',
                 center: ['50%', '60%'],
-                data:financeStageList(resultData)
+                data:financeStageList(resultData.FinanceStage)
             }
         ]
     };
+     // $(window).resize(FinanceStageCompanNumChart.resize);
+        //
+        // var funnelChart = echarts.init(document.getElementById("echarts-funnel-chart"));
+        // funnelChart.showLoading();
+        // var funneloption = {
+        //     title : {
+        //         text: '漏斗图',
+        //         subtext: '',
+        //     },
+        //     tooltip : {
+        //         trigger: 'item',
+        //         formatter: "{a} <br/>{b} : {c}%"
+        //     },
+        //     legend: {
+        //         data : positionTypeName(resultData.PositionType)
+        //     },
+        //     calculable : true,
+        //     series : [
+        //         {
+        //             name:'融资情况',
+        //             type:'funnel',
+        //             sort : 'ascending',
+        //             radius : '55%',
+        //             center: ['50%', '60%'],
+        //             data:positionTypeNum(resultData.PositionType)
+        //         }
+        //     ]
+        // };
+        // funnelChart.hideLoading();
+        // funnelChart.setOption(pieoption);
+        // $(window).resize(pieoption.resize);
 
-    pieChart.setOption(pieoption);
-    $(window).resize(pieChart.resize);
-
-        var funnelChart = echarts.init(document.getElementById("echarts-funnel-chart"));
-        funnelChart.showLoading();
-        var funneloption = {
+        var pieoption2 = {
             title : {
-                text: '漏斗图',
+                text: '职位情况图',
                 subtext: '',
+                x:'center'
             },
             tooltip : {
                 trigger: 'item',
-                formatter: "{a} <br/>{b} : {c}%"
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
             },
             legend: {
-                data : financeStageName(resultData)
+                orient : 'vertical',
+                x : 'right',
+                data:positionTypeName(resultData.PositionType)
             },
             calculable : true,
             series : [
                 {
-                    name:'融资情况',
-                    type:'funnel',
-                    sort : 'ascending',
+                    name:'职位情况图',
+                    type:'pie',
                     radius : '55%',
-                    center: ['50%', '60%'],
-                    data:financeStageList(resultData)
+                    data:positionTypeNum(resultData.PositionType)
                 }
             ]
         };
-        funnelChart.hideLoading();
-        funnelChart.setOption(pieoption);
-        $(window).resize(pieoption.resize);
-
+        PositionTypeNumsPieChart.hideLoading();
+        PositionTypeNumsPieChart.setOption(pieoption2);
+        FinanceStageCompanNumChart.hideLoading();
+        FinanceStageCompanNumChart.setOption(pieoption);
+       $(window).resize(PositionTypeNumsPieChart.resize);
+        window.addEventListener("resize",function(){
+            PositionTypeNumsPieChart.resize();
+            FinanceStageCompanNumChart.resize();
+        });
     });
 
     function positionTypeName(result) {
@@ -243,45 +330,6 @@ $(function () {
         }
         return array;
     }
-
-    /**
-     * 职位情况图
-     */
-    $.post("/rest/v1/queryPositionTypeNums",function(resultData){
-        /**
-         * 饼状图
-         */
-        var pieChart = echarts.init(document.getElementById("echarts-force-chart"));
-        pieChart.showLoading();
-        var pieoption = {
-            title : {
-                text: '融资情况',
-                subtext: '',
-                x:'center'
-            },
-            tooltip : {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient : 'vertical',
-                x : 'left',
-                data:positionTypeName(resultData)
-            },
-            calculable : true,
-            series : [
-                {
-                    name:'融资情况',
-                    type:'pie',
-                    data:positionTypeNum(resultData)
-                }
-            ]
-        };
-        pieChart.hideLoading();
-        pieChart.setOption(pieoption);
-        $(window).resize(pieChart.resize);
-
-    });
 
 
 

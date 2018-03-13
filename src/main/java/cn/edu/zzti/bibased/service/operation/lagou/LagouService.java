@@ -276,7 +276,7 @@ public class LagouService {
                 param.put("kd", positionName);
                 Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
                 for (City city : citys) {
-                    if (city.getCityName().contains("城市")) {
+                    if (city.getCityName().contains("城市")||city.getCityName().contains("全部")) {
                         continue;
                     }
                     String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city=" + city.getCityName() + "&needAddtionalResult=false&isSchoolJob=0";
@@ -292,10 +292,11 @@ public class LagouService {
                     pageSize = pageSize > 20 ? 20 : pageSize;
                     isSleep(pageSize);
                     Long lastCreateTime = lagouOperationService.queryLastPositionCreateTime(city.getCityName(), positionName);
-                    if (pageSize != 0) {
-                        logger.info("爬虫开始获取数据：城市："+city.getCityName()+"职位："+positionName);
+                    if (pageSize != 0 || pageSize != 1) {
+                        logger.info("爬虫开始获取数据：城市："+city.getCityName()+"  职位："+positionName);
                         for (int i = 1; i <= pageSize; i++) {
-                            for (int j = 0; j < 10; j++) {
+                            int pageNum = pageSize < 10  ? pageSize : 10;
+                            for (int j = 0; j < pageNum; j++) {
                                 Map<String, Object> param2 = new LinkedHashMap<>();
                                 param2.put("first", false);
                                 param2.put("pn", i);
@@ -312,13 +313,13 @@ public class LagouService {
                             boolean isBreak = false;
                             List<PositionDetail> positionDetails = new LinkedList<>();
                             int count = 0;
-                            for (int k = 0; k < 10; k++) {
+                            for (int k = 0; k < pageNum; k++) {
                                 try {
                                     Future<PositionDetailResultJsonVo> take = completionService.take();
                                     if (take.get() != null) {
                                         PositionDetailResultJsonVo positionDetailResultJsonVo = take.get();
                                         List<PositionDetailVo> result = positionDetailResultJsonVo.getResult();
-                                        if (result != null || result.size() == 0) {
+                                        if (result != null && result.size() == 0) {
                                             isBreak = true;
                                         }
                                         List<PositionDetail> positionDetailsList = handlePositionDetails(result, lastCreateTime, positionName);
@@ -339,7 +340,7 @@ public class LagouService {
                             if (positionDetails.size() > 0) {
                                 lagouOperationService.batchAddPositionDetails(positionDetails);
                                 i--;
-                                logger.info("----异步写入数据>  ");
+                                logger.info("数据获取成功-->异步写入数据  ");
                             } else if (isBreak || positionDetails.size() == 0 || count == 2) {
                                 break;
                             }
