@@ -89,6 +89,19 @@ public class PositionDetail {
 
     private Long lastVer;
 
+    /**
+     * 数据分析使用
+     */
+    private int num;
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
     public Integer getId() {
         return id;
     }

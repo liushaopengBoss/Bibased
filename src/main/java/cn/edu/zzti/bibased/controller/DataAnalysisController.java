@@ -1,6 +1,7 @@
 package cn.edu.zzti.bibased.controller;
 
 import cn.edu.zzti.bibased.dto.Company;
+import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouOperationService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,4 +61,14 @@ public class DataAnalysisController {
         return lagouOperationService.queryPositionTypeNums();
     }
 
+    /**
+     * 职位类型数据
+     *
+     * @return
+     */
+    @RequestMapping("/v1/queryWorkYearNums")
+    @ResponseBody
+    public List<PositionDetail> queryWorkYearNums(){
+        return lagouOperationService.queryWorkYearNums();
+    }
 }

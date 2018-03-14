@@ -114,4 +114,12 @@ public class LagouOperationService{
         return lagouDao.queryPositionTypeNums();
     }
 
+    /**
+     * 分析各个工作年限职位的数量
+     *
+     * @return
+     */
+    public List<PositionDetail> queryWorkYearNums(){
+        return lagouDao.queryWorkYearNums();
+    }
 }

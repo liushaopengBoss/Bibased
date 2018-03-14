@@ -89,4 +89,7 @@ public class LagouDao {
         return positionsMapper.queryPositionTypeNums();
     }
 
+    public List<PositionDetail> queryWorkYearNums(){
+        return positionDetailMapper.queryWorkYearNums(WebsiteEnum.LAGOU.getWebCode());
+    }
 }

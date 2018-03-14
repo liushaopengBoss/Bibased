@@ -270,6 +270,100 @@ $(function () {
     }
 
 
+    function  workYearName(result) {
+        var arr = [];
+        for(var i=0;i<result.length;i++){
+            if(result[i].workMinYear == 0){
+                arr.push("经验无要求")
+            }else if(result[i].workMinYear == 1){
+                arr.push("1-3年")
+            }
+            else if(result[i].workMinYear == 3){
+                arr.push("3-5年")
+            }
+            else if(result[i].workMinYear == 5){
+                arr.push("5-10年")
+            }else if(result[i].workMinYear == 10){
+                arr.push("十年以上")
+            }
+
+        }
+    }
+
+    function  workYearValueName(result) {
+        var arr = [];
+        for(var i=0;i<result.length;i++){
+            if(result[i].workMinYear == 0){
+                var obj = new Object();
+                obj.value = 0;
+                obj.name = "经验无要求";
+                arr.push(obj)
+            }else if(result[i].workMinYear == 1){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "1-3年";
+                arr.push(obj)
+            }
+            else if(result[i].workMinYear == 3){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "3-5年";
+                arr.push(obj)
+            }
+            else if(result[i].workMinYear == 5){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "5-10年";
+                arr.push(obj)
+            }else if(result[i].workMinYear == 10){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "十年以上";
+                arr.push(obj)
+            }
+
+        }
+    }
+
+    /**
+     * 职位情况图
+     */
+    var workYear = echarts.init(document.getElementById("workYear"));
+    workYear.showLoading({
+        text: "正在加载中...请稍后"
+    });
+    $.post("/rest/v1/queryWorkYearNums",function(resultData){
+        /**
+         * 饼状图
+         */
+        var workYearOpeation = {
+            title : {
+                text: '工作年限',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient : 'vertical',
+                x : 'right',
+                data:workYearName(resultData)
+            },
+            calculable : true,
+            series : [
+                {
+                    name:'工作年限',
+                    type:'pie',
+                    radius : '55%',
+                    data:workYearValueName(resultData)
+                }
+            ]
+        };
+        workYear.hideLoading();
+        workYear.setOption(workYearOpeation);
+        $(window).resize(workYear.resize);
+    });
 
 
     var mapChart = echarts.init(document.getElementById("echarts-map-chart"));
