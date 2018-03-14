@@ -40,13 +40,9 @@ public class DataAnalysisController {
      */
     @RequestMapping("/v1/queryFinanceStageCompanNum")
     @ResponseBody
-    public Map queryFinanceStageCompanNum(){
-        Map map = new HashMap();
-        map.put("FinanceStage",lagouOperationService.queryFinanceStageCompanNum());
-        map.put("PositionType",lagouOperationService.queryPositionTypeNums());
-        return map;
+    public  List<Company> queryFinanceStageCompanNum(){
+        return lagouOperationService.queryFinanceStageCompanNum();
     }
-
 
     @RequestMapping("/v1/queryIndustryCompanNum")
     @ResponseBody

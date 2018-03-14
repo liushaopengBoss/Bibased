@@ -319,7 +319,7 @@ public class LagouService {
                                     if (take.get() != null) {
                                         PositionDetailResultJsonVo positionDetailResultJsonVo = take.get();
                                         List<PositionDetailVo> result = positionDetailResultJsonVo.getResult();
-                                        if (result != null && result.size() == 0) {
+                                        if (result == null ||result != null && result.size() == 0 ) {
                                             isBreak = true;
                                         }
                                         List<PositionDetail> positionDetailsList = handlePositionDetails(result, lastCreateTime, positionName);
