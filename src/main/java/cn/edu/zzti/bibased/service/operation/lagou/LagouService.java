@@ -270,36 +270,40 @@ public class LagouService {
         if(!CollectionUtils.isEmpty(positions) && !CollectionUtils.isEmpty(citys)){
             positions.forEach(position -> {
                 String positionName = position.getPositionName();
-                Map<String,Object> param = new LinkedHashMap<>();
-                param.put("first",true);
-                param.put("pn",1);
-                param.put("kd",positionName);
+                Map<String, Object> param = new LinkedHashMap<>();
+                param.put("first", true);
+                param.put("pn", 1);
+                param.put("kd", positionName);
                 Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
-                citys.stream().forEach(city -> {
-                    String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city="+city.getCityName()+"&needAddtionalResult=false&isSchoolJob=0";
-                    logger.info("---->  "+apiUrl);
-                    logger.debug("---->  https://www.lagou.com/jobs/list_"+positionName.trim()+"?px=default&city="+city.getCityName());
-                    lagouAjaxHeader.put("Referer","https://www.lagou.com/jobs/list_"+positionName.trim()+"?px=default&city="+city.getCityName());
+                for (City city : citys) {
+                    if (city.getCityName().contains("城市")||city.getCityName().contains("全部")) {
+                        continue;
+                    }
+                    String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city=" + city.getCityName() + "&needAddtionalResult=false&isSchoolJob=0";
+                    logger.info("---->  " + apiUrl);
+                    logger.info("---->  https://www.lagou.com/jobs/list_" + positionName.trim() + "?px=default&city=" + city.getCityName());
+                    lagouAjaxHeader.put("Referer", "https://www.lagou.com/jobs/list_" + positionName.trim() + "?px=default&city=" + city.getCityName());
                     setCookie(lagouAjaxHeader);
-                    BaseExecuter executer = (PositionDetailExecute)SpringContextUtils.getBean(PositionDetailExecute.class);
+                    BaseExecuter executer = (PositionDetailExecute) SpringContextUtils.getBean(PositionDetailExecute.class);
                     executer.setApiUrl(apiUrl);
                     executer.setHeaders(lagouAjaxHeader);
                     executer.setParams(param);
-                    int pageSize = executer.getPageSize() ;
-                      pageSize = pageSize >20 ? 20:pageSize;
+                    int pageSize = executer.getPageSize();
+                    pageSize = pageSize > 20 ? 20 : pageSize;
                     isSleep(pageSize);
-                    Long  lastCreateTime  = lagouOperationService.queryLastPositionCreateTime(city.getCityName(),positionName);
-                    if(pageSize != 0){
-                        logger.info("---->执行数据");
-                        for(int i=1;i<=pageSize;i++){
-                            for (int j=0;j<10;j++){
-                                Map<String,Object> param2 = new LinkedHashMap<>();
-                                param2.put("first",false);
-                                param2.put("pn",i);
-                                param2.put("kd",positionName);
-                                logger.debug("页数为---->  "+i);
+                    Long lastCreateTime = lagouOperationService.queryLastPositionCreateTime(city.getCityName(), positionName);
+                    if (pageSize != 0 || pageSize != 1) {
+                        logger.info("爬虫开始获取数据：城市："+city.getCityName()+"  职位："+positionName);
+                        for (int i = 1; i <= pageSize; i++) {
+                            int pageNum = pageSize < 10  ? pageSize : 10;
+                            for (int j = 0; j < pageNum; j++) {
+                                Map<String, Object> param2 = new LinkedHashMap<>();
+                                param2.put("first", false);
+                                param2.put("pn", i);
+                                param2.put("kd", positionName);
+                                logger.debug("页数为---->  " + i);
                                 setCookie(lagouAjaxHeader);
-                                BaseExecuter positonDetailTask = (PositionDetailExecute)SpringContextUtils.getBean(PositionDetailExecute.class);
+                                BaseExecuter positonDetailTask = (PositionDetailExecute) SpringContextUtils.getBean(PositionDetailExecute.class);
                                 positonDetailTask.setParams(param2);
                                 positonDetailTask.setHeaders(lagouAjaxHeader);
                                 positonDetailTask.setApiUrl(apiUrl);
@@ -308,48 +312,48 @@ public class LagouService {
                             }
                             boolean isBreak = false;
                             List<PositionDetail> positionDetails = new LinkedList<>();
-                            int  count = 0;
-                            for (int k = 0; k <10; k++) {
+                            int count = 0;
+                            for (int k = 0; k < pageNum; k++) {
                                 try {
                                     Future<PositionDetailResultJsonVo> take = completionService.take();
-                                    if(take.get() != null){
+                                    if (take.get() != null) {
                                         PositionDetailResultJsonVo positionDetailResultJsonVo = take.get();
                                         List<PositionDetailVo> result = positionDetailResultJsonVo.getResult();
-                                        if(result !=null || result.size() == 0) {
-                                            isBreak =true;
+                                        if (result == null ||result != null && result.size() == 0 ) {
+                                            isBreak = true;
                                         }
-                                        List<PositionDetail> positionDetailsList = handlePositionDetails(result, lastCreateTime,positionName);
-                                        if(positionDetailsList.size()<result.size()){
+                                        List<PositionDetail> positionDetailsList = handlePositionDetails(result, lastCreateTime, positionName);
+                                        if (positionDetailsList.size() < result.size()) {
                                             count++;
                                         }
                                         positionDetails.addAll(positionDetailsList);
 
-                                    }else{
+                                    } else {
                                         logger.error("future -->获取数据失败！");
                                     }
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     isBreak = true;
-                                    logger.error("获取数据失败！",e);
+                                    logger.error("获取数据失败！", e);
                                 }
                             }
 
-                            if(positionDetails.size()>0 ){
+                            if (positionDetails.size() > 0) {
                                 lagouOperationService.batchAddPositionDetails(positionDetails);
                                 i--;
-                                logger.info("----写入数据>  ");
-                            }else if(isBreak || positionDetails.size() == 0 || count ==2){
+                                logger.info("数据获取成功-->异步写入数据  ");
+                            } else if (isBreak || positionDetails.size() == 0 || count == 2) {
                                 break;
                             }
 
-                          }
+                        }
 
                     }
-
-                });
-
+                    logger.info("职位："+positionName+"城市："+city.getCityName());
+                }
+                logger.info("职位："+positionName+"抓取完成");
             });
-
         }
+
     }
 
     /**

@@ -211,6 +211,8 @@
                     <include>**/*.properties</include>
                     <include>**/*.xml</include>
                     <include>**/*.yaml</include>
+                    <include>**/mapper/*.xml</include>
+                    <include>**/static/*/*</include>
                 </includes>
                 <filtering>false</filtering>
             </resource>

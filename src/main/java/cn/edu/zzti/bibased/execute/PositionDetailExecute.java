@@ -37,7 +37,7 @@ public class PositionDetailExecute extends BaseExecuter {
             Gson gson = new Gson();
             positionDetailResultJsonVo = gson.fromJson(targetJson == null ? "{}" : targetJson, PositionDetailResultJsonVo.class);
         }
-        if (positionDetailResultJsonVo == null) {
+        if (positionDetailResultJsonVo == null || positionDetailResultJsonVo.getTotalCount() ==0|| positionDetailResultJsonVo.getResultSize()==0) {
             positionDetailResultJsonVo = new PositionDetailResultJsonVo();
             positionDetailResultJsonVo.setResultSize(1);
             positionDetailResultJsonVo.setTotalCount(1);
