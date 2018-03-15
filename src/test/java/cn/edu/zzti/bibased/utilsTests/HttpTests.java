@@ -22,6 +22,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -183,5 +185,16 @@ public class HttpTests extends BaseApplicationTests {
     @Test
     public void positionWorkYearTest(){
         List<PositionDetail> positionDetails = lagouOperationService.queryWorkYearNums();
+    }
+        @Resource
+        JavaMailSenderImpl mailSender;
+    @Test
+    public void senfTets(){
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo("1396647019@qq.com");//收件人邮箱地址
+        mail.setFrom("biggress@163.com");//收件人
+        mail.setSubject("spring自带javamail发送的邮件");//主题
+        mail.setText("hello this mail is from spring javaMail ");//正文
+        mailSender.send(mail);
     }
 }

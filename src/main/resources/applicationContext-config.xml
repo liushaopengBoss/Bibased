@@ -121,5 +121,5 @@
 			</list>
 		</property>
 	</bean>
-
+	<import resource="application-config.xml"/>
 </beans>
