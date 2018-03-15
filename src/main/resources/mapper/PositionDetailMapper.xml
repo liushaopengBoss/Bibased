@@ -119,12 +119,5 @@
 
   </insert>
 
-  <!--<select id="queryWorkYearNums" resultMap="BaseResultMap">-->
-    <!--SELECT work_min_year ,work_max_year,count(id) as num from position_detail where work_min_year = 0 and work_max_year = 0 and include = #{include} UNION-->
- <!--SELECT work_min_year,work_max_year,count(id) as num from position_detail where work_min_year = 1 and work_max_year = 3 and include = #{include} UNION-->
-<!--SELECT work_min_year,work_max_year,count(id) as num from position_detail where work_min_year = 3 and work_max_year = 5 and include = #{include} UNION-->
-<!--SELECT work_min_year,work_max_year,count(id) as num from position_detail where work_min_year = 5 and work_max_year = 10 and include = #{include}  UNION-->
-<!--SELECT work_min_year,work_max_year,count(id) as num from position_detail where  work_min_year = 10 and work_max_year = 10 and include = #{include}-->
-  <!--</select>-->
 
 </mapper>

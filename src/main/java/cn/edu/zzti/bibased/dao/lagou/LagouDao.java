@@ -92,4 +92,12 @@ public class LagouDao {
     public List<PositionDetail> queryWorkYearNums(){
         return positionDetailMapper.queryWorkYearNums(WebsiteEnum.LAGOU.getWebCode());
     }
+
+    public List<PositionDetail> queryEducationNums(){
+        return positionDetailMapper.queryEducationNums(WebsiteEnum.LAGOU.getWebCode());
+    }
+
+    public List<PositionDetail> queryJobNatureNums(){
+        return positionDetailMapper.queryJobNatureNums(WebsiteEnum.LAGOU.getWebCode());
+    }
 }

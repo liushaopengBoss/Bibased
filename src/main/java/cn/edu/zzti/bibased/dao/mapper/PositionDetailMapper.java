@@ -26,4 +26,15 @@ public interface PositionDetailMapper {
             "SELECT work_min_year as workMinYear,work_max_year as workMaxYear,count(id) as num from position_detail where work_min_year = 5 and work_max_year = 10 and include = #{include}  UNION\n" +
             "SELECT work_min_year as workMinYear,work_max_year as workMaxYear,count(id) as num from position_detail where  work_min_year = 10 and work_max_year = 10 and include = #{include}")
     List<PositionDetail> queryWorkYearNums(@Param("include")String include);
+
+    @Select("SELECT education ,count(id) as num\n" +
+            " from position_detail where include = #{include} GROUP BY education")
+    List<PositionDetail> queryEducationNums(@Param("include")String include);
+
+    @Select("SELECT job_nature as jobNature ,count(id) as num\n" +
+            " from position_detail where include = 'lagou' GROUP BY job_nature")
+    List<PositionDetail> queryJobNatureNums(@Param("include")String include);
+
+
+
 }

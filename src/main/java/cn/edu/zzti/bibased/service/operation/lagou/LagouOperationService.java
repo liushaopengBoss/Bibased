@@ -122,4 +122,13 @@ public class LagouOperationService{
     public List<PositionDetail> queryWorkYearNums(){
         return lagouDao.queryWorkYearNums();
     }
+
+
+    public List<PositionDetail> queryEducationNums(){
+        return lagouDao.queryEducationNums();
+    }
+
+    public List<PositionDetail> queryJobNatureNums(){
+        return lagouDao.queryJobNatureNums();
+    }
 }

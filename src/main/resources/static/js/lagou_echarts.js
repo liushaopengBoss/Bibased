@@ -288,6 +288,8 @@ $(function () {
             }
 
         }
+
+        return arr;
     }
 
     function  workYearValueName(result) {
@@ -323,6 +325,7 @@ $(function () {
             }
 
         }
+        return arr;
     }
 
     /**
@@ -347,7 +350,7 @@ $(function () {
             },
             legend: {
                 orient : 'vertical',
-                x : 'right',
+                x : 'left',
                 data:workYearName(resultData)
             },
             calculable : true,
@@ -356,6 +359,7 @@ $(function () {
                     name:'工作年限',
                     type:'pie',
                     radius : '55%',
+                    center: ['50%', '60%'],
                     data:workYearValueName(resultData)
                 }
             ]
@@ -365,6 +369,118 @@ $(function () {
         $(window).resize(workYear.resize);
     });
 
+    function  educationNames(result) {
+        var arr = [];
+        for(var i=0;i<result.length;i++){
+            arr.push(result[i].education)
+        }
+        return arr;
+    }
+    function  educationValuesNames(result) {
+        var arr = [];
+        for(var i=0;i<result.length;i++){
+            var obj = new Object();
+            obj.value = result[i].num;
+            obj.name = result[i].education;
+            arr.push(obj)
+        }
+        return arr;
+    }
+    /**
+     *
+     */
+    var educationPieChart = echarts.init(document.getElementById("education"));
+    educationPieChart.showLoading({
+        text: "正在加载中...请稍后"
+    });
+    $.post("/rest/v1/queryEducationNums",function(resultData){
+        /**
+         * 饼状图
+         */
+        var educationOperation = {
+            title : {
+                text: '职位情况图',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient : 'vertical',
+                x : 'right',
+                data:educationNames(resultData)
+            },
+            calculable : true,
+            series : [
+                {
+                    name:'职位情况图',
+                    type:'pie',
+                    radius : '55%',
+                    data:educationValuesNames(resultData)
+                }
+            ]
+        };
+        educationPieChart.hideLoading();
+        educationPieChart.setOption(educationOperation);
+        $(window).resize(educationPieChart.resize);
+    });
+    function  jobNatureNames(result) {
+        var arr = [];
+        for(var i=0;i<result.length;i++){
+            arr.push(result[i].jobNature)
+        }
+        return arr;
+    }
+    function  jobNatureValuesNames(result) {
+        var arr = [];
+        for(var i=0;i<result.length;i++){
+            var obj = new Object();
+            obj.value = result[i].num;
+            obj.name = result[i].jobNature;
+            arr.push(obj)
+        }
+        return arr;
+    }
+    /**
+     *
+     */
+    var jobNaturePieChart = echarts.init(document.getElementById("jobNature"));
+    jobNaturePieChart.showLoading({
+        text: "正在加载中...请稍后"
+    });
+    $.post("/rest/v1/queryJobNatureNums",function(resultData){
+        /**
+         * 饼状图
+         */
+        var jobNatureOperation = {
+            title : {
+                text: '工作类型情况图',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient : 'vertical',
+                x : 'right',
+                data:jobNatureNames(resultData)
+            },
+            calculable : true,
+            series : [
+                {
+                    name:'工作类型',
+                    type:'pie',
+                    radius : '55%',
+                    data:jobNatureValuesNames(resultData)
+                }
+            ]
+        };
+        jobNaturePieChart.hideLoading();
+        jobNaturePieChart.setOption(jobNatureOperation);
+        $(window).resize(jobNaturePieChart.resize);
+    });
 
     var mapChart = echarts.init(document.getElementById("echarts-map-chart"));
     var mapoption = {

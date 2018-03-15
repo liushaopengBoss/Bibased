@@ -71,4 +71,25 @@ public class DataAnalysisController {
     public List<PositionDetail> queryWorkYearNums(){
         return lagouOperationService.queryWorkYearNums();
     }
+
+    /**
+     * 职位类型数据
+     *
+     * @return
+     */
+    @RequestMapping("/v1/queryEducationNums")
+    @ResponseBody
+    public List<PositionDetail> queryEducationNums(){
+        return lagouOperationService.queryEducationNums();
+    }
+    /**
+     * 职位类型数据
+     *
+     * @return
+     */
+    @RequestMapping("/v1/queryJobNatureNums")
+    @ResponseBody
+    public List<PositionDetail> queryJobNatureNums(){
+        return lagouOperationService.queryJobNatureNums();
+    }
 }

@@ -5,6 +5,7 @@ import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
 import cn.edu.zzti.bibased.dao.lagou.LagouDao;
 import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.Company;
+import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
@@ -177,5 +178,10 @@ public class HttpTests extends BaseApplicationTests {
     public void lastCreatTime(){
         Long aLong = lagouOperationService.queryLastPositionCreateTime("北京","Java");
         logger.info(aLong+"");
+    }
+
+    @Test
+    public void positionWorkYearTest(){
+        List<PositionDetail> positionDetails = lagouOperationService.queryWorkYearNums();
     }
 }
