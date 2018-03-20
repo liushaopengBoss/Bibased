@@ -102,4 +102,14 @@ public class DataAnalysisController {
     public List<PositionDetail> queryPositionDetailsByFirstTye(){
         return lagouOperationService.queryPositionDetailsByFirstTye("技术");
     }
+    /**
+     * 拉钩  不同公司规模的职位数量
+     *
+     * @return
+     */
+    @RequestMapping("/v1/queryCompanySize")
+    @ResponseBody
+    public List<PositionDetail> queryCompanySize(){
+        return lagouOperationService.queryCompanySize();
+    }
 }

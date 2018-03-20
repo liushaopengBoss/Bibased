@@ -103,4 +103,8 @@ public class LagouDao {
     public List<PositionDetail> queryPositionDetailsByFirstTye(String firstType){
         return positionDetailMapper.queryPositionDetailsByFirstTye(WebsiteEnum.LAGOU.getWebCode(),firstType);
     }
+
+    public List<PositionDetail> queryCompanySize(){
+        return positionDetailMapper.queryCompanySize(WebsiteEnum.LAGOU.getWebCode());
+    }
 }

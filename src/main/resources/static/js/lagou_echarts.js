@@ -481,6 +481,110 @@ $(function () {
         jobNaturePieChart.setOption(jobNatureOperation);
         $(window).resize(jobNaturePieChart.resize);
     });
+    function companySizeNames(result){
+        var arr = [];
+        for(var i=0;i<result.length;i++){
+            if(result[i].companyMinSize == 0){
+                arr.push("低于10人")
+            }else if(result[i].companyMinSize == 10){
+                arr.push("10-50人")
+            }
+            else if(result[i].companyMinSize == 50){
+                arr.push("50-150人")
+            }
+            else if(result[i].companyMinSize == 150){
+                arr.push("150-500人")
+            }else if(result[i].companyMinSize == 500){
+                arr.push("500-2000人")
+            }else{
+                arr.push("2000人以上")
+            }
+
+        }
+
+        return arr;
+    }
+
+    function companySizeValueNames(result) {
+        var arr = [];
+        for(var i=0;i<result.length;i++){
+            if(result[i].companyMinSize == 0){
+                var obj = new Object();
+                obj.value = 0;
+                obj.name = "低于10人";
+                arr.push(obj)
+            }else if(result[i].companyMinSize == 10){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "10-50人";
+                arr.push(obj)
+            }
+            else if(result[i].companyMinSize == 50){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "50-150人";
+                arr.push(obj)
+            }
+            else if(result[i].companyMinSize == 150){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "150-500人";
+                arr.push(obj)
+            }else if(result[i].companyMinSize == 500){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "500-2000人";
+                arr.push(obj)
+            }else if(result[i].companyMinSize == 2000){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "2000人以上";
+                arr.push(obj)
+            }
+
+        }
+        return arr;
+    }
+    /**
+     *不同公司规模的职位数量图
+     */
+    var companySize = echarts.init(document.getElementById("companySize"));
+    companySize.showLoading({
+        text: "正在加载中...请稍后"
+    });
+    $.post("/rest/v1/queryCompanySize",function(resultData){
+        /**
+         * 饼状图
+         */
+        var companySizeOperation = {
+            title : {
+                text: '不同公司规模的职位数量图',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient : 'vertical',
+                x : 'right',
+                data:companySizeNames(resultData)
+            },
+            calculable : true,
+            series : [
+                {
+                    name:'公司规模的职位数量',
+                    type:'pie',
+                    radius : '55%',
+                    data:companySizeValueNames(resultData)
+                }
+            ]
+        };
+        companySize.hideLoading();
+        companySize.setOption(companySizeOperation);
+        $(window).resize(companySize.resize);
+    });
+
 
     function  thirdType(result) {
         var array = [];

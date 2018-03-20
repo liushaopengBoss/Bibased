@@ -135,4 +135,8 @@ public class LagouOperationService{
     public List<PositionDetail> queryPositionDetailsByFirstTye(String firstType){
         return lagouDao.queryPositionDetailsByFirstTye(firstType);
     }
+
+    public List<PositionDetail> queryCompanySize(){
+        return lagouDao.queryCompanySize();
+    }
 }

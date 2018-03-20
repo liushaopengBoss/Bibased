@@ -1,5 +1,6 @@
 package cn.edu.zzti.bibased.dao.mapper;
 
+import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dto.PositionDetail;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -32,13 +33,18 @@ public interface PositionDetailMapper {
     List<PositionDetail> queryEducationNums(@Param("include")String include);
 
     @Select("SELECT job_nature as jobNature ,count(id) as num\n" +
-            " from position_detail where include = 'lagou' GROUP BY job_nature")
+            " from position_detail where include = #{include} GROUP BY job_nature")
     List<PositionDetail> queryJobNatureNums(@Param("include")String include);
 
     @Select("SELECT third_type as thirdType ,count(id) as num from position_detail where include = #{include} and first_type =#{firstType}" +
             " GROUP BY third_type ORDER BY num desc limit 60")
     List<PositionDetail> queryPositionDetailsByFirstTye(@Param("include")String include,@Param("firstType")String firstType);
-
-
+  @Select("SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size = 0 and company_max_size = 0 and include = #{include} UNION\n" +
+          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size >= 10 and company_max_size <= 50 and include = #{include} UNION\n" +
+          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size = 50 and company_max_size = 150 and include = #{include} UNION\n" +
+          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size = 150 and company_max_size = 500 and include = #{include} UNION\n" +
+          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size = 500 and company_max_size = 2000 and include = #{include} UNION\n" +
+          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size = 2000 and company_max_size = 2000 and include = #{include} \n")
+   List<PositionDetail> queryCompanySize(@Param("include")String include );
 
 }
