@@ -100,4 +100,7 @@ public class LagouDao {
     public List<PositionDetail> queryJobNatureNums(){
         return positionDetailMapper.queryJobNatureNums(WebsiteEnum.LAGOU.getWebCode());
     }
+    public List<PositionDetail> queryPositionDetailsByFirstTye(String firstType){
+        return positionDetailMapper.queryPositionDetailsByFirstTye(WebsiteEnum.LAGOU.getWebCode(),firstType);
+    }
 }

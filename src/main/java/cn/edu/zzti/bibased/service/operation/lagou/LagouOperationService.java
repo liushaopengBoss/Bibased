@@ -131,4 +131,8 @@ public class LagouOperationService{
     public List<PositionDetail> queryJobNatureNums(){
         return lagouDao.queryJobNatureNums();
     }
+
+    public List<PositionDetail> queryPositionDetailsByFirstTye(String firstType){
+        return lagouDao.queryPositionDetailsByFirstTye(firstType);
+    }
 }

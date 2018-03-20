@@ -323,7 +323,7 @@ public class LagouService {
                                             isBreak = true;
                                         }
                                         List<PositionDetail> positionDetailsList = handlePositionDetails(result, lastCreateTime, positionName);
-                                        if (positionDetailsList.size() < result.size()) {
+                                        if (result == null || positionDetailsList.size() < result.size()) {
                                             count++;
                                         }
                                         positionDetails.addAll(positionDetailsList);

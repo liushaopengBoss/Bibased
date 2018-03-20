@@ -482,6 +482,85 @@ $(function () {
         $(window).resize(jobNaturePieChart.resize);
     });
 
+    function  thirdType(result) {
+        var array = [];
+        for(var i=0;i<result.length;i++){
+            array.push(result[i].thirdType)
+        }
+        return array;
+    }
+
+    function  thirdTypeNum(result) {
+        var array = [];
+        for(var i=0;i<result.length;i++){
+            array.push(result[i].num)
+        }
+        return array;
+    }
+
+    var positionDetailNums = echarts.init(document.getElementById("positionDetailsByJS"));
+    positionDetailNums.showLoading({
+        text: "正在加载中...请稍后"
+    });
+    /**
+     *  1.各城市公司数量信息
+     */
+    $.post("/rest/v1/queryPositionDetailsByJS",function(resultData){
+        /**
+         * 柱状图
+         */
+        var baroption = {
+            title : {
+                text: '技术类型下职位数量信息'
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['职位的数量']
+            },
+            grid:{
+                x2:24,
+                y2:24
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    data : thirdType(resultData)
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    scale:true
+                }
+            ],
+            series : [
+                {
+                    name:'职位的数量',
+                    type:'bar',
+                    data:thirdTypeNum(resultData),
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name: '平均值'}
+                        ]
+                    }
+                }
+            ]
+        };
+        positionDetailNums.hideLoading();
+        positionDetailNums.setOption(baroption);
+        window.onresize = positionDetailNums.resize;
+    });
+
+
     var mapChart = echarts.init(document.getElementById("echarts-map-chart"));
     var mapoption = {
         title : {

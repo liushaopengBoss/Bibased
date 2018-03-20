@@ -35,6 +35,10 @@ public interface PositionDetailMapper {
             " from position_detail where include = 'lagou' GROUP BY job_nature")
     List<PositionDetail> queryJobNatureNums(@Param("include")String include);
 
+    @Select("SELECT third_type as thirdType ,count(id) as num from position_detail where include = #{include} and first_type =#{firstType}" +
+            " GROUP BY third_type ORDER BY num desc limit 60")
+    List<PositionDetail> queryPositionDetailsByFirstTye(@Param("include")String include,@Param("firstType")String firstType);
+
 
 
 }

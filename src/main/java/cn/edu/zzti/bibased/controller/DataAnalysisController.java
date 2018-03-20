@@ -92,4 +92,14 @@ public class DataAnalysisController {
     public List<PositionDetail> queryJobNatureNums(){
         return lagouOperationService.queryJobNatureNums();
     }
+    /**
+     * 拉钩技术类型下 各种职位类型的职位数量
+     *
+     * @return
+     */
+    @RequestMapping("/v1/queryPositionDetailsByJS")
+    @ResponseBody
+    public List<PositionDetail> queryPositionDetailsByFirstTye(){
+        return lagouOperationService.queryPositionDetailsByFirstTye("技术");
+    }
 }
