@@ -1,8 +1,8 @@
 package cn.edu.zzti.bibased.constant;
 
 /**
- * 用途
- * <p>
+ * 信息采集的网站
+ *
  * Created by huaidou on  2018/1/11
  */
 public enum WebsiteEnum {

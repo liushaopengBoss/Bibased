@@ -159,4 +159,17 @@ public class LagouDao {
             return positionDetails;
         }
     }
+    /**
+     * 获取每个招聘网站在各个城市的职位数量
+     * @return
+     */
+    public List<PositionDetail> queryWebCityNums(){
+        if(cache.containsKey(WebsiteEnum.LAGOU.getWebCode()+"queryWebCityNums")){
+            return (List<PositionDetail>)cache.getValue(WebsiteEnum.LAGOU.getWebCode()+"queryWebCityNums");
+        }else{
+            List<PositionDetail> positionDetails = positionDetailMapper.queryWebCityNums();
+            cache.add(WebsiteEnum.LAGOU.getWebCode()+"queryWebCityNums",positionDetails);
+            return positionDetails;
+        }
+    }
 }

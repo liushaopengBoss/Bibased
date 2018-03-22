@@ -99,4 +99,11 @@ public interface PositionDetailMapper {
           "   cr_time < UNIX_TIMESTAMP(DATE_SUB(curdate(),INTERVAL 0 DAY))")
     int queryBeforeDateGetInfoNums(@Param("include")String include);
 
+    /**
+     * 获取每个招聘网站在各个城市的职位数量
+     * @return
+     */
+  @Select("SELECT include,city,count(id) as num from position_detail GROUP BY include,city")
+  List<PositionDetail> queryWebCityNums();
+
 }

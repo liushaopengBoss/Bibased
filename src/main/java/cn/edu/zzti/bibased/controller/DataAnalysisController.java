@@ -112,4 +112,14 @@ public class DataAnalysisController {
     public List<PositionDetail> queryCompanySize(){
         return lagouOperationService.queryCompanySize();
     }
+    /**
+     * 获取每个招聘网站在各个城市的职位数量
+     *
+     * @return
+     */
+    @RequestMapping("/v1/queryWebCityNums")
+    @ResponseBody
+    public Map<String,List<PositionDetail>> queryWebCityNums(){
+        return lagouOperationService.queryWebCityNums();
+    }
 }

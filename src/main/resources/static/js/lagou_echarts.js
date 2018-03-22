@@ -663,8 +663,12 @@ $(function () {
         positionDetailNums.setOption(baroption);
         window.onresize = positionDetailNums.resize;
     });
+    $.get("/json/china_city.json",function(resultData){
 
+    })
+    $.get("/json/china_province.json",function(resultData){
 
+    })
     var mapChart = echarts.init(document.getElementById("echarts-map-chart"));
     var mapoption = {
         title : {

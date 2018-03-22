@@ -16,7 +16,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -138,5 +141,17 @@ public class LagouOperationService{
 
     public List<PositionDetail> queryCompanySize(){
         return lagouDao.queryCompanySize();
+    }
+
+    public Map<String,List<PositionDetail>> queryWebCityNums(){
+        Map<String,List<PositionDetail>> mapResult = new HashMap<>();
+        List<PositionDetail> positionDetails = lagouDao.queryWebCityNums();
+        for(WebsiteEnum websiteEnum:WebsiteEnum.values()){
+            List<PositionDetail> collect = positionDetails.stream().filter(positionDetail -> {
+                return positionDetail.getInclude().equals(websiteEnum.getWebCode());
+            }).collect(Collectors.toList());
+            mapResult.put(websiteEnum.getWebCode(),collect);
+        }
+        return mapResult;
     }
 }
