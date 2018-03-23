@@ -663,145 +663,196 @@ $(function () {
         positionDetailNums.setOption(baroption);
         window.onresize = positionDetailNums.resize;
     });
-    $.get("/json/china_city.json",function(resultData){
+    /**
+     * 中国省市区map
+     */
+    var chinaCityMap = new Map();
+    var chinaProvinceMap = new Map();
+    $.get("/json/china_province.json",function(ChinaProvinceResult){
+        var chinaProvince = ChinaProvinceResult.RECORDS;
+        for(var i=0;i<chinaProvince.length;i++){
+            chinaProvinceMap.put(chinaProvince[i].pid,chinaProvince[i].name);
+        }
+    })
+    $.get("/json/china_city.json",function(ChinaCityResult){
+        var chinaCity = ChinaCityResult.RECORDS;
+        for(var i=0;i<chinaCity.length;i++){
+            chinaCityMap.put(chinaCity[i].name,chinaCity[i].pid);
+        }
+    })
+
+    function getMap(){//初始化map_，给map_对象增加方法，使map_像个Map
+        var map_=new Object();
+        //属性加个特殊字符，以区别方法名，统一加下划线_
+        map_.put=function(key,value){    map_[key]=value;}
+        map_.get=function(key){    return map_[key];}
+        map_.remove=function(key){    delete map_[key];}
+        map_.size=function(){
+            return map_.length;
+        }
+        map_.constrainKey = function(key){
+            if(this.get(key) != undefined){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        map_.keyset=function(){
+            var ret="";
+            for(var p in map_){
+                if(typeof p =='string' && p.substring(p.length-1)=="_"){
+                    ret+=",";
+                    ret+=p;
+                }
+            }
+            if(ret==""){
+                return ret.split(","); //empty array
+            }else{
+                return ret.substring(1).split(",");
+            }
+        }
+        return map_;
+    }
+    var provinceMap = new Map();
+    function addNums(provinceName, num) {
+        if(provinceMap.containsKey(provinceName)){
+            var newVar = provinceMap.get(provinceName);
+            provinceMap.clear
+            provinceMap.put(provinceName,num+newVar);
+        }else{
+            provinceMap.put(provinceName,num);
+        }
+    }
+    function chinaPositionNums(resultData) {
+        for(var i=0;i<resultData.length;i++){
+            var cityPid = chinaCityMap.get(resultData[i].city);
+            var province;
+            if(cityPid == undefined){
+                province = resultData[i].city;
+            }else{
+                province = chinaProvinceMap.get(cityPid);
+            }
+            addNums(province,resultData[i].num);
+        }
+        var arr = [];
+        var keys = provinceMap.keys();
+        for(var i=0;i<keys.length;i++){
+            var obj = new Object();
+            obj.value = provinceMap.get(keys[i]);
+            obj.name = keys[i];
+            arr.push(obj)
+        }
+        return arr;
+    }
+
+    $.post("/rest/v1/queryWebCityNums",function(resultData){
+
+        var mapChart = echarts.init(document.getElementById("echarts-map-chart"));
+        var mapoption = {
+            title : {
+                text: '全国职位概况图',
+                subtext: '',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                x:'left',
+                data:['拉钩','Boss直聘','智联招聘']
+            },
+            dataRange: {
+                min: 0,
+                max: 5000,
+                x: 'left',
+                y: 'bottom',
+                text:['高','低'],           // 文本，默认为数值文本
+                calculable : true
+            },
+            toolbox: {
+                show: true,
+                orient : 'vertical',
+                x: 'right',
+                y: 'center',
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            roamController: {
+                show: true,
+                x: 'right',
+                mapTypeControl: {
+                    'china': true
+                }
+            },
+            series : [
+                {
+                    name: '拉钩',
+                    type: 'map',
+                    mapType: 'china',
+                    roam: false,
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+                    data:chinaPositionNums(resultData.lagou)
+                },
+                {
+                    name: 'Boss直聘',
+                    type: 'map',
+                    mapType: 'china',
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+                    data:[
+                        {name: '北京',value: Math.round(Math.random()*1000)},
+                        {name: '天津',value: Math.round(Math.random()*1000)},
+                        {name: '上海',value: Math.round(Math.random()*1000)},
+                        {name: '重庆',value: Math.round(Math.random()*1000)},
+                        {name: '河北',value: Math.round(Math.random()*1000)},
+                        {name: '安徽',value: Math.round(Math.random()*1000)},
+                        {name: '新疆',value: Math.round(Math.random()*1000)},
+                        {name: '浙江',value: Math.round(Math.random()*1000)},
+                        {name: '江西',value: Math.round(Math.random()*1000)},
+                        {name: '山西',value: Math.round(Math.random()*1000)},
+                        {name: '内蒙古',value: Math.round(Math.random()*1000)},
+                        {name: '吉林',value: Math.round(Math.random()*1000)},
+                        {name: '福建',value: Math.round(Math.random()*1000)},
+                        {name: '广东',value: Math.round(Math.random()*1000)},
+                        {name: '西藏',value: Math.round(Math.random()*1000)},
+                        {name: '四川',value: Math.round(Math.random()*1000)},
+                        {name: '宁夏',value: Math.round(Math.random()*1000)}
+                    ]
+                },
+                {
+                    name: '智联招聘',
+                    type: 'map',
+                    mapType: 'china',
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+                    data:[
+                        {name: '北京',value: Math.round(Math.random()*1000)},
+                        {name: '天津',value: Math.round(Math.random()*1000)},
+                        {name: '上海',value: Math.round(Math.random()*1000)},
+                        {name: '广东',value: Math.round(Math.random()*1000)}
+                    ]
+                }
+            ]
+        };
+        mapChart.setOption(mapoption);
+        $(window).resize(mapChart.resize);
+
 
     })
-    $.get("/json/china_province.json",function(resultData){
 
-    })
-    var mapChart = echarts.init(document.getElementById("echarts-map-chart"));
-    var mapoption = {
-        title : {
-            text: '全国职位概况图',
-            subtext: '',
-            x:'center'
-        },
-        tooltip : {
-            trigger: 'item'
-        },
-        legend: {
-            orient: 'vertical',
-            x:'left',
-            data:['拉钩','Boss直聘','智联招聘']
-        },
-        dataRange: {
-            min: 0,
-            max: 5000,
-            x: 'left',
-            y: 'bottom',
-            text:['高','低'],           // 文本，默认为数值文本
-            calculable : true
-        },
-        toolbox: {
-            show: true,
-            orient : 'vertical',
-            x: 'right',
-            y: 'center',
-            feature : {
-                mark : {show: true},
-                dataView : {show: true, readOnly: false},
-                restore : {show: true},
-                saveAsImage : {show: true}
-            }
-        },
-        roamController: {
-            show: true,
-            x: 'right',
-            mapTypeControl: {
-                'china': true
-            }
-        },
-        series : [
-            {
-                name: '拉钩',
-                type: 'map',
-                mapType: 'china',
-                roam: false,
-                itemStyle:{
-                    normal:{label:{show:true}},
-                    emphasis:{label:{show:true}}
-                },
-                data:[
-                    {name: '北京',value: Math.round(Math.random()*1000)},
-                    {name: '天津',value: Math.round(Math.random()*1000)},
-                    {name: '上海',value: Math.round(Math.random()*1000)},
-                    {name: '重庆',value: Math.round(Math.random()*1000)},
-                    {name: '河北',value: Math.round(Math.random()*1000)},
-                    {name: '河南',value: Math.round(Math.random()*1000)},
-                    {name: '云南',value: Math.round(Math.random()*1000)},
-                    {name: '辽宁',value: Math.round(Math.random()*1000)},
-                    {name: '黑龙江',value: Math.round(Math.random()*1000)},
-                    {name: '湖南',value: Math.round(Math.random()*1000)},
-                    {name: '安徽',value: Math.round(Math.random()*1000)},
-                    {name: '山东',value: Math.round(Math.random()*1000)},
-                    {name: '新疆',value: Math.round(Math.random()*1000)},
-                    {name: '江苏',value: Math.round(Math.random()*1000)},
-                    {name: '浙江',value: Math.round(Math.random()*1000)},
-                    {name: '江西',value: Math.round(Math.random()*1000)},
-                    {name: '湖北',value: Math.round(Math.random()*1000)},
-                    {name: '广西',value: Math.round(Math.random()*1000)},
-                    {name: '甘肃',value: Math.round(Math.random()*1000)},
-                    {name: '山西',value: Math.round(Math.random()*1000)},
-                    {name: '内蒙古',value: Math.round(Math.random()*1000)},
-                    {name: '陕西',value: Math.round(Math.random()*1000)},
-                    {name: '吉林',value: Math.round(Math.random()*1000)},
-                    {name: '福建',value: Math.round(Math.random()*1000)},
-                    {name: '贵州',value: Math.round(Math.random()*1000)},
-                    {name: '广东',value: Math.round(Math.random()*1000)},
-                    {name: '青海',value: Math.round(Math.random()*1000)},
-                    {name: '西藏',value: Math.round(Math.random()*1000)},
-                    {name: '四川',value: Math.round(Math.random()*1000)},
-                    {name: '宁夏',value: Math.round(Math.random()*1000)},
-                    {name: '海南',value: Math.round(Math.random()*1000)}
-                ]
-            },
-            {
-                name: 'Boss直聘',
-                type: 'map',
-                mapType: 'china',
-                itemStyle:{
-                    normal:{label:{show:true}},
-                    emphasis:{label:{show:true}}
-                },
-                data:[
-                    {name: '北京',value: Math.round(Math.random()*1000)},
-                    {name: '天津',value: Math.round(Math.random()*1000)},
-                    {name: '上海',value: Math.round(Math.random()*1000)},
-                    {name: '重庆',value: Math.round(Math.random()*1000)},
-                    {name: '河北',value: Math.round(Math.random()*1000)},
-                    {name: '安徽',value: Math.round(Math.random()*1000)},
-                    {name: '新疆',value: Math.round(Math.random()*1000)},
-                    {name: '浙江',value: Math.round(Math.random()*1000)},
-                    {name: '江西',value: Math.round(Math.random()*1000)},
-                    {name: '山西',value: Math.round(Math.random()*1000)},
-                    {name: '内蒙古',value: Math.round(Math.random()*1000)},
-                    {name: '吉林',value: Math.round(Math.random()*1000)},
-                    {name: '福建',value: Math.round(Math.random()*1000)},
-                    {name: '广东',value: Math.round(Math.random()*1000)},
-                    {name: '西藏',value: Math.round(Math.random()*1000)},
-                    {name: '四川',value: Math.round(Math.random()*1000)},
-                    {name: '宁夏',value: Math.round(Math.random()*1000)}
-                ]
-            },
-            {
-                name: '智联招聘',
-                type: 'map',
-                mapType: 'china',
-                itemStyle:{
-                    normal:{label:{show:true}},
-                    emphasis:{label:{show:true}}
-                },
-                data:[
-                    {name: '北京',value: Math.round(Math.random()*1000)},
-                    {name: '天津',value: Math.round(Math.random()*1000)},
-                    {name: '上海',value: Math.round(Math.random()*1000)},
-                    {name: '广东',value: Math.round(Math.random()*1000)}
-                ]
-            }
-        ]
-    };
-    mapChart.setOption(mapoption);
-    $(window).resize(mapChart.resize);
+
 
 
 });
