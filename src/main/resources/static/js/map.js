@@ -18,7 +18,9 @@ function Map() {
 
     //向MAP中增加元素（key, value)
     this.put = function(_key, _value) {
-
+        if(this.containsKey(_key)){
+            this.removeByKey(_key)
+        }
         this.elements.push( {
             key : _key,
             value : _value
@@ -40,7 +42,21 @@ function Map() {
         }
         return bln;
     };
-
+    //删除指定VALUE的元素，成功返回True，失败返回False
+    this.removeByKey = function(_key) {//removeByValueAndKey
+        var bln = false;
+        try {
+            for (i = 0; i < this.elements.length; i++) {
+                if (this.elements[i].key == _key) {
+                    this.elements.splice(i, 1);
+                    return true;
+                }
+            }
+        } catch (e) {
+            bln = false;
+        }
+        return bln;
+    };
     //删除指定VALUE的元素，成功返回True，失败返回False
     this.removeByValue = function(_value) {//removeByValueAndKey
         var bln = false;
