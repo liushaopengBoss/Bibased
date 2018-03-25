@@ -16,7 +16,7 @@ public interface PositionDetailMapper {
 
     void batchInsert(List<PositionDetail> positionDetails);
 
-    PositionDetail selectByPrimaryKey(Integer igd);
+    PositionDetail selectByPrimaryKey(Integer id);
 
     Long selectLastPostionCreateTime(@Param("include") String include, @Param("city") String city, @Param("thirdType") String thirdType);
 

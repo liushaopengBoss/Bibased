@@ -197,4 +197,11 @@ public class HttpTests extends BaseApplicationTests {
         mail.setText("hello this mail is from spring javaMail ");//正文
         mailSender.send(mail);
     }
+
+    @Test
+    public void lagouLoginTest(){
+        String url = "https://www.lagou.com/frontLogin.do";
+        String s = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
+
+    }
 }

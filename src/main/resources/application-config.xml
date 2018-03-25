@@ -4,18 +4,18 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-    <!--邮件发送线程池-->
-    <bean id="emailPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-        <property name="corePoolSize" value="20"/>
-        <property name="maxPoolSize" value="100"/>
-        <property name="queueCapacity" value="200"/>
-        <property name="waitForTasksToCompleteOnShutdown" value="true"/>
-        <property name="awaitTerminationSeconds" value="100"/>
-        <property name="keepAliveSeconds" value="300"/>
-        <property name="rejectedExecutionHandler">
-            <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
-        </property>
-    </bean>
+    <!--&lt;!&ndash;邮件发送线程池&ndash;&gt;-->
+    <!--<bean id="emailPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">-->
+        <!--<property name="corePoolSize" value="20"/>-->
+        <!--<property name="maxPoolSize" value="100"/>-->
+        <!--<property name="queueCapacity" value="200"/>-->
+        <!--<property name="waitForTasksToCompleteOnShutdown" value="true"/>-->
+        <!--<property name="awaitTerminationSeconds" value="100"/>-->
+        <!--<property name="keepAliveSeconds" value="300"/>-->
+        <!--<property name="rejectedExecutionHandler">-->
+            <!--<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>-->
+        <!--</property>-->
+    <!--</bean>-->
 
     <!--&lt;!&ndash; 邮件发送 velocity 指定目录 &ndash;&gt;-->
     <!--<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">-->
