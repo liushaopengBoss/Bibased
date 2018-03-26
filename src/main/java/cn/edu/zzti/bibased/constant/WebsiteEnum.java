@@ -7,7 +7,7 @@ package cn.edu.zzti.bibased.constant;
  */
 public enum WebsiteEnum {
     LAGOU("lagou","拉钩"),ZHILIAN("zhilian","智联"),
-    JOB("51job","51Job");
+    JOB("job","51Job");
 
     private String webCode;
     private String webName;

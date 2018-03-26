@@ -760,7 +760,7 @@ $(function () {
             legend: {
                 orient: 'vertical',
                 x:'left',
-                data:['拉钩','Boss直聘','智联招聘']
+                data:['拉钩','51Job','智联招聘']
             },
             dataRange: {
                 min: 0,
@@ -802,32 +802,14 @@ $(function () {
                     data:chinaPositionNums(resultData.lagou)
                 },
                 {
-                    name: 'Boss直聘',
+                    name: '51Job',
                     type: 'map',
                     mapType: 'china',
                     itemStyle:{
                         normal:{label:{show:true}},
                         emphasis:{label:{show:true}}
                     },
-                    data:[
-                        {name: '北京',value: Math.round(Math.random()*1000)},
-                        {name: '天津',value: Math.round(Math.random()*1000)},
-                        {name: '上海',value: Math.round(Math.random()*1000)},
-                        {name: '重庆',value: Math.round(Math.random()*1000)},
-                        {name: '河北',value: Math.round(Math.random()*1000)},
-                        {name: '安徽',value: Math.round(Math.random()*1000)},
-                        {name: '新疆',value: Math.round(Math.random()*1000)},
-                        {name: '浙江',value: Math.round(Math.random()*1000)},
-                        {name: '江西',value: Math.round(Math.random()*1000)},
-                        {name: '山西',value: Math.round(Math.random()*1000)},
-                        {name: '内蒙古',value: Math.round(Math.random()*1000)},
-                        {name: '吉林',value: Math.round(Math.random()*1000)},
-                        {name: '福建',value: Math.round(Math.random()*1000)},
-                        {name: '广东',value: Math.round(Math.random()*1000)},
-                        {name: '西藏',value: Math.round(Math.random()*1000)},
-                        {name: '四川',value: Math.round(Math.random()*1000)},
-                        {name: '宁夏',value: Math.round(Math.random()*1000)}
-                    ]
+                    data:chinaPositionNums(resultData.job)
                 },
                 {
                     name: '智联招聘',
@@ -837,12 +819,7 @@ $(function () {
                         normal:{label:{show:true}},
                         emphasis:{label:{show:true}}
                     },
-                    data:[
-                        {name: '北京',value: Math.round(Math.random()*1000)},
-                        {name: '天津',value: Math.round(Math.random()*1000)},
-                        {name: '上海',value: Math.round(Math.random()*1000)},
-                        {name: '广东',value: Math.round(Math.random()*1000)}
-                    ]
+                    data:chinaPositionNums(resultData.zhilian)
                 }
             ]
         };
