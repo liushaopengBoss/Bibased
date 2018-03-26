@@ -21,7 +21,7 @@ public class ClearCache extends QuartzJobBean {
         ApplicationContext applicationContext = (ApplicationContext) context.getJobDetail().getJobDataMap()
                 .get("applicationContext");
         Cache cache =(Cache) applicationContext.getBean("cache");
-
-        logger.info("lagou job start !! get lagou position detail!!");
+        cache.clearInvalideData();
+        logger.info("lagou job clearcache start !!");
     }
 }
