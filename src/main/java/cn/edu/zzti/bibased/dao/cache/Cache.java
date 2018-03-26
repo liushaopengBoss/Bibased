@@ -1,7 +1,9 @@
 package cn.edu.zzti.bibased.dao.cache;
 
+import cn.edu.zzti.bibased.utils.DateUtils;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -28,5 +30,10 @@ public class Cache {
 
     public boolean containsKey(String key){
         return cache.containsKey(key);
+    }
+
+    public void clearInvokeData(){
+        String yestoday = DateUtils.formatStr(DateUtils.getAfterDate(new Date(), -1), DateUtils.YYMMDD);
+
     }
 }

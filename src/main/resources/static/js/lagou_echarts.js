@@ -724,6 +724,7 @@ $(function () {
         }
     }
     function chinaPositionNums(resultData) {
+        provinceMap.clear();
         for(var i=0;i<resultData.length;i++){
             var cityPid = chinaCityMap.get(resultData[i].city);
             var province;
@@ -738,8 +739,8 @@ $(function () {
         var keys = provinceMap.keys();
         for(var i=0;i<keys.length;i++){
             var obj = new Object();
-            obj.value = provinceMap.get(keys[i]);
             obj.name = keys[i];
+            obj.value = provinceMap.get(keys[i]);
             arr.push(obj)
         }
         return arr;
