@@ -10,12 +10,12 @@ import java.util.concurrent.ConcurrentSkipListMap;
  */
 public class HttpHeaderConstant {
 
-    private static  String user_trace_token = "20171126164429-0464ac5c-d286-11e7-ab32-525400f775ce";
-    private static  String user_trace_token2 ="20171204190931-9a32b27e-d8e3-11e7-829f-525400f775ce";
-    private static  String user_trace_token3 = "20171126164429-0464ac5c-d286-11e7-ab32-525400f775ce";
-    private static String JSESSIONID = "ABAAABAAAGGABCB3A386C1E352571F93EF1CA0E3DC60C8E";
+    private static  String user_trace_token = "20171204190931-9a32b27e-d8e3-11e7-829f-525400f775ce";
+    private static  String user_trace_token2 ="20171126164429-0464ac5c-d286-11e7-ab32-525400f775ce";
+    private static  String user_trace_token3 = "20171204190931-9a32b27e-d8e3-11e7-829f-525400f775ce";
+    private static String JSESSIONID = "ABAAABAAAIAACBI194E7FFC32E96282D13A026C00B1B198";
     private static String JSESSIONID2 = "ABAAABAAADEAAFI5D5E23A8C51C8A2CF493F15613955F28";
-    private static String JSESSIONID3 = "ABAAABAAAGGABCB3A386C1E352571F93EF1CA0E3DC60C8E";
+    private static String JSESSIONID3 = "ABAAABAAAIAACBI194E7FFC32E96282D13A026C00B1B198";
     /**
      * 拉钩get请求header
      */
@@ -75,10 +75,27 @@ public class HttpHeaderConstant {
         compaanyParam.put("sortField",0);
         compaanyParam.put("havemark",0);
 }
-    public static final Map<String,String>  jobHeader = new ConcurrentHashMap<>();
+    public static final Map<String,Object>  bossGetHeader = new ConcurrentHashMap<>();
     static {
-
+        lagouGetHeader.put("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+        lagouGetHeader.put("Accept-Encoding", "gzip, deflate, br");
+        lagouGetHeader.put("Accept-Language", "zh-CN,zh;q=0.9");
+        lagouGetHeader.put("Cache-Control", "max-age=0");
+        lagouGetHeader.put("Cookie:", "JSESSIONID=\"\"; Hm_lvt_194df3105ad7148dcf2b98a91b5e727a=1521518076,1522150597; Hm_lpvt_194df3105ad7148dcf2b98a91b5e727a=1522150597; __c=1522150597; __g=-; __l=l=%2Fwww.zhipin.com%2F&r=; __a=58605553.1517829617.1521518076.1522150597.20.3.1.20");
+        lagouGetHeader.put("Host", "www.zhipin.com");
+        lagouGetHeader.put("Origin", "https://www.lagou.com");
+        lagouGetHeader.put("Upgrade-Insecure-Requests", 1);
+        lagouGetHeader.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
     }
+
+    /**
+     * Cache-Control: max-age=0
+     Connection: keep-alive
+     Cookie: lastCity=101210100; JSESSIONID=""; Hm_lvt_194df3105ad7148dcf2b98a91b5e727a=1521518076,1522150597; Hm_lpvt_194df3105ad7148dcf2b98a91b5e727a=1522150597; __c=1522150597; __g=-; __l=l=%2Fwww.zhipin.com%2F&r=; __a=58605553.1517829617.1521518076.1522150597.20.3.1.20
+     Host: www.zhipin.com
+     Upgrade-Insecure-Requests: 1
+     User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36
+     */
 
     public static void setStatus() {
         if(HttpHeaderConstant.JSESSIONID == HttpHeaderConstant.JSESSIONID2){

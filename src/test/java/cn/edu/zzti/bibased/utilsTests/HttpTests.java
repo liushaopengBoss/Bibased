@@ -10,6 +10,7 @@ import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
 import cn.edu.zzti.bibased.service.email.EmailService;
+import cn.edu.zzti.bibased.service.handler.BossHandler;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouOperationService;
@@ -186,8 +187,8 @@ public class HttpTests extends BaseApplicationTests {
     public void positionWorkYearTest(){
         List<PositionDetail> positionDetails = lagouOperationService.queryWorkYearNums();
     }
-        @Resource
-        JavaMailSenderImpl mailSender;
+    @Resource
+    JavaMailSenderImpl mailSender;
     @Test
     public void senfTets(){
         SimpleMailMessage mail = new SimpleMailMessage();
@@ -196,5 +197,12 @@ public class HttpTests extends BaseApplicationTests {
         mail.setSubject("spring自带javamail发送的邮件");//主题
         mail.setText("hello this mail is from spring javaMail ");//正文
         mailSender.send(mail);
+    }
+
+    @Test
+    public void BossPositionTest(){
+        String apiUrl = "https://www.zhipin.com/";
+        String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.bossGetHeader);
+        BossHandler.getJobs(html);
     }
 }

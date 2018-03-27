@@ -1,8 +1,8 @@
 package cn.edu.zzti.bibased.dao.lagou;
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
+import cn.edu.zzti.bibased.dao.BaseDao;
 import cn.edu.zzti.bibased.dao.cache.Cache;
-import cn.edu.zzti.bibased.dao.mapper.*;
 import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import org.springframework.stereotype.Repository;
@@ -15,51 +15,10 @@ import java.util.List;
  * 用于数据的写入
  */
 @Repository
-public class LagouDao {
-    @Resource
-    private PositionsMapper positionsMapper;
-
-    @Resource
-    private CityMapper cityMapper;
-
-    @Resource
-    private CompanyMapper companyMapper;
-
-    @Resource
-    private PositionDetailMapper positionDetailMapper;
-
-    @Resource
-    private ActionLogDao actionLogDao;
+public class LagouDao extends BaseDao {
 
     @Resource
     private Cache cache;
-
-    public void insertJob(Positions position){
-        positionsMapper.insert(position);
-    }
-    public void batchInsertJobs(List<Positions> positionList){
-        positionsMapper.batchInsert(positionList);
-    }
-
-    public void batchInsertCitys(List<City> cityList){
-        cityMapper.batchInsert(cityList);
-    }
-
-    public void batchInsertCompanys(List<Company> companies){
-        companyMapper.batchInsert(companies);
-    }
-
-    public List<Positions> queryLeafPositions(String include){
-        return positionsMapper.queryLeafPositions(include);
-    }
-
-    public List<City> queryCitys(String include){
-        return cityMapper.queryCity(include);
-    }
-
-    public void batchInsertPositionDetails(List<PositionDetail> positionDetails){
-        positionDetailMapper.batchInsert(positionDetails);
-    }
 
     public Long queryLastPositionCreateTime(String city,String thirdType){
         Long positionDetail = positionDetailMapper.selectLastPostionCreateTime(WebsiteEnum.LAGOU.getWebCode(),city,thirdType);

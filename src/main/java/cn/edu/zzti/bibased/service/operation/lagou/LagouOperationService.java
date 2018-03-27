@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -33,7 +34,9 @@ public class LagouOperationService{
      */
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
     public void batchAddJob(List<Positions> jobs){
-        lagouDao.batchInsertJobs(jobs);
+        if(!CollectionUtils.isEmpty(jobs)){
+            lagouDao.batchInsertJobs(jobs);
+        }
     }
 
 
@@ -42,7 +45,9 @@ public class LagouOperationService{
      */
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
     public void batchAddCity(List<City> city){
-        lagouDao.batchInsertCitys(city);
+        if(!CollectionUtils.isEmpty(city)){
+            lagouDao.batchInsertCitys(city);
+        }
     }
 
 
@@ -51,12 +56,15 @@ public class LagouOperationService{
      */
     @Async
     public void batchAddCompany(List<Company> companies){
-        StopWatch clock = new StopWatch();
-        clock.start(); //计时开始
-        lagouDao.batchInsertCompanys(companies);
-        clock.stop();
-        long time = clock.getTime();
-        logger.info("批处理执行时间:"+time+"\n"+"数量：:"+companies.size());
+        if(!CollectionUtils.isEmpty(companies)){
+            StopWatch clock = new StopWatch();
+            clock.start(); //计时开始
+            lagouDao.batchInsertCompanys(companies);
+            clock.stop();
+            long time = clock.getTime();
+            logger.info("批处理执行时间:"+time+"\n"+"数量：:"+companies.size());
+        }
+
     }
 
     /**
@@ -64,12 +72,15 @@ public class LagouOperationService{
      */
     @Async
     public void batchAddPositionDetails(List<PositionDetail> positionDetails){
-        StopWatch clock = new StopWatch();
-        clock.start(); //计时开始
-        lagouDao.batchInsertPositionDetails(positionDetails);
-        clock.stop();
-        long time = clock.getTime();
-        logger.info("批处理执行时间:"+time+"\n");
+        if(!CollectionUtils.isEmpty(positionDetails)){
+            StopWatch clock = new StopWatch();
+            clock.start(); //计时开始
+            lagouDao.batchInsertPositionDetails(positionDetails);
+            clock.stop();
+            long time = clock.getTime();
+            logger.info("批处理执行时间:"+time+"\n");
+        }
+
     }
 
     public List<Positions> queryLeftPositions(){
