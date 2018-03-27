@@ -105,12 +105,29 @@
 		<!-- 指定spring容器的key，如果不设定在job中的jobmap中是获取不到spring容器的 -->
 		<property name="applicationContextJobDataKey" value="applicationContext"/>
 	</bean>
-
+	<!-- 定义任务bean 清除缓存 -->
+	<bean name="clearCache" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<!-- 指定具体的job类 -->
+		<property name="jobClass" value="cn.edu.zzti.bibased.jobs.ClearCache" />
+		<!-- 指定job的名称 -->
+		<property name="name" value="clearCache" />
+		<!-- 指定job的分组 -->
+		<property name="group" value="Lagou" />
+		<!-- 必须设置为true，如果为false，当没有活动的触发器与之关联时会在调度器中删除该任务  -->
+		<property name="durability" value="true"/>
+		<!-- 指定spring容器的key，如果不设定在job中的jobmap中是获取不到spring容器的 -->
+		<property name="applicationContextJobDataKey" value="applicationContext"/>
+	</bean>
 	<!-- 定义触发器 -->
 	<bean name="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="lagouJobDetail" />
 		<!-- 每天的14点执行 -->
 		<property name="cronExpression" value="0 5 14 * * ?" />
+	</bean>
+	<bean name="cronTriggerClearCache" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="clearCache" />
+		<!-- 每天的凌晨点执行 -->
+		<property name="cronExpression" value="0 0 0 * * ?" />
 	</bean>
 
 	<!-- 定义调度器 -->
@@ -118,8 +135,9 @@
 		<property name="triggers">
 			<list>
 				<ref bean="cronTrigger" />
+				<ref bean="cronTriggerClearCache" />
 			</list>
 		</property>
 	</bean>
-
+	<import resource="application-config.xml"/>
 </beans>

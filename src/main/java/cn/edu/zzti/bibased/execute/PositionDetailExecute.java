@@ -27,6 +27,7 @@ public class PositionDetailExecute extends BaseExecuter {
         if (StringUtils.isNotBlank(sourceJson)) {
             String targetJson = null;
             try {
+
                 logger.debug("职位信息json" + sourceJson);
                 JsonElement jsonElement = new JsonParser().parse(sourceJson);
                 targetJson = jsonElement.getAsJsonObject().get("content").getAsJsonObject().get("positionResult").toString();

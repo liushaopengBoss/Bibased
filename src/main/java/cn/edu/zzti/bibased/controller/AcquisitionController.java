@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+/**
+ * 信息采集
+ */
 @RestController
 @RequestMapping("/rest")
-public class GetInfomationController{
+public class AcquisitionController {
 
     @Resource
     private LagouService lagouService;
