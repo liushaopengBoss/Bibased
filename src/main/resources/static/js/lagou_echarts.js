@@ -728,7 +728,7 @@ $(function () {
         for(var i=0;i<resultData.length;i++){
             var cityPid = chinaCityMap.get(resultData[i].city);
             var province;
-            if(cityPid == undefined){
+            if(cityPid == false){
                 province = resultData[i].city;
             }else{
                 province = chinaProvinceMap.get(cityPid);
@@ -765,7 +765,7 @@ $(function () {
             },
             dataRange: {
                 min: 0,
-                max: 5000,
+                max: 20000,
                 x: 'left',
                 y: 'bottom',
                 text:['高','低'],           // 文本，默认为数值文本

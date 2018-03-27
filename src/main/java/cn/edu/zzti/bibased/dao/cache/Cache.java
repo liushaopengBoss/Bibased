@@ -38,7 +38,7 @@ public class Cache {
     }
 
     public void clearInvalideData(){
-        String yestoday = DateUtils.formatStr(DateUtils.getAfterDate(new Date(), 0), DateUtils.YYMMDD);
+        String yestoday = DateUtils.formatStr(DateUtils.getAfterDate(new Date(), -1), DateUtils.YYMMDD);
         logger.info(""+yestoday);
         List<String> list = new ArrayList<>();
         for(String key:cache.keySet()){
