@@ -68,18 +68,18 @@
             <version>${nekohtml_version}</version>
         </dependency>
         <!-- 添加 log4j 依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j</artifactId>
-            <version>${log4j_version}</version>
-        </dependency>
-        <!-- logback
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-log4j</artifactId>-->
+            <!--<version>${log4j_version}</version>-->
+        <!--</dependency>-->
+        <!-- logback -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
             <version>${spring_boot_version}</version>
         </dependency>
-        -->
+
         <dependency>
             <groupId>org.codehaus.janino</groupId>
             <artifactId>janino</artifactId>
@@ -213,6 +213,7 @@
                     <include>**/*.yaml</include>
                     <include>**/mapper/*.xml</include>
                     <include>**/static/*/*</include>
+                    <include>**/static/*/*/*</include>
                 </includes>
                 <filtering>false</filtering>
             </resource>

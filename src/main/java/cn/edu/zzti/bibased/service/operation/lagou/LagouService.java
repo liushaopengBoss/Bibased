@@ -13,6 +13,7 @@ import cn.edu.zzti.bibased.dto.lagou.*;
 import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.CompanyExecute;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
+import cn.edu.zzti.bibased.service.email.EmailService;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.thread.*;
@@ -48,6 +49,8 @@ public class LagouService {
     private LagouOperationService lagouOperationService;
     @Resource
     private HttpClientService httpClientService;
+    @Resource
+    private EmailService emailService;
 
     public String startGetDate(String apiUrl, Map<String,Object> param,String httpType) throws Exception{
         LaGouTask laGouTask = new LaGouTask(apiUrl,param, httpType);
@@ -92,7 +95,7 @@ public class LagouService {
      * 采集拉勾网的城市信息
      *
      */
-    @Async
+
     @ActionLog(ProjectItem.CITY)
     public void getCityInformation(){
         String url = "https://www.lagou.com/zhaopin/Java/?labelWords=label";
@@ -258,6 +261,7 @@ public class LagouService {
     @Async
     @ActionLog(ProjectItem.POSITIONDETAIL)
     public void getPositionDeailsInfomation(){
+        emailService.sendSimpleMail("信息开始采集！","时间"+DateUtils.formatStr(new Date(),DateUtils.YYMMDD_HHmmSS));
         Future<List<Positions>> positionListFuter = lagouPool.submit(() -> {
                return lagouOperationService.queryLeftPositions();
         });
@@ -319,11 +323,11 @@ public class LagouService {
                                     if (take.get() != null) {
                                         PositionDetailResultJsonVo positionDetailResultJsonVo = take.get();
                                         List<PositionDetailVo> result = positionDetailResultJsonVo.getResult();
-                                        if (result == null ||result != null && result.size() == 0 ) {
+                                        if (result == null || (result != null && result.size() == 0) ) {
                                             isBreak = true;
                                         }
                                         List<PositionDetail> positionDetailsList = handlePositionDetails(result, lastCreateTime, positionName);
-                                        if (positionDetailsList.size() < result.size()) {
+                                        if (result == null ||  (result!=null &&positionDetailsList.size() < result.size())) {
                                             count++;
                                         }
                                         positionDetails.addAll(positionDetailsList);
@@ -334,6 +338,7 @@ public class LagouService {
                                 } catch (Exception e) {
                                     isBreak = true;
                                     logger.error("获取数据失败！", e);
+                                    emailService.sendSimpleMail("信息告警","获取数据失败！"+e);
                                 }
                             }
 
@@ -353,7 +358,7 @@ public class LagouService {
                 logger.info("职位："+positionName+"抓取完成");
             });
         }
-
+        emailService.sendSimpleMail("信息采集结束！","时间"+DateUtils.formatStr(new Date(),DateUtils.YYMMDD_HHmmSS));
     }
 
     /**

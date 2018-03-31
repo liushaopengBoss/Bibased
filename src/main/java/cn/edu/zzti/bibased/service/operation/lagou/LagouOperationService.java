@@ -14,9 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -30,7 +34,9 @@ public class LagouOperationService{
      */
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
     public void batchAddJob(List<Positions> jobs){
-        lagouDao.batchInsertJobs(jobs);
+        if(!CollectionUtils.isEmpty(jobs)){
+            lagouDao.batchInsertJobs(jobs);
+        }
     }
 
 
@@ -39,7 +45,9 @@ public class LagouOperationService{
      */
     @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
     public void batchAddCity(List<City> city){
-        lagouDao.batchInsertCitys(city);
+        if(!CollectionUtils.isEmpty(city)){
+            lagouDao.batchInsertCitys(city);
+        }
     }
 
 
@@ -48,12 +56,15 @@ public class LagouOperationService{
      */
     @Async
     public void batchAddCompany(List<Company> companies){
-        StopWatch clock = new StopWatch();
-        clock.start(); //计时开始
-        lagouDao.batchInsertCompanys(companies);
-        clock.stop();
-        long time = clock.getTime();
-        logger.info("批处理执行时间:"+time+"\n"+"数量：:"+companies.size());
+        if(!CollectionUtils.isEmpty(companies)){
+            StopWatch clock = new StopWatch();
+            clock.start(); //计时开始
+            lagouDao.batchInsertCompanys(companies);
+            clock.stop();
+            long time = clock.getTime();
+            logger.info("批处理执行时间:"+time+"\n"+"数量：:"+companies.size());
+        }
+
     }
 
     /**
@@ -61,12 +72,15 @@ public class LagouOperationService{
      */
     @Async
     public void batchAddPositionDetails(List<PositionDetail> positionDetails){
-        StopWatch clock = new StopWatch();
-        clock.start(); //计时开始
-        lagouDao.batchInsertPositionDetails(positionDetails);
-        clock.stop();
-        long time = clock.getTime();
-        logger.info("批处理执行时间:"+time+"\n");
+        if(!CollectionUtils.isEmpty(positionDetails)){
+            StopWatch clock = new StopWatch();
+            clock.start(); //计时开始
+            lagouDao.batchInsertPositionDetails(positionDetails);
+            clock.stop();
+            long time = clock.getTime();
+            logger.info("批处理执行时间:"+time+"\n");
+        }
+
     }
 
     public List<Positions> queryLeftPositions(){
@@ -130,5 +144,25 @@ public class LagouOperationService{
 
     public List<PositionDetail> queryJobNatureNums(){
         return lagouDao.queryJobNatureNums();
+    }
+
+    public List<PositionDetail> queryPositionDetailsByFirstTye(String firstType){
+        return lagouDao.queryPositionDetailsByFirstTye(firstType);
+    }
+
+    public List<PositionDetail> queryCompanySize(){
+        return lagouDao.queryCompanySize();
+    }
+
+    public Map<String,List<PositionDetail>> queryWebCityNums(){
+        Map<String,List<PositionDetail>> mapResult = new HashMap<>();
+        List<PositionDetail> positionDetails = lagouDao.queryWebCityNums();
+        for(WebsiteEnum websiteEnum:WebsiteEnum.values()){
+            List<PositionDetail> collect = positionDetails.stream().filter(positionDetail -> {
+                return positionDetail.getInclude().equals(websiteEnum.getWebCode());
+            }).collect(Collectors.toList());
+            mapResult.put(websiteEnum.getWebCode(),collect);
+        }
+        return mapResult;
     }
 }
