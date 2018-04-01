@@ -34,6 +34,9 @@ import java.util.*;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.Future;
 
+/**
+ * 采集拉勾网数据
+ */
 @Service
 public class LagouGetService {
     private static final Logger logger = LoggerFactory.getLogger(LagouGetService.class);
