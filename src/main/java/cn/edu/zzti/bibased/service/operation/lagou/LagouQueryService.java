@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -23,63 +24,9 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class LagouOperationService{
-    private Logger logger = LoggerFactory.getLogger(LagouOperationService.class);
+public class LagouQueryService {
     @Resource
     private LagouDao lagouDao;
-
-    /**
-     * 批量数据写入职位
-     */
-    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
-    public void batchAddJob(List<Positions> jobs){
-        lagouDao.batchInsertJobs(jobs);
-    }
-
-
-    /**
-     * 批量数据写入城市
-     */
-    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
-    public void batchAddCity(List<City> city){
-        lagouDao.batchInsertCitys(city);
-    }
-
-
-    /**
-     * 批量数据写入公司信息  并且异步操作
-     */
-    @Async
-    public void batchAddCompany(List<Company> companies){
-        StopWatch clock = new StopWatch();
-        clock.start(); //计时开始
-        lagouDao.batchInsertCompanys(companies);
-        clock.stop();
-        long time = clock.getTime();
-        logger.info("批处理执行时间:"+time+"\n"+"数量：:"+companies.size());
-    }
-
-    /**
-     * 批量数据写入职位详情信息  并且异步操作
-     */
-    @Async
-    public void batchAddPositionDetails(List<PositionDetail> positionDetails){
-        StopWatch clock = new StopWatch();
-        clock.start(); //计时开始
-        lagouDao.batchInsertPositionDetails(positionDetails);
-        clock.stop();
-        long time = clock.getTime();
-        logger.info("批处理执行时间:"+time+"\n");
-    }
-
-    public List<Positions> queryLeftPositions(){
-        return  lagouDao.queryLeafPositions(WebsiteEnum.LAGOU.getWebCode());
-    }
-
-    public List<City> queryCitys(){
-        return lagouDao.queryCitys(WebsiteEnum.LAGOU.getWebCode());
-    }
-
     /**
      * 获取最后一起信息抓取的时间
      * @param city

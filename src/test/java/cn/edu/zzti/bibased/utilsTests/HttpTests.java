@@ -10,10 +10,12 @@ import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
 import cn.edu.zzti.bibased.service.email.EmailService;
+import cn.edu.zzti.bibased.service.handler.BossHandler;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
-import cn.edu.zzti.bibased.service.operation.lagou.LagouOperationService;
-import cn.edu.zzti.bibased.service.operation.lagou.LagouService;
+import cn.edu.zzti.bibased.service.operation.base.AcquisitionService;
+import cn.edu.zzti.bibased.service.operation.lagou.LagouQueryService;
+import cn.edu.zzti.bibased.service.operation.lagou.LagouGetService;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import cn.edu.zzti.bibased.utils.IDUtils;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
@@ -33,13 +35,15 @@ public class HttpTests extends BaseApplicationTests {
     @Resource
     private HttpClientService httpClientService;
     @Resource
-    private LagouOperationService lagouOperationService;
+    private LagouQueryService lagouOperationService;
     @Resource
     private LagouDao lagouDao;
     @Resource
-    LagouService lagouService;
+    LagouGetService lagouService;
     @Resource
     private EmailService emailService;
+    @Resource
+    AcquisitionService acquisitionService;
     @Test
     public void getService() throws Exception {
         // String url = "http://search.51job.com/list/080200,000000,0000,00,9,99,Java%2B%25E5%25BC%2580%25E5%258F%2591,2,1.html?lang=c&stype=1&postchannel=0000&workyear=99&cotype=99&degreefrom=99&jobterm=99&companysize=99&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=1&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=";
@@ -186,15 +190,29 @@ public class HttpTests extends BaseApplicationTests {
     public void positionWorkYearTest(){
         List<PositionDetail> positionDetails = lagouOperationService.queryWorkYearNums();
     }
-        @Resource
-        JavaMailSenderImpl mailSender;
+    @Resource
+    JavaMailSenderImpl mailSender;
     @Test
     public void senfTets(){
         SimpleMailMessage mail = new SimpleMailMessage();
-        mail.setTo("1396647019@qq.com");//收件人邮箱地址
+        mail.setTo("1093591277@qq.com");//收件人邮箱地址
         mail.setFrom("biggress@163.com");//收件人
-        mail.setSubject("spring自带javamail发送的邮件");//主题
+        mail.setSubject("spring自带javamail发送给儿子的的邮件");//主题
         mail.setText("hello this mail is from spring javaMail ");//正文
         mailSender.send(mail);
     }
+
+    @Test
+    public void lagouLoginTest() {
+        String url = "https://www.lagou.com/frontLogin.do";
+        String s = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
+    }
+    @Test
+    public void BossPositionTest(){
+        String apiUrl = "https://www.zhipin.com/";
+        String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.bossGetHeader);
+        List<Positions> jobs = BossHandler.getJobs(html);
+        acquisitionService.batchAddJob(jobs);
+    }
+
 }

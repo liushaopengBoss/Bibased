@@ -1,7 +1,6 @@
 package cn.edu.zzti.bibased.jobs;
 
 import cn.edu.zzti.bibased.dao.cache.Cache;
-import cn.edu.zzti.bibased.service.operation.lagou.LagouService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;

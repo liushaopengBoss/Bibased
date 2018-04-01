@@ -2,7 +2,9 @@ package cn.edu.zzti.bibased.dao.lagou;
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dao.cache.Cache;
-import cn.edu.zzti.bibased.dao.mapper.*;
+import cn.edu.zzti.bibased.dao.mapper.CompanyMapper;
+import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
+import cn.edu.zzti.bibased.dao.mapper.PositionsMapper;
 import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import org.springframework.stereotype.Repository;
@@ -12,15 +14,15 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 用于数据的写入
+ * 用于数据的查询
  */
 @Repository
-public class LagouDao {
-    @Resource
-    private PositionsMapper positionsMapper;
+public class LagouDao  {
 
     @Resource
-    private CityMapper cityMapper;
+    private Cache cache;
+    @Resource
+    private PositionsMapper positionsMapper;
 
     @Resource
     private CompanyMapper companyMapper;
@@ -30,36 +32,6 @@ public class LagouDao {
 
     @Resource
     private ActionLogDao actionLogDao;
-
-    @Resource
-    private Cache cache;
-
-    public void insertJob(Positions position){
-        positionsMapper.insert(position);
-    }
-    public void batchInsertJobs(List<Positions> positionList){
-        positionsMapper.batchInsert(positionList);
-    }
-
-    public void batchInsertCitys(List<City> cityList){
-        cityMapper.batchInsert(cityList);
-    }
-
-    public void batchInsertCompanys(List<Company> companies){
-        companyMapper.batchInsert(companies);
-    }
-
-    public List<Positions> queryLeafPositions(String include){
-        return positionsMapper.queryLeafPositions(include);
-    }
-
-    public List<City> queryCitys(String include){
-        return cityMapper.queryCity(include);
-    }
-
-    public void batchInsertPositionDetails(List<PositionDetail> positionDetails){
-        positionDetailMapper.batchInsert(positionDetails);
-    }
 
     public Long queryLastPositionCreateTime(String city,String thirdType){
         Long positionDetail = positionDetailMapper.selectLastPostionCreateTime(WebsiteEnum.LAGOU.getWebCode(),city,thirdType);
@@ -110,7 +82,7 @@ public class LagouDao {
      * @return
      */
     public List<Positions> queryPositionTypeNums(){
-        return positionsMapper.queryPositionTypeNums();
+        return positionsMapper.queryPositionTypeNums(WebsiteEnum.LAGOU.getWebCode());
     }
 
     public List<PositionDetail> queryWorkYearNums(){
