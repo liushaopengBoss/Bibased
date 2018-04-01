@@ -1,5 +1,7 @@
 package cn.edu.zzti.bibased.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +9,7 @@ import java.io.Serializable;
  * <p>
  * Created by huaidou on  2018/1/11
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Positions implements Serializable {
     private long id;
     private String positionUrl;//职位url链接地址

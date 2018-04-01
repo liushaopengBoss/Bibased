@@ -92,4 +92,34 @@ public class DataAnalysisController {
     public List<PositionDetail> queryJobNatureNums(){
         return lagouOperationService.queryJobNatureNums();
     }
+    /**
+     * 拉钩技术类型下 各种职位类型的职位数量
+     *
+     * @return
+     */
+    @RequestMapping("/v1/queryPositionDetailsByJS")
+    @ResponseBody
+    public List<PositionDetail> queryPositionDetailsByFirstTye(){
+        return lagouOperationService.queryPositionDetailsByFirstTye("技术");
+    }
+    /**
+     * 拉钩  不同公司规模的职位数量
+     *
+     * @return
+     */
+    @RequestMapping("/v1/queryCompanySize")
+    @ResponseBody
+    public List<PositionDetail> queryCompanySize(){
+        return lagouOperationService.queryCompanySize();
+    }
+    /**
+     * 获取每个招聘网站在各个城市的职位数量
+     *
+     * @return
+     */
+    @RequestMapping("/v1/queryWebCityNums")
+    @ResponseBody
+    public Map<String,List<PositionDetail>> queryWebCityNums(){
+        return lagouOperationService.queryWebCityNums();
+    }
 }
