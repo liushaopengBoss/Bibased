@@ -35,28 +35,28 @@ public class BossHandler {
             Elements jobMenu = bossJobs.getElementsByClass("job-menu");
             for (int i = 0; i <jobMenu.size(); i++) {
                 Elements menuSubs = jobMenu.get(i).getElementsByClass("menu-sub");
-                Elements h4 = jobMenu.get(i).getElementsByTag("h4");
                 for (int j = 0; j <menuSubs.size() ; j++) {
-                    String rootName = h4.get(j).text();
-                    long jobsIntId = IDUtils.getJobsIntId();
-                    Positions rootPositon = new Positions();
-                    rootPositon.setInclude(WebsiteEnum.BOSS.getWebCode());
-                    rootPositon.setPositionName(rootName);
-                    rootPositon.setLeaf(Boolean.FALSE);
-                    rootPositon.setDateVersion(dateVersion);
-                    rootPositon.setParentId(0);
-                    rootPositon.setRootId(jobsIntId);
-                    jobs.add(rootPositon);
                     Elements text = menuSubs.get(j).getElementsByClass("text");
+                    Elements h4 = menuSubs.get(j).getElementsByTag("h4");
                     for (int k = 0; k <text.size() ; k++) {
+                        String rootName = h4.get(k).text();
+                        long rootId = IDUtils.getJobsIntId();
+                        Positions rootPositon = new Positions();
+                        rootPositon.setInclude(WebsiteEnum.BOSS.getWebCode());
+                        rootPositon.setPositionName(rootName);
+                        rootPositon.setLeaf(Boolean.FALSE);
+                        rootPositon.setDateVersion(dateVersion);
+                        rootPositon.setParentId(0);
+                        rootPositon.setRootId(rootId);
+                        jobs.add(rootPositon);
                         Elements a = text.get(k).getElementsByTag("a");
                         for (int l = 0; l <a.size() ; l++) {
                             Positions leafPositon = new Positions();
                             leafPositon.setInclude(WebsiteEnum.BOSS.getWebCode());
                             leafPositon.setPositionName(a.get(l).text());
                             leafPositon.setDateVersion(dateVersion);
-                            leafPositon.setParentId(jobsIntId);
-                            leafPositon.setRootId(jobsIntId);
+                            leafPositon.setParentId(rootId);
+                            leafPositon.setRootId(rootId);
                             leafPositon.setPositionUrl("https://www.zhipin.com/"+a.get(l).attr("href"));
                             jobs.add(leafPositon);
                         }

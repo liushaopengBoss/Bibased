@@ -1,6 +1,5 @@
-package cn.edu.zzti.bibased.dao;
+package cn.edu.zzti.bibased.dao.acquisition;
 
-import cn.edu.zzti.bibased.dao.lagou.ActionLogDao;
 import cn.edu.zzti.bibased.dao.mapper.CityMapper;
 import cn.edu.zzti.bibased.dao.mapper.CompanyMapper;
 import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
@@ -9,6 +8,7 @@ import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.Company;
 import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.Positions;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -16,7 +16,8 @@ import java.util.List;
 /**
  * Created by huaidou on  2018/3/27
  */
-public class BaseDao {
+@Repository
+public class AcquisitionDao {
     @Resource
     protected PositionsMapper positionsMapper;
 
@@ -28,9 +29,6 @@ public class BaseDao {
 
     @Resource
     protected PositionDetailMapper positionDetailMapper;
-
-    @Resource
-    protected ActionLogDao actionLogDao;
 
 
     public void insertJob(Positions position){

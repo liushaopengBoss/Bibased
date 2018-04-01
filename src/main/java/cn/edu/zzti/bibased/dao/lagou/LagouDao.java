@@ -1,8 +1,10 @@
 package cn.edu.zzti.bibased.dao.lagou;
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
-import cn.edu.zzti.bibased.dao.BaseDao;
 import cn.edu.zzti.bibased.dao.cache.Cache;
+import cn.edu.zzti.bibased.dao.mapper.CompanyMapper;
+import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
+import cn.edu.zzti.bibased.dao.mapper.PositionsMapper;
 import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import org.springframework.stereotype.Repository;
@@ -12,13 +14,24 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 用于数据的写入
+ * 用于数据的查询
  */
 @Repository
-public class LagouDao extends BaseDao {
+public class LagouDao  {
 
     @Resource
     private Cache cache;
+    @Resource
+    private PositionsMapper positionsMapper;
+
+    @Resource
+    private CompanyMapper companyMapper;
+
+    @Resource
+    private PositionDetailMapper positionDetailMapper;
+
+    @Resource
+    private ActionLogDao actionLogDao;
 
     public Long queryLastPositionCreateTime(String city,String thirdType){
         Long positionDetail = positionDetailMapper.selectLastPostionCreateTime(WebsiteEnum.LAGOU.getWebCode(),city,thirdType);
@@ -69,7 +82,7 @@ public class LagouDao extends BaseDao {
      * @return
      */
     public List<Positions> queryPositionTypeNums(){
-        return positionsMapper.queryPositionTypeNums();
+        return positionsMapper.queryPositionTypeNums(WebsiteEnum.LAGOU.getWebCode());
     }
 
     public List<PositionDetail> queryWorkYearNums(){

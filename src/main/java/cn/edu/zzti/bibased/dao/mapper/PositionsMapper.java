@@ -31,9 +31,9 @@ public interface PositionsMapper {
      * @return
      */
     @Select("  SELECT position_name as positionName ,count(root_id) as num from positions where root_id in (\n" +
-            "\t\tSELECT id from positions where parent_id = 0 AND date_version = (\n" +
-            "\t\t\tSELECT date_version from positions order by date_version desc limit 1\n" +
+            "\t\tSELECT root_id from positions where parent_id = 0 and include = #{include} AND date_version = (\n" +
+            "\t\t\tSELECT date_version from positions where include = #{include} order by date_version desc limit 1\n" +
             "\t\t)\n" +
             ")  group by root_id")
-     List<Positions> queryPositionTypeNums();
+     List<Positions> queryPositionTypeNums(String include);
 }

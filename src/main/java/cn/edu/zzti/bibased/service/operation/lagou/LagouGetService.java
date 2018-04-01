@@ -2,7 +2,6 @@ package cn.edu.zzti.bibased.service.operation.lagou;
 
 import cn.edu.zzti.bibased.aspect.ActionLog;
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
-import cn.edu.zzti.bibased.constant.HttpType;
 import cn.edu.zzti.bibased.constant.ProjectItem;
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dto.City;
@@ -16,6 +15,7 @@ import cn.edu.zzti.bibased.execute.PositionDetailExecute;
 import cn.edu.zzti.bibased.service.email.EmailService;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
+import cn.edu.zzti.bibased.service.operation.base.AcquisitionService;
 import cn.edu.zzti.bibased.thread.*;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import cn.edu.zzti.bibased.utils.SpringContextUtils;
@@ -31,13 +31,12 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.Future;
 
 @Service
-public class LagouService {
-    private static final Logger logger = LoggerFactory.getLogger(LagouService.class);
+public class LagouGetService {
+    private static final Logger logger = LoggerFactory.getLogger(LagouGetService.class);
     @Resource
     private ThreadPoolTaskExecutor lagouPool;
     /**
@@ -46,11 +45,13 @@ public class LagouService {
     @Resource
     private CompletionService completionService;
     @Resource
-    private LagouOperationService lagouOperationService;
+    private LagouQueryService lagouQueryService;
     @Resource
     private HttpClientService httpClientService;
     @Resource
     private EmailService emailService;
+    @Resource
+    private AcquisitionService acquisitionService;
 
     public String startGetDate(String apiUrl, Map<String,Object> param,String httpType) throws Exception{
         LaGouTask laGouTask = new LaGouTask(apiUrl,param, httpType);
@@ -89,7 +90,7 @@ public class LagouService {
         String url = "https://www.lagou.com";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
         List<Positions> jobs = LagouHandler.getJobs(html);
-        lagouOperationService.batchAddJob(jobs);
+        acquisitionService.batchAddJob(jobs);
     }
     /**
      * 采集拉勾网的城市信息
@@ -101,7 +102,7 @@ public class LagouService {
         String url = "https://www.lagou.com/zhaopin/Java/?labelWords=label";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
         List<City> jobs = LagouHandler.getCitys(html);
-        lagouOperationService.batchAddCity(jobs);
+        acquisitionService.batchAddCity(jobs);
     }
     /**
      * 采集拉勾网的公司信息
@@ -250,7 +251,7 @@ public class LagouService {
                 company.setPositionSlogan(vo.getCompanyFeatures());
             }
             companyVOS.clear();
-            lagouOperationService.batchAddCompany(targetCompany);
+            acquisitionService.batchAddCompany(targetCompany);
         }
     }
 
@@ -263,11 +264,11 @@ public class LagouService {
     public void getPositionDeailsInfomation(){
         emailService.sendSimpleMail("信息开始采集！","时间"+DateUtils.formatStr(new Date(),DateUtils.YYMMDD_HHmmSS));
         Future<List<Positions>> positionListFuter = lagouPool.submit(() -> {
-               return lagouOperationService.queryLeftPositions();
+               return acquisitionService.queryLeftPositions();
         });
 
         List<Positions> positions = null;
-        List<City> citys =lagouOperationService.queryCitys();
+        List<City> citys =acquisitionService.queryCitys();
         try{
             positions = positionListFuter.get();
         }catch (Exception e){}
@@ -295,7 +296,7 @@ public class LagouService {
                     int pageSize = executer.getPageSize();
                     pageSize = pageSize > 20 ? 20 : pageSize;
                     isSleep(pageSize);
-                    Long lastCreateTime = lagouOperationService.queryLastPositionCreateTime(city.getCityName(), positionName);
+                    Long lastCreateTime = lagouQueryService.queryLastPositionCreateTime(city.getCityName(), positionName);
                     if (pageSize != 0 || pageSize != 1) {
                         logger.info("爬虫开始获取数据：城市："+city.getCityName()+"  职位："+positionName);
                         for (int i = 1; i <= pageSize; i++) {
@@ -343,7 +344,7 @@ public class LagouService {
                             }
 
                             if (positionDetails.size() > 0) {
-                                lagouOperationService.batchAddPositionDetails(positionDetails);
+                                acquisitionService.batchAddPositionDetails(positionDetails);
                                 i--;
                                 logger.info("数据获取成功-->异步写入数据  ");
                             } else if (isBreak || positionDetails.size() == 0 || count == 2) {
