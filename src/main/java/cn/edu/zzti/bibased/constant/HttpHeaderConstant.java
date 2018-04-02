@@ -28,13 +28,15 @@ public class HttpHeaderConstant {
         lagouGetHeader.put("Connection", "keep-alive");
 //        lagouGetHeader.put("Content-Length","23");
         lagouGetHeader.put("Content-Type", "applicationation/x-www-form-urlencoded; charset=UTF-8");
-        lagouGetHeader.put("Cookie", "user_trace_token=" + user_trace_token + "; LGUID="+user_trace_token+"; index_location_city=%E5%85%A8%E5%9B%BD; JSESSIONID=" + JSESSIONID + "; PRE_UTM=; PRE_HOST=; PRE_SITE=; PRE_LAND=https%3A%2F%2Fwww.lagou.com%2F; TG-TRACK-CODE=index_navigation; _gat=1; _gid=GA1.2.124201744.1512039385; _ga=GA1.2.901608893.1511590633; Hm_lvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1511590640,1511590640,1511846105,1512039389; Hm_lpvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1512039628; LGSID=20171130185625-1c137253-d5bd-11e7-b62b-525400f775ce; LGRID=20171130190027-ac9d17e2-d5bd-11e7-9b20-5254005c3644; SEARCH_ID=");
+       // lagouGetHeader.put("Cookie", "user_trace_token=" + user_trace_token + "; LGUID="+user_trace_token+"; index_location_city=%E5%85%A8%E5%9B%BD; JSESSIONID=" + JSESSIONID + "; PRE_UTM=; PRE_HOST=; PRE_SITE=; PRE_LAND=https%3A%2F%2Fwww.lagou.com%2F; TG-TRACK-CODE=index_navigation; _gat=1; _gid=GA1.2.124201744.1512039385; _ga=GA1.2.901608893.1511590633; Hm_lvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1511590640,1511590640,1511846105,1512039389; Hm_lpvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1512039628; LGSID=20171130185625-1c137253-d5bd-11e7-b62b-525400f775ce; LGRID=20171130190027-ac9d17e2-d5bd-11e7-9b20-5254005c3644; SEARCH_ID=");
+        lagouGetHeader.put("Cookie","user_trace_token=20171204190931-9a32b27e-d8e3-11e7-829f-525400f775ce; LGUID=20171204190931-9a32b4e9-d8e3-11e7-829f-525400f775ce; _ga=GA1.2.1002046000.1512385771; JSESSIONID=ABAAABAAADEAAFI73B5C188BF0F77CDD891D6BCC1ACE8B0; Hm_lvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1521543898,1522124283,1522147458,1522645727; _gat=1; LGSID=20180402130847-ecaabc03-3633-11e8-b6d5-5254005c3644; PRE_UTM=; PRE_HOST=; PRE_SITE=; PRE_LAND=https%3A%2F%2Fwww.lagou.com%2F; index_location_city=%E5%85%A8%E5%9B%BD; _gid=GA1.2.426115179.1522645731; TG-TRACK-CODE=index_navigation;  LGRID=20180402130914-fca506a9-3633-11e8-b6d5-5254005c3644;SEARCH_ID=");
         lagouGetHeader.put("Host", "www.lagou.com");
-        lagouGetHeader.put("Origin", "https://www.lagou.com");
-        lagouGetHeader.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36");
-        lagouGetHeader.put("X-Anit-Forge-Code", "0");
-        lagouGetHeader.put("X-Anit-Forge-Token", "None");
-        lagouGetHeader.put("X-Requested-With", "XMLHttpRequest");
+//        lagouGetHeader.put("Origin", "https://www.lagou.com");
+        lagouGetHeader.put("Upgrade-Insecure-Requests", 1);
+        lagouGetHeader.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
+//        lagouGetHeader.put("X-Anit-Forge-Code", "0");
+//        lagouGetHeader.put("X-Anit-Forge-Token", "None");
+//        lagouGetHeader.put("X-Requested-With", "XMLHttpRequest");
 
     }
     //https://www.lagou.com/upload/ltm/oss.html?u=/gongsi/213-0-0&q=171&n=172&d=105&l=261&dns=0&p=545&pi=43&qn=387&t=1519818522275
