@@ -1,6 +1,8 @@
 package cn.edu.zzti.bibased.execute;
 
+import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.lagou.PositionDetailResultJsonVo;
+import cn.edu.zzti.bibased.service.handler.BossHandler;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -10,18 +12,35 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @Scope(value = "prototype")
 public class PositionDetailExecute extends BaseExecuter {
     private Logger logger = LoggerFactory.getLogger(PositionDetailExecute.class);
     @Override
-    protected PositionDetailResultJsonVo builderResult() {
-        String data = httpClientService.doPost(apiUrl, this.params, this.headers);
-        return handlePositions(data);
+    protected Object builderResult() {
+        switch (websiteEnum){
+            case BOSS:{
+                String html = httpClientService.doGet(apiUrl, this.params, this.headers);
+                return handleBossPositionDetails(html);
+            }
+            case JOB:{
+                break;
+            }
+            case LAGOU:{
+                String data = httpClientService.doPost(apiUrl, this.params, this.headers);
+                return handleLagouPositions(data);
+            }
+        }
+        return null;
     }
 
-    private PositionDetailResultJsonVo handlePositions(String sourceJson) {
+    private List<PositionDetail> handleBossPositionDetails(String html){
+    return BossHandler.getBossPositionDetails(html);
+    }
+    private PositionDetailResultJsonVo handleLagouPositions(String sourceJson) {
 
         PositionDetailResultJsonVo positionDetailResultJsonVo = null;
         if (StringUtils.isNotBlank(sourceJson)) {
@@ -55,7 +74,7 @@ public class PositionDetailExecute extends BaseExecuter {
         try {
             String data = httpClientService.doPost(apiUrl, this.params, this.headers);
             logger.debug("页面数json："+data);
-            PositionDetailResultJsonVo positionDetailResultJsonVo= handlePositions(data);
+            PositionDetailResultJsonVo positionDetailResultJsonVo= handleLagouPositions(data);
             if(positionDetailResultJsonVo !=null){
                 return positionDetailResultJsonVo.getTotalCount()/positionDetailResultJsonVo.getResultSize();
             }

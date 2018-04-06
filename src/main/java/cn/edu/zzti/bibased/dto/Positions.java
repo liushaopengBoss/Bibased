@@ -12,6 +12,7 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Positions implements Serializable {
     private long id;
+    private String code;
     private String positionUrl;//职位url链接地址
     private String positionName;//职位名称
     private String include;//属于哪个网站
@@ -34,6 +35,14 @@ public class Positions implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getPositionUrl() {

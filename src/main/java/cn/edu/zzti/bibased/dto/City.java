@@ -12,6 +12,7 @@ public class City implements Serializable {
     private String cityName;
     private String include;
     private String dateVersion;
+    private String code;
     private long createTime;//创建时间
     private long opTime;//修改时间
     private long lastVer;// 版本
@@ -20,6 +21,14 @@ public class City implements Serializable {
      * 获取公司的链接 ID (用于数据的拼装)
      */
     private String linkId;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public Integer getId() {
         return id;

@@ -1,5 +1,6 @@
 package cn.edu.zzti.bibased.execute;
 
+import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.thread.AnsyTask;
 import cn.edu.zzti.bibased.utils.SpringContextUtils;
@@ -23,7 +24,10 @@ public abstract class BaseExecuter implements AnsyTask.Executer {
      * post参数
      */
     protected  Map<String,Object> params;
-
+    /**
+     * 网站类型
+     */
+    protected WebsiteEnum websiteEnum;
     @Resource
     protected HttpClientService httpClientService;
 

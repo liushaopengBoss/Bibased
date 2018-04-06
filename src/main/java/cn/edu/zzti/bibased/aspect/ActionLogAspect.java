@@ -2,6 +2,7 @@ package cn.edu.zzti.bibased.aspect;
 
 import cn.edu.zzti.bibased.constant.ProjectItem;
 import cn.edu.zzti.bibased.dto.ActionLogDO;
+import cn.edu.zzti.bibased.service.email.EmailService;
 import cn.edu.zzti.bibased.service.operation.other.ActionLogService;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -27,6 +28,8 @@ public class ActionLogAspect {
     private Logger logger = LoggerFactory.getLogger(ActionLogAspect.class);
     @Resource
     private ActionLogService actionLogService;
+    @Resource
+    private EmailService emailService;
 
     @Around("execution(public * cn.edu.zzti.bibased.service.operation.lagou.*.*(..))")
     public Object aroundService(ProceedingJoinPoint pjp) throws Throwable {

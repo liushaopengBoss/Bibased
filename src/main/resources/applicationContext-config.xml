@@ -73,7 +73,7 @@
 		  factory-bean="requestConfigBuilder" factory-method="build" />
 
 	<!-- 线程池, 当池子满时, 调用处理阻塞等待 -->
-	<bean id="lagouPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+	<bean id="getInfoPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="18"/>
 		<property name="maxPoolSize" value="50"/>
 		<property name="queueCapacity" value="36"/>
