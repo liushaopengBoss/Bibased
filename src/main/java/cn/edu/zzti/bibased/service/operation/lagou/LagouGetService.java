@@ -41,7 +41,7 @@ import java.util.concurrent.Future;
 public class LagouGetService {
     private static final Logger logger = LoggerFactory.getLogger(LagouGetService.class);
     @Resource
-    private ThreadPoolTaskExecutor lagouPool;
+    private ThreadPoolTaskExecutor getInfoPool;
     /**
      * 注入无阻塞的
      */
@@ -75,10 +75,10 @@ public class LagouGetService {
      * 多线程执行数据
      */
     public void initLagouInfo(){
-        lagouPool.execute(()-> {
+        getInfoPool.execute(()-> {
                 getJobInformation();
         });
-        lagouPool.execute(()->{
+        getInfoPool.execute(()->{
             getCityInformation();
         });
 
@@ -266,7 +266,7 @@ public class LagouGetService {
     @ActionLog(ProjectItem.POSITIONDETAIL)
     public void getPositionDeailsInfomation(){
         emailService.sendSimpleMail("信息开始采集！","时间"+DateUtils.formatStr(new Date(),DateUtils.YYMMDD_HHmmSS));
-        Future<List<Positions>> positionListFuter = lagouPool.submit(() -> {
+        Future<List<Positions>> positionListFuter = getInfoPool.submit(() -> {
                return acquisitionService.queryLeftPositions();
         });
 
