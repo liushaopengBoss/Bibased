@@ -235,10 +235,10 @@
         function getWebInfo(webType,type) {
             var url ;
             switch (webType){
-                case 1: url = "/rest/v1/get_position_details?code="+type; break;
-                case 2: url ="/rest/v1/get_positions?code="+type; break;
-                case 3: url = "/rest/v1/get_city?code="+type;break;
-                case 4: url = "/rest/v1/get_company?code="+type;break;
+                case 1: url = "/rest/v1/get_position_details/"+type; break;
+                case 2: url ="/rest/v1/get_positions/"+type; break;
+                case 3: url = "/rest/v1/get_city/"+type;break;
+                case 4: url = "/rest/v1/get_company/"+type;break;
             }
             $.ajax({
                 url : url,
@@ -277,14 +277,16 @@
         }
         function setTimeout(id) {
             init(id);
+            var time = 0;
             var interva = setInterval(function() {
                     $.ajax({
-                        url : "/rest/v1/get_Speed_of_progress?time=0",
+                        url : "/rest/v1/get_Speed_of_progress?time="+time,
                         dataType : "jsonp",
                         type : "POST",
                         jsonpCallback:'callback',
                         success : function(resultData){
                             if(resultData.code == 200){
+                                time = resultData.data;
                                 $("#"+id+"Label").text("当前进度： "+resultData.data+"%")
                                 $("#"+id+"ProgressBar").width(resultData.data);
                             }else{

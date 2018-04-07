@@ -20,7 +20,7 @@
     <include refid="Base_Column_List" />
     from city
     where include = #{include,jdbcType=VARCHAR} AND  date_version = (
-      select date_version  from city ORDER BY date_version DESC limit 1
+      select date_version  from city WHERE include = #{include,jdbcType=VARCHAR} ORDER BY date_version DESC limit 1
     )
   </select>
 

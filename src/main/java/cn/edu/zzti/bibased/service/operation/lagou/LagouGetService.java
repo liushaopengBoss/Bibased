@@ -101,6 +101,7 @@ public class LagouGetService {
      */
 
     @ActionLog(ProjectItem.CITY)
+    @Async
     public void getCityInformation(){
         String url = "https://www.lagou.com/zhaopin/Java/?labelWords=label";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
