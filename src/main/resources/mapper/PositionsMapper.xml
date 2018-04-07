@@ -45,6 +45,6 @@
         SELECT   position_url, position_name, include from positions
         WHERE  include = #{include}  and leaf = 1 and date_version = (
           SELECT date_version from positions WHERE  include = #{include} ORDER BY date_version Desc limit 1
-        )
+        ) AND  root_id != parent_id
     </select>
 </mapper>

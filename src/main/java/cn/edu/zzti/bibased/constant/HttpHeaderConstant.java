@@ -1,5 +1,6 @@
 package cn.edu.zzti.bibased.constant;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -88,6 +89,27 @@ public class HttpHeaderConstant {
         lagouGetHeader.put("Origin", "https://www.lagou.com");
         lagouGetHeader.put("Upgrade-Insecure-Requests", 1);
         lagouGetHeader.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
+    }
+    public  static  Map<String,Object>  bossPositionDetailGetHeader = new LinkedHashMap<>();
+
+    static {
+        bossPositionDetailGetHeader.put(":authority","www.zhipin.com");
+        bossPositionDetailGetHeader.put(":method","GET");
+        bossPositionDetailGetHeader.put(":path","");
+        bossPositionDetailGetHeader.put(":scheme","https");
+        bossPositionDetailGetHeader.put("accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+        bossPositionDetailGetHeader.put("accept-encoding","gzip, deflate, br");
+        bossPositionDetailGetHeader.put("accept-language","zh-CN,zh;q=0.9");
+        bossPositionDetailGetHeader.put("cookie","lastCity=101210100; JSESSIONID=\"\";" +
+                " Hm_lvt_194df3105ad7148dcf2b98a91b5e727a=1521947993,1522511497,1522570866,1522849305;" +
+                " __c=1522849305; __g=-; __l=l=%2Fwww.zhipin.com%2F&r=; " +
+                "toUrl=https%3A%2F%2Fwww.zhipin.com%2Fjob_detail%2F; " +
+                "t=2hC6RJArNhx9pdCs; wt=2hC6RJArNhx9pdCs; " +
+                "Hm_lpvt_194df3105ad7148dcf2b98a91b5e727a=1523014640;" +
+                " __a=60528412.1515908295.1522570866.1522849305.89.5.53.89");
+        bossPositionDetailGetHeader.put("referer","https://www.zhipin.com/c101280600-p100103/?ka=sel-city-101280600");
+        bossPositionDetailGetHeader.put("upgrade-insecure-requests",1);
+        bossPositionDetailGetHeader.put("user-agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36");
     }
 
     /**

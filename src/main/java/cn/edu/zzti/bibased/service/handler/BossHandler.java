@@ -125,6 +125,23 @@ public class BossHandler {
         }
     }
 
+    public static List<City>  getHotCity(String sourceJson){
+        List<City> citys = new ArrayList<>();
+        if(StringUtils.isNotEmpty(sourceJson)) {
+            try {
+                JsonElement jsonElement = new JsonParser().parse(sourceJson);
+                String targetJson = jsonElement.getAsJsonObject().get("data").getAsJsonObject().get("hotCityList").toString();
+                if (StringUtils.isNotEmpty(targetJson)) {
+                    List<BossBaseVo> bossBaseVos = JSON.parseArray(targetJson, BossBaseVo.class);
+                    String dateVersion = DateUtils.formatStr(new Date(), DateUtils.YYMMDDHHmmssSSS);
+                    handleCity(bossBaseVos, citys, dateVersion);
+                }
+            }catch (Exception e){
+                logger.info("get boss hot city info faild！",e);
+            }
+        }
+        return citys;
+    }
     public static List<City>  getCity(String sourceJson){
         List<City> citys = new ArrayList<>();
         if(StringUtils.isNotEmpty(sourceJson)) {
@@ -168,9 +185,14 @@ public class BossHandler {
                     Elements infoPrimary = element.getElementsByClass("info-primary");
                     Elements infoCompany = element.getElementsByClass("info-company");
                     Elements infoPublish =element.getElementsByClass("info-publis");
-                    Element infoP = infoCompany.get(0);
+                    Element infoP = infoPrimary.get(0);
                     String thirdType = infoP.getElementsByClass("job-title").toString();
-//                    infoP.getElementsByClass()
+                    String salary = infoP.getElementsByTag("h3").get(0).getElementsByTag("span").text();
+                    String positionUrl = infoP.getElementsByTag("h3").get(0).getElementsByTag("a").get(0).getElementsByAttribute("href").toString();
+                    String address = infoP.getElementsByTag("p").text();
+                    Elements h3Company = infoCompany.get(0).getElementsByTag("h3");
+                    String companyName = h3Company.get(0).getElementsByTag("a").text();
+                    String companyInfo = h3Company.get(0).getElementsByTag("p").text();
 
                 }
             }

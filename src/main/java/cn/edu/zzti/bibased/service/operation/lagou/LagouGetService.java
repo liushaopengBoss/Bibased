@@ -315,6 +315,7 @@ public class LagouGetService {
                                 positonDetailTask.setParams(param2);
                                 positonDetailTask.setHeaders(lagouAjaxHeader);
                                 positonDetailTask.setApiUrl(apiUrl);
+                                positonDetailTask.setWebsiteEnum(WebsiteEnum.LAGOU);
                                 completionService.submit(AnsyTask.newTask().registExecuter(positonDetailTask));
                                 i++;
                             }
