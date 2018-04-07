@@ -174,21 +174,23 @@ public class BossHandler {
     }
 
     public static  List<PositionDetail> getBossPositionDetails(String html){
+        logger.info(html);
         List<PositionDetail> positionDetails = new ArrayList<>();
         if(StringUtils.isNotEmpty(html)) {
             Document bossPositionDetails = Jsoup.parse(html);
             Elements jobList = bossPositionDetails.getElementsByClass("job-list");
             for(int i = 0;i<jobList.size();i++){
                 Elements jobPrimary = jobList.get(i).getElementsByClass("job-primary");
+                logger.info(jobPrimary.size()+"");
                 for(int j= 0;j <jobPrimary.size();j++){
-                    Element element = jobList.get(j);
+                    Element element = jobPrimary.get(j);
                     Elements infoPrimary = element.getElementsByClass("info-primary");
                     Elements infoCompany = element.getElementsByClass("info-company");
                     Elements infoPublish =element.getElementsByClass("info-publis");
                     Element infoP = infoPrimary.get(0);
-                    String thirdType = infoP.getElementsByClass("job-title").toString();
+                    String thirdType = infoP.getElementsByClass("job-title").text();
                     String salary = infoP.getElementsByTag("h3").get(0).getElementsByTag("span").text();
-                    String positionUrl = infoP.getElementsByTag("h3").get(0).getElementsByTag("a").get(0).getElementsByAttribute("href").toString();
+                    String positionUrl = infoP.getElementsByTag("h3").get(0).getElementsByTag("a").get(0).getElementsByAttribute("href").text();
                     String address = infoP.getElementsByTag("p").text();
                     Elements h3Company = infoCompany.get(0).getElementsByTag("h3");
                     String companyName = h3Company.get(0).getElementsByTag("a").text();

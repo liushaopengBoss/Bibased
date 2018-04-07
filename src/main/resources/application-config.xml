@@ -1,41 +1,157 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
 
-    <!--&lt;!&ndash;邮件发送线程池&ndash;&gt;-->
-    <!--<bean id="emailPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">-->
-        <!--<property name="corePoolSize" value="20"/>-->
-        <!--<property name="maxPoolSize" value="100"/>-->
-        <!--<property name="queueCapacity" value="200"/>-->
-        <!--<property name="waitForTasksToCompleteOnShutdown" value="true"/>-->
-        <!--<property name="awaitTerminationSeconds" value="100"/>-->
-        <!--<property name="keepAliveSeconds" value="300"/>-->
-        <!--<property name="rejectedExecutionHandler">-->
-            <!--<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>-->
-        <!--</property>-->
-    <!--</bean>-->
+	<!-- 定义httpclient连接池 -->
+	<bean id="httpClientConnectionManager" class="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" destroy-method="close">
+		<!-- 设置连接总数 -->
+		<property name="maxTotal" value="100"></property>
+		<!-- 设置每个地址的并发数 -->
+		<property name="defaultMaxPerRoute" value="100"></property>
+	</bean>
+	<!--ssl-->
+	<bean id="X509TrustManager" class="cn.edu.zzti.bibased.utils.MyX509TrustManager"/>
+	<bean id="sslContextClient" class="cn.edu.zzti.bibased.utils.SSLContextClient" factory-method="getSSLContext"/>
+	<bean id = "SSLConnectionSocketFactory" class="org.apache.http.conn.ssl.SSLConnectionSocketFactory">
+		<constructor-arg name="sslContext" ref="sslContextClient" />
+		<constructor-arg name="hostnameVerifier" ref="X509TrustManager" />
+	</bean>
 
-    <!--&lt;!&ndash; 邮件发送 velocity 指定目录 &ndash;&gt;-->
-    <!--<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">-->
-        <!--<property name="resourceLoaderPath" value="email/"></property>-->
-    <!--</bean>-->
-    <!-- 邮件发送工具类  -->
-    <bean  id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="smtp.163.com"></property>
-        <property name="javaMailProperties">
-            <props>
-                <prop key="mail.smtp.auth">true</prop>
-                <prop key="mail.smtp.timeout">25000</prop>
-            </props>
-        </property>
-        <property name="port" value="25"/>
-        <property name="defaultEncoding" value="UTF-8"/>
-        <property name="username" value="biggress@163.com"></property>
-        <!-- 授权密码-->
-        <property name="password" value="gress11"></property>
-    </bean>
+	<!-- 定义 HttpsClient工厂，这里使用HttpClientBuilder构建 -->
+	<bean id="httpsClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder"
+		factory-method="create">
+		<property name="SSLSocketFactory" ref="SSLConnectionSocketFactory"/>
+		<property name="defaultRequestConfig" ref="requestConfig"/>
+		<property name="connectionManager" ref="httpClientConnectionManager"></property>
+	</bean>
+	<bean id = "cookieStore" class="org.apache.http.impl.client.BasicCookieStore" scope="prototype" />
+	<!-- 定义 HttpClient工厂，这里使用HttpClientBuilder构建 -->
+	<bean id="httpClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder"
+		  factory-method="create">
+		<property name="defaultCookieStore" ref="cookieStore"/>
+		<property name="defaultRequestConfig" ref="requestConfig"/>
+		<property name="connectionManager" ref="httpClientConnectionManager"></property>
+	</bean>
+	<!-- 要保证httpClient为多利，以为每次都是新的http请求   HTTPS-->
+	<bean id="httpsClient" class="org.apache.http.impl.client.CloseableHttpClient"
+		  factory-bean="httpsClientBuilder" factory-method="build" scope="prototype"  />
 
+	<!-- 要保证httpClient为多利，以为每次都是新的http请求   HTTP-->
+	<bean id="httpClient" class="org.apache.http.impl.client.CloseableHttpClient"
+		  factory-bean="httpClientBuilder" factory-method="build" scope="prototype"  />
 
+	<!-- 定期清理无效的连接 -->
+	<bean class="cn.edu.zzti.bibased.utils.IdleConnectionEvictor" destroy-method="shutdown">
+		<constructor-arg index="0" ref="httpClientConnectionManager" />
+		<!-- 间隔半分钟清理一次 -->
+		<constructor-arg index="1" value="18000" />
+	</bean>
+	
+	<!-- 定义requestConfig的工厂 -->
+	<bean id="requestConfigBuilder" class="org.apache.http.client.config.RequestConfig.Builder">
+		<!-- 从连接池中获取到连接的最长时间 -->
+		<property name="connectionRequestTimeout" value="5000"/>
+		<!-- 创建连接的最长时间 -->
+		<property name="connectTimeout" value="3000"/>
+		<!-- 数据传输的最长时间 -->
+		<property name="socketTimeout" value="3000"/>
+		<!-- 提交请求前测试连接是否可用 -->
+		<property name="staleConnectionCheckEnabled" value="true"/>
+	</bean>
+
+	<!-- 得到requestConfig实例 -->
+	<bean id="requestConfig" class="org.apache.http.client.config.RequestConfig"
+		  factory-bean="requestConfigBuilder" factory-method="build" />
+
+	<!-- 线程池, 当池子满时, 调用处理阻塞等待 -->
+	<bean id="getInfoPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="18"/>
+		<property name="maxPoolSize" value="50"/>
+		<property name="queueCapacity" value="36"/>
+		<property name="waitForTasksToCompleteOnShutdown" value="true"/>
+		<property name="awaitTerminationSeconds" value="30"/>
+		<property name="keepAliveSeconds" value="90"/>
+		<property name="rejectedExecutionHandler">
+			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
+		</property>
+	</bean>
+
+	<!--解决多线程下返回值耗时顺序不同，而出现的阻塞问题-->
+	<bean id="completionService" class="java.util.concurrent.ExecutorCompletionService">
+		<constructor-arg name="executor" ref="getInfoPool"/>
+	</bean>
+	<!--解决多线程下无法注入Service问题-->
+	<bean  class="cn.edu.zzti.bibased.utils.SpringContextUtils"/>
+
+	<!-- 定义任务bean -->
+	<bean name="lagouJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<!-- 指定具体的job类 -->
+		<property name="jobClass" value="cn.edu.zzti.bibased.jobs.LagouJob" />
+		<!-- 指定job的名称 -->
+		<property name="name" value="lagouJob" />
+		<!-- 指定job的分组 -->
+		<property name="group" value="Lagou" />
+		<!-- 必须设置为true，如果为false，当没有活动的触发器与之关联时会在调度器中删除该任务  -->
+		<property name="durability" value="true"/>
+		<!-- 指定spring容器的key，如果不设定在job中的jobmap中是获取不到spring容器的 -->
+		<property name="applicationContextJobDataKey" value="applicationContext"/>
+	</bean>
+	<!-- 定义任务bean 清除缓存 -->
+	<bean name="clearCache" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<!-- 指定具体的job类 -->
+		<property name="jobClass" value="cn.edu.zzti.bibased.jobs.ClearCache" />
+		<!-- 指定job的名称 -->
+		<property name="name" value="clearCache" />
+		<!-- 指定job的分组 -->
+		<property name="group" value="Lagou" />
+		<!-- 必须设置为true，如果为false，当没有活动的触发器与之关联时会在调度器中删除该任务  -->
+		<property name="durability" value="true"/>
+		<!-- 指定spring容器的key，如果不设定在job中的jobmap中是获取不到spring容器的 -->
+		<property name="applicationContextJobDataKey" value="applicationContext"/>
+	</bean>
+	<!-- 定义触发器 -->
+	<bean name="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="lagouJobDetail" />
+		<!-- 每天的14点执行 -->
+		<property name="cronExpression" value="0 5 14 * * ?" />
+	</bean>
+	<bean name="cronTriggerClearCache" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="clearCache" />
+		<!-- 每天的凌晨点执行 -->
+		<property name="cronExpression" value="0 0 0 * * ?" />
+	</bean>
+
+	<!-- 定义调度器 -->
+	<bean name="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!--<ref bean="cronTrigger" />-->
+				<ref bean="cronTriggerClearCache" />
+			</list>
+		</property>
+	</bean>
+	<!-- 邮件发送工具类  -->
+	<bean  id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.163.com"></property>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.timeout">25000</prop>
+			</props>
+		</property>
+		<property name="port" value="25"/>
+		<property name="defaultEncoding" value="UTF-8"/>
+		<property name="username" value="biggress@163.com"></property>
+		<!-- 授权密码-->
+		<property name="password" value="gress11"></property>
+	</bean>
 </beans>

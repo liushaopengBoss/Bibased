@@ -90,7 +90,7 @@ public class HttpHeaderConstant {
         lagouGetHeader.put("Upgrade-Insecure-Requests", 1);
         lagouGetHeader.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
     }
-    public  static  Map<String,Object>  bossPositionDetailGetHeader = new LinkedHashMap<>();
+    public  static  Map<String,Object>  bossPositionDetailGetHeader = new HashMap<>();
 
     static {
         bossPositionDetailGetHeader.put(":authority","www.zhipin.com");

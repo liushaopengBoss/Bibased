@@ -107,9 +107,9 @@ public class BossGetService {
         for(City city:citys){
             for(Positions position:positions){
                 String apiUrl = getAppendUrl(city,position);
-                for(int i=0;i<10;i++) {
+                for(int i=1;i<3;i++) {
                     BaseExecuter positonDetailTask = (PositionDetailExecute) SpringContextUtils.getBean(PositionDetailExecute.class);
-                    if(i == 0){
+                    if(i == 1){
                         positonDetailTask.setParams(null);
                     }else{
                         Map<String,Object> param = new HashMap<>();
@@ -151,17 +151,17 @@ public class BossGetService {
   private String getAppendUrl(City city,Positions positions){
       StringBuffer buffer = new StringBuffer("https://www.zhipin.com/");
       //https://www.zhipin.com/c101280600-p100103/?ka=sel-city-101280600
-      buffer.append("c").append(city.getCode()).append("p").append(positions.getPositionUrl());
+      buffer.append("c").append(city.getCode()).append("-p").append(positions.getPositionUrl()).append("/");
         return buffer.toString();
   }
   private void getHeader(City city, Positions position,Map<String, Object> header,int pageNo){
       StringBuffer buffer = new StringBuffer("/");
-      buffer.append("c").append(city.getCode()).append("p").append(position.getPositionUrl());
+      buffer.append("c").append(city.getCode()).append("-p").append(position.getPositionUrl()).append("/");
       header.put("referer","https://www.zhipin.com"+buffer.toString());
       if(pageNo!=1){
           buffer.append("?page="+pageNo+"&ka=page-"+pageNo);
       }
-      header.put(":path:",buffer.toString());
+      header.put(":path",buffer.toString());
 
       header.put("cookie","lastCity="+city.getCode()+"; JSESSIONID=\"\";" +
               " Hm_lvt_194df3105ad7148dcf2b98a91b5e727a=1521947993,1522511497,1522570866,1522849305;" +
