@@ -71,7 +71,7 @@ public class AcquisitionController {
                         System.out.printf("job");
                         break;
                     case BOSS:
-                        System.out.printf("boss");
+                        bossGetService.getCity();
                         break;
                     case ZHILIAN:
                         System.out.printf("zhilian");
@@ -93,7 +93,7 @@ public class AcquisitionController {
                         System.out.printf("job");
                         break;
                     case BOSS:
-                        System.out.printf("boss");
+                        bossGetService.getBossPositionTypeV2();
                         break;
                     case ZHILIAN:
                         System.out.printf("zhilian");
@@ -115,7 +115,7 @@ public class AcquisitionController {
                         System.out.printf("job");
                         break;
                     case BOSS:
-                        System.out.printf("boss");
+                        bossGetService.getPositionDetails();
                         break;
                     case ZHILIAN:
                         System.out.printf("zhilian");

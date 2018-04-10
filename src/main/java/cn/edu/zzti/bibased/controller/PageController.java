@@ -15,7 +15,8 @@ public class PageController {
     private static final String INDEX= PAGE_HOME + "index";
     private static final String INDEHOMEPAGE= PAGE_HOME + "index_homepage";
     private static final String CHARTS= PAGE_HOME + "charts";
-    private static final String PROJECT= PAGE_HOME + "projects";
+    private static final String LAGOU_PROJECT= PAGE_HOME + "lagou_projects";
+    private static final String BOSS_PROJECT= PAGE_HOME + "boss_projects";
     private static final String PROJECT_DETAIL= PAGE_HOME + "project_detail";
     private static final String COMPANY_SEARCH = PAGE_HOME + "company_search";
     private static final String LAGOU_ANALYSIS = PAGE_HOME + "lagou_analysis";
@@ -62,9 +63,18 @@ public class PageController {
      *
      * @return
      */
-    @RequestMapping(value = "/projects")
-    public String project() {
-        return PROJECT;
+    @RequestMapping(value = "/lagou_projects")
+    public String lagouProject() {
+        return LAGOU_PROJECT;
+    }
+    /**
+     *项目采集信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/boss_projects")
+    public String bossPproject() {
+        return BOSS_PROJECT;
     }
     /**
      *项目采集详情

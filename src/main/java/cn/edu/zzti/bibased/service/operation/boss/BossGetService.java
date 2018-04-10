@@ -5,21 +5,14 @@ import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.Positions;
-import cn.edu.zzti.bibased.dto.boss.BossBaseVo;
 import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
 import cn.edu.zzti.bibased.service.email.EmailService;
 import cn.edu.zzti.bibased.service.handler.BossHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.service.operation.base.AcquisitionService;
-import cn.edu.zzti.bibased.service.operation.lagou.LagouQueryService;
 import cn.edu.zzti.bibased.thread.AnsyTask;
-import cn.edu.zzti.bibased.utils.IDUtils;
 import cn.edu.zzti.bibased.utils.SpringContextUtils;
-import com.alibaba.fastjson.JSON;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -27,12 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.net.IDN;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.Future;
 
@@ -100,49 +91,58 @@ public class BossGetService {
            citys =  cityFuture.get();
           positions = positionFuture.get();
       }catch (Exception e){
-        logger.error("get city or position faild ! !"+e);
+        logger.error("get city or position faild ! !",e);
       }
 
-      if( !CollectionUtils.isEmpty(citys) && !CollectionUtils.isEmpty(positions)){
-        for(City city:citys){
-            for(Positions position:positions){
-                String apiUrl = getAppendUrl(city,position);
-                for(int i=1;i<3;i++) {
-                    BaseExecuter positonDetailTask = (PositionDetailExecute) SpringContextUtils.getBean(PositionDetailExecute.class);
-                    if(i == 1){
-                        positonDetailTask.setParams(null);
-                    }else{
-                        Map<String,Object> param = new HashMap<>();
-                        param.put("ka","sel-city-"+city.getCode());
-                        positonDetailTask.setParams(param);
-                    }
-                    Map<String, Object> bossPositionDetailGetHeader = HttpHeaderConstant.bossPositionDetailGetHeader;
-                    getHeader(city,position,bossPositionDetailGetHeader,i);
-                    positonDetailTask.setHeaders(bossPositionDetailGetHeader);
-                    positonDetailTask.setApiUrl(apiUrl);
-                    positonDetailTask.setWebsiteEnum(WebsiteEnum.BOSS);
-                    completionService.submit(AnsyTask.newTask().registExecuter(positonDetailTask));
-                }
-                List<PositionDetail> positionDetails = new ArrayList<>();
-                for (int i = 0; i < 10 ; i++) {
-                    try {
-                        Future<List<PositionDetail>> take = completionService.take();
-                        if(take.isCancelled()){
-                            continue;
-                        }
-                        List<PositionDetail> positionList = take.get();
-                        positionDetails.addAll(positionList);
-                    }catch (Exception e){
-                        logger.error("boss get positionDetail future faild !!",e);
-                    }
-                }
+       if (!CollectionUtils.isEmpty(citys) && !CollectionUtils.isEmpty(positions)) {
+          logger.info("数据采集开始！！");
+           for (Positions position : positions) {
+               for (City city : citys) {
 
-                if(!CollectionUtils.isEmpty(positionDetails)){
-                  acquisitionService.batchAddPositionDetails(positionDetails);
-                }
-            }
-        }
-      }
+                   if("全国".equals(city.getCityName())){
+                       continue;
+                   }
+                   logger.info("正在采集城市："+city.getCityName()+" 职位:" +position.getPositionName());
+                   String apiUrl = getAppendUrl(city, position);
+                   for (int i = 1; i < 11; i++) {
+                       BaseExecuter positonDetailTask = (PositionDetailExecute) SpringContextUtils.getBean(PositionDetailExecute.class);
+                       if (i == 1) {
+                           positonDetailTask.setParams(null);
+                       } else {
+                           Map<String, Object> param = new HashMap<>();
+                           param.put("ka", "sel-city-" + city.getCode());
+                           positonDetailTask.setParams(param);
+                       }
+                       Map<String, Object> bossPositionDetailGetHeader = HttpHeaderConstant.bossPositionDetailGetHeader;
+                       getHeader(city, position, bossPositionDetailGetHeader, i);
+                       positonDetailTask.setHeaders(bossPositionDetailGetHeader);
+                       positonDetailTask.setApiUrl(apiUrl);
+                       positonDetailTask.setWebsiteEnum(WebsiteEnum.BOSS);
+                       completionService.submit(AnsyTask.newTask().registExecuter(positonDetailTask));
+                   }
+                   List<PositionDetail> positionDetails = new ArrayList<>();
+                   for (int i = 1; i < 11; i++) {
+                       try {
+                           Future<List<PositionDetail>> take = completionService.take();
+                           if (take.isCancelled()) {
+                               continue;
+                           }
+                           List<PositionDetail> positionList = take.get();
+                           positionDetails.addAll(positionList);
+                       } catch (Exception e) {
+                           logger.error("boss get positionDetail future faild !!", e);
+                       }
+                   }
+
+                   if (!CollectionUtils.isEmpty(positionDetails)) {
+                       logger.info("数据写入数据库！！"+city.getCityName()+" size:" +positionDetails.size());
+                       acquisitionService.batchAddPositionDetails(positionDetails);
+                   }
+               }
+           }
+
+           logger.info("数据采集结束！！");
+       }
 
 
 
