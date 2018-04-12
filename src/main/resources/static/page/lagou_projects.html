@@ -194,7 +194,7 @@
                 type : "POST",
                 jsonpCallback:'callback',
                 success : function(resultData){
-                    if(resultData.data >= 100){
+//                    if(resultData.data >= 100){
 
                         $("#positionDetailProgressBar").width('100%');
                         $("#positionProgressBar").width('100%');
@@ -211,7 +211,7 @@
                         $("#city").html($("<span class=\"label label-success\">成 &nbsp;&nbsp;功</span>"));
                         $("#company").html($("<span class=\"label label-success\">成 &nbsp;&nbsp;功</span>"));
 
-                    }
+//                    }
                 },
                 error:function(){
 

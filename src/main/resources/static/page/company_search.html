@@ -37,7 +37,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">省份：</label>
                                 <div  class="col-sm-5">
-                                    <select data-placeholder="选择省份" class="chosen-select" multiple style="width:400px;" tabindex="4">
+                                    <select data-placeholder="选择省份" class="chosen-select" multiple style="width:400px;" tabindex="4" name="province">
                                         <option value="">请选择省份</option>
                                         <option value="110000" hassubinfo="true">北京</option>
                                         <option value="120000" hassubinfo="true">天津</option>
@@ -78,9 +78,20 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-3 control-label">网站类型：</label>
+                                <div class="col-sm-5">
+                                    <select data-placeholder="类型" class="chosen-select" style="width:400px;" tabindex="2"  name="websine">
+                                        <option value="110000" hassubinfo="true">无要求</option>
+                                        <option value="120000" hassubinfo="true">拉勾网</option>
+                                        <option value="120000" hassubinfo="true">BOSS直聘</option>
+                                        <option value="120000" hassubinfo="true">前程无忧</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label">工作年份：</label>
                                 <div class="col-sm-5">
-                                    <select data-placeholder="工作年份" class="chosen-select" style="width:400px;" tabindex="2">
+                                    <select data-placeholder="工作年份" class="chosen-select" style="width:400px;" tabindex="2"  name="workYear">
                                         <option value="110000" hassubinfo="true">无要求</option>
                                         <option value="120000" hassubinfo="true">1-3年</option>
                                         <option value="120000" hassubinfo="true">3-5年</option>
@@ -92,7 +103,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">薪资要求：</label>
                                 <div class="col-sm-5">
-                                    <select data-placeholder="月薪" class="chosen-select" style="width:400px;" tabindex="2">
+                                    <select data-placeholder="月薪" class="chosen-select" style="width:400px;" tabindex="2" name="salary">
                                         <option value="110000" hassubinfo="true">无要求</option>
                                         <option value="120000" hassubinfo="true">2k以下</option>
                                         <option value="120000" hassubinfo="true">2k-5k</option>
@@ -107,7 +118,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">公司规模：</label>
                                 <div class="col-sm-5">
-                                    <select data-placeholder="规模" class="chosen-select" style="width:400px;" tabindex="2">
+                                    <select data-placeholder="规模" class="chosen-select" style="width:400px;" tabindex="2" name="companySize">
                                         <option value="110000" hassubinfo="true">无要求</option>
                                         <option value="120000" hassubinfo="true">10人以下</option>
                                         <option value="120000" hassubinfo="true">10人-50人</option>
@@ -121,7 +132,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">职位类型：</label>
                                 <div class="col-sm-5">
-                                    <select data-placeholder="类型" class="chosen-select" style="width:400px;" tabindex="2">
+                                    <select data-placeholder="类型" class="chosen-select" style="width:400px;" tabindex="2" name="positionType">
                                         <option value="110000" hassubinfo="true">无要求</option>
                                         <option value="120000" hassubinfo="true">全职</option>
                                         <option value="120000" hassubinfo="true">实习</option>
@@ -132,7 +143,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">融资类型：</label>
                                 <div class="col-sm-5">
-                                    <select data-placeholder="类型" class="chosen-select" style="width:400px;" tabindex="2">
+                                    <select data-placeholder="类型" class="chosen-select" style="width:400px;" tabindex="2" name="finance">
                                         <option value="110000" hassubinfo="true">无要求</option>
                                         <option value="120000" hassubinfo="true">A轮</option>
                                         <option value="120000" hassubinfo="true">B轮</option>
@@ -146,7 +157,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-3">
-                                    <button class="btn btn-primary" type="submit">查询</button>
+                                    <button class="btn btn-primary queryButton">查询</button>
                                 </div>
                             </div>
                         </form>
@@ -350,14 +361,41 @@
     <script src="js/bootstrap.min.js?v=3.3.6"></script>
     <script src="js/plugins/footable.all.min.js"></script>
     <script src="js/plugins/chosen.jquery.js"></script>
-    <script src = "js/form-advanced-demo.js"></script>
     <!-- 自定义js -->
     <script src="js/content.js?v=1.0.0"></script>
     <script>
         $(document).ready(function() {
 
-            $('.footable').footable();
-            $('.footable2').footable();
+            var config = {
+                '.chosen-select': {},
+                '.chosen-select-deselect': {
+                    allow_single_deselect: true
+                },
+                '.chosen-select-no-single': {
+                    disable_search_threshold: 10
+                },
+                '.chosen-select-no-results': {
+                    no_results_text: 'Oops, nothing found!'
+                },
+                '.chosen-select-width': {
+                    width: "95%"
+                }
+            }
+            for (var selector in config) {
+                $(selector).chosen(config[selector]);
+            }
+
+            $(".queryButton").click(function () {
+
+                var a= $("#commentForm").serialize();
+
+
+            })
+
+
+
+
+
 
         });
 
