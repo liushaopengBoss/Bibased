@@ -38,7 +38,7 @@ public class LagouDao  {
         Long positionDetail = positionDetailMapper.selectLastPostionCreateTime(WebsiteEnum.LAGOU.getWebCode(),city,thirdType);
         return positionDetail !=null?positionDetail:0L;
     }
-    private List<ActionLogDO> queryActionLog(int typeCode){
+    public List<ActionLogDO> queryActionLog(int typeCode){
         return actionLogDao.queryActionLog(WebsiteEnum.LAGOU.getWebCode(),typeCode);
     }
     /**
@@ -152,6 +152,12 @@ public class LagouDao  {
         return DateUtils.formatStr(new Date(),DateUtils.YYMMDD)+WebsiteEnum.LAGOU.getWebCode();
     }
 
+    /**
+     * 通用查询
+     *
+     * @param query
+     * @return
+     */
     public List<PositionDetail> queryPositionDetailWithBaseQuery(PositionDetailQuery query){
         return positionDetailMapper.queryPositionDetailWithBaseQuery(query);
     }

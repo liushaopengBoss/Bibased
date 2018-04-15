@@ -20,6 +20,7 @@ public class PageController {
     private static final String PROJECT_DETAIL= PAGE_HOME + "project_detail";
     private static final String COMPANY_SEARCH = PAGE_HOME + "company_search";
     private static final String LAGOU_ANALYSIS = PAGE_HOME + "lagou_analysis";
+    private static  final String POSITIONdETAIL_SEARCH = PAGE_HOME+"positionDetail_search";
     /**
      * 首页查询{主页}
      *
@@ -95,6 +96,16 @@ public class PageController {
     @RequestMapping(value = "/company_search")
     public String companySearch() {
         return COMPANY_SEARCH;
+    }
+
+    /**
+     *公司搜索
+     *
+     * @return
+     */
+    @RequestMapping(value = "/positionDetail_search")
+    public String positionDetailSearch() {
+        return POSITIONdETAIL_SEARCH;
     }
     /**
      *lagou 数据分析
