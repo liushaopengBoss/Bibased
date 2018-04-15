@@ -6,6 +6,8 @@ import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.Company;
 import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.Positions;
+import cn.edu.zzti.bibased.dto.query.PositionDetailQuery;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,5 +103,47 @@ public class LagouQueryService {
             mapResult.put(websiteEnum.getWebCode(),collect);
         }
         return mapResult;
+    }
+
+    public List<PositionDetail> queryPositionDetailWithBaseQuery(String[] province,String websine,String workYear,String salary ,String companySize,String positionType,String finance){
+        PositionDetailQuery query = new PositionDetailQuery();
+        if(StringUtils.isNotEmpty(websine)){
+            query.setInclude(websine);
+        }
+        if(StringUtils.isNotEmpty(workYear)){
+            if(workYear.trim().split("-").length==1){
+                query.setWorkMinYear(Integer.parseInt(workYear.trim().split("-")[0]));
+                query.setWorkMaxYear(Integer.parseInt(workYear.trim().split("-")[0]));
+            }else{
+                query.setWorkMinYear(Integer.parseInt(workYear.trim().split("-")[0]));
+                query.setWorkMaxYear(Integer.parseInt(workYear.trim().split("-")[1]));
+
+            }
+        }
+        if(StringUtils.isNotEmpty(salary)){
+            if(salary.trim().split("-").length==1){
+                query.setMinSalary(new BigDecimal(Integer.parseInt(salary.trim().split("-")[0])));
+                query.setMaxSalary(new BigDecimal(Integer.parseInt(salary.trim().split("-")[0])));
+            }else{
+                query.setMinSalary(new BigDecimal(Integer.parseInt(salary.trim().split("-")[0])));
+                query.setMaxSalary(new BigDecimal(Integer.parseInt(salary.trim().split("-")[1])));
+            }
+        }
+        if(StringUtils.isNotEmpty(companySize)){
+            if(companySize.trim().split("-").length==1){
+                query.setCompanyMinSize(Integer.parseInt(companySize.trim().split("-")[0]));
+                query.setCompanyMaxSize(Integer.parseInt(companySize.trim().split("-")[0]));
+            }else{
+                query.setCompanyMinSize(Integer.parseInt(companySize.trim().split("-")[0]));
+                query.setCompanyMaxSize(Integer.parseInt(companySize.trim().split("-")[1]));
+            }
+        }
+        if(StringUtils.isNotEmpty(positionType)){
+            query.setJobNature(positionType);
+        }
+        if(StringUtils.isNotEmpty(finance)){
+            query.setFinanceStage(finance);
+        }
+        return lagouDao.queryPositionDetailWithBaseQuery(query);
     }
 }

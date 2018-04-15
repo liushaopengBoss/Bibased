@@ -2,6 +2,7 @@ package cn.edu.zzti.bibased.dao.mapper;
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dto.PositionDetail;
+import cn.edu.zzti.bibased.dto.query.PositionDetailQuery;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -103,7 +104,40 @@ public interface PositionDetailMapper {
      * 获取每个招聘网站在各个城市的职位数量
      * @return
      */
-  @Select("SELECT include,city,count(id) as num from position_detail GROUP BY include,city")
+  @Select("<script>" +
+          "SELECT include,city,count(id) as num from position_detail GROUP BY include,city")
   List<PositionDetail> queryWebCityNums();
+
+//    /**
+//     * 通用查询
+//     * @param query
+//     * @return
+//     */
+//  @Select("<script>  " +
+//          "SELECT * from position_detail where 1=1  \n" +
+//          "      <if test=\"workMinYear != null && workMaxYear != null\" >\n" +
+//          "        and work_min_year = #{workMinYear,jdbcType=INTEGER}  and  work_max_year = #{workMaxYear,jdbcType=INTEGER}\n" +
+//          "      </if>\n" +
+//          "      \n" +
+//          "\t  <if test=\"minSalary != null && maxSalary != null\" >\n" +
+//          "        and min_salary = #{minSalary,jdbcType=DECIMAL}  and max_salary = #{maxSalary,jdbcType=DECIMAL}\n" +
+//          "      </if>\n" +
+//          "     <if test=\"include != null\" >\n" +
+//          "        and include = #{include,jdbcType=VARCHAR},\n" +
+//          "      </if>\n" +
+//          "      <if test=\"companyMinSize != null && companyMaxSize != null\" >\n" +
+//          "        and #{companyMinSize,jdbcType=INTEGER}  and #{companyMaxSize,jdbcType=INTEGER}\n" +
+//          "      </if>\n" +
+//          "      <if test=\"financeStage != null\" >\n" +
+//          "       and  finance_stage = #{financeStage,jdbcType=VARCHAR}\n" +
+//          "      </if>\n" +
+//          "\t  <if test=\"jobNature != null\" >\n" +
+//          "        and job_nature = #{jobNature,jdbcType=VARCHAR}\n" +
+//          "      </if>" +
+//          " limit 10" +
+//          "</script>")
+//  List<PositionDetail> queryPositionDetailWithBaseQuery(PositionDetailQuery query);
+    @Select("")
+    List<PositionDetail> queryPositionDetailWithBaseQuery(PositionDetailQuery query);
 
 }

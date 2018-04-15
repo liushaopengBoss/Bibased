@@ -6,6 +6,7 @@ import cn.edu.zzti.bibased.dao.mapper.CompanyMapper;
 import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
 import cn.edu.zzti.bibased.dao.mapper.PositionsMapper;
 import cn.edu.zzti.bibased.dto.*;
+import cn.edu.zzti.bibased.dto.query.PositionDetailQuery;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import org.springframework.stereotype.Repository;
 
@@ -149,5 +150,9 @@ public class LagouDao  {
 
     private String prefix(){
         return DateUtils.formatStr(new Date(),DateUtils.YYMMDD)+WebsiteEnum.LAGOU.getWebCode();
+    }
+
+    public List<PositionDetail> queryPositionDetailWithBaseQuery(PositionDetailQuery query){
+        return positionDetailMapper.queryPositionDetailWithBaseQuery(query);
     }
 }

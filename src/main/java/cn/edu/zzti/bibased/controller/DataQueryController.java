@@ -5,11 +5,13 @@ package cn.edu.zzti.bibased.controller;
 import cn.edu.zzti.bibased.dto.Company;
 import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.ResultMap;
+import cn.edu.zzti.bibased.service.operation.lagou.LagouQueryService;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -20,6 +22,8 @@ import java.util.List;
 @RequestMapping("/rest/query")
 public class DataQueryController {
 
+    @Resource
+    private LagouQueryService queryService;
 
 
     /**
@@ -42,8 +46,7 @@ public class DataQueryController {
     @RequestMapping("/v1/queryPostionDetail")
     @ResponseBody
     public Object queryPostionDetail(String[] province,String websine,String workYear,String salary ,String companySize,String positionType,String finance){
-
-        return  null;
+        return  queryService.queryPositionDetailWithBaseQuery(province,websine,workYear,salary,companySize,positionType,finance);
     }
 
 
