@@ -17,7 +17,21 @@
 
 <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
-        <div class="row">
+        <!-- 动画 -->
+        <div class="col-sm-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <div class="spiner-example">
+                        <div class="sk-spinner sk-spinner-three-bounce">
+                            <div class="sk-bounce1"></div>
+                            <div class="sk-bounce2"></div>
+                            <div class="sk-bounce3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
@@ -119,7 +133,7 @@
                                 <label class="col-sm-3 control-label">公司规模：</label>
                                 <div class="col-sm-5">
                                     <select data-placeholder="规模" class="chosen-select" style="width:400px;" tabindex="2" name="companySize">
-                                        <option value="0" hassubinfo="true">无要求</option>
+                                        <option value="" hassubinfo="true">无要求</option>
                                         <option value="0-10" hassubinfo="true">10人以下</option>
                                         <option value="10-50" hassubinfo="true">10人-50人</option>
                                         <option value="50-150" hassubinfo="true">50人-150人</option>
@@ -198,17 +212,6 @@
                                 </tr>
                                 </thead>
                                 <tbody id="dataBox">
-                                <tr>
-                                    <td>袁岳</td>
-                                    <td>2015韩国童装韩版牛仔童短裤</td>
-                                    <td>袁岳</td>
-                                    <td>0800 051213</td>
-                                    <td>深圳市有大福实业有限公司</td>
-                                    <td><span class="pie">0.52/1.561</span></td>
-                                    <td>200</td>
-                                    <td>2015.09.10</td>
-                                    <td><a href="#"><i class="fa fa-check text-navy"></i> 通过</a></td>
-                                </tr>
                                 </tbody>
                                 <tfoot>
                                 <tr>
@@ -265,7 +268,7 @@
                                 "                                    <td>"+result[i].positionName+"</td>\n" +
                                 "                                    <td>"+result[i].companyShortName+"</td>\n" +
                                 "                                    <td>"+result[i].city+"</td>\n" +
-                                "                                    <td>"+result[i].minSalary +" - "+ result[i].minSalary +"K</td>\n" +
+                                "                                    <td>"+result[i].minSalary +" - "+ result[i].maxSalary +"K</td>\n" +
                                 "                                    <td>"+result[i].companyMinSize +" - "+ result[i].companyMaxSize +"人</td>\n" +
                                 "                                    <td>"+result[i].workMinYear +" - "+ result[i].workMaxYear +"年</td>\n" +
                                 "                                    <td>"+new Date(result[i].positionCreateTime).toLocaleString()+"</td>\n" +

@@ -185,6 +185,7 @@ public class BossHandler {
                     Element element = jobPrimary.get(j);
                     PositionDetail positionDetail = new PositionDetail();
                     positionDetails.add(positionDetail);
+                    positionDetail.setCity(bossPositionDetails.getElementsByClass("disabled").text());
                     handlePositionDetails(element,positionDetail);
                 }
             }
@@ -199,7 +200,7 @@ public class BossHandler {
         Element infoP = infoPrimary.get(0);
         String positioNname = infoP.getElementsByClass("job-title").text();
         String salary = infoP.getElementsByTag("h3").get(0).getElementsByClass("red").text();
-         String positionUrl = infoP.getElementsByTag("h3").get(0).getElementsByTag("a").get(0).attr("href").toString();
+        String positionUrl = infoP.getElementsByTag("h3").get(0).getElementsByTag("a").get(0).attr("href").toString();
         String[] cityWordEduction = infoP.getElementsByTag("p").last().toString().replace("<p>", "").replace("</p>", "").split("<em class=\"vline\"></em>");
 
         Elements h3Company = infoCompany.get(0).getElementsByTag("h3");
@@ -225,7 +226,7 @@ public class BossHandler {
             }
         }
         if(cityWordEduction.length ==3){
-            positionDetail.setCity(cityWordEduction[0]);
+            positionDetail.setDistrict(cityWordEduction[0]);
             if(cityWordEduction[1] != null){
                 try {
                     String[] split = cityWordEduction[1].replace("年", "").replace("以上", "").replace("以内", "").replace("少于", "").split("-");

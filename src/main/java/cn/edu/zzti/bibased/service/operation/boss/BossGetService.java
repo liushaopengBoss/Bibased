@@ -104,7 +104,7 @@ public class BossGetService {
                    }
                    logger.info("正在采集城市："+city.getCityName()+" 职位:" +position.getPositionName());
                    String apiUrl = getAppendUrl(city, position);
-                   for (int i = 1; i < 11; i++) {
+                   for (int i = 1; i < 2; i++) {
                        BaseExecuter positonDetailTask = (PositionDetailExecute) SpringContextUtils.getBean(PositionDetailExecute.class);
                        if (i == 1) {
                            positonDetailTask.setParams(null);
@@ -121,7 +121,7 @@ public class BossGetService {
                        completionService.submit(AnsyTask.newTask().registExecuter(positonDetailTask));
                    }
                    List<PositionDetail> positionDetails = new ArrayList<>();
-                   for (int i = 1; i < 11; i++) {
+                   for (int i = 1; i < 2; i++) {
                        try {
                            Future<List<PositionDetail>> take = completionService.take();
                            if (take.isCancelled()) {
