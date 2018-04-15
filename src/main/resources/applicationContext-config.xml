@@ -87,7 +87,7 @@
 
 	<!--解决多线程下返回值耗时顺序不同，而出现的阻塞问题-->
 	<bean id="completionService" class="java.util.concurrent.ExecutorCompletionService">
-		<constructor-arg name="executor" ref="lagouPool"/>
+		<constructor-arg name="executor" ref="getInfoPool"/>
 	</bean>
 	<!--解决多线程下无法注入Service问题-->
 	<bean  class="cn.edu.zzti.bibased.utils.SpringContextUtils"/>
