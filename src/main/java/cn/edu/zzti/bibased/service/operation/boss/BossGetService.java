@@ -143,11 +143,15 @@ public class BossGetService {
 
            logger.info("数据采集结束！！");
        }
-
-
-
-
    }
+
+  private void handlePositionDetail(List<PositionDetail> positionList,String positionName){
+       if(!CollectionUtils.isEmpty(positionList)){
+           positionList.forEach(p->{
+               p.setThirdType(positionName);
+           });
+       }
+  }
   private String getAppendUrl(City city,Positions positions){
       StringBuffer buffer = new StringBuffer("https://www.zhipin.com/");
       //https://www.zhipin.com/c101280600-p100103/?ka=sel-city-101280600

@@ -88,7 +88,7 @@ public interface PositionDetailMapper {
           "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size = 150 and company_max_size = 500 and include = #{include} UNION\n" +
           "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size = 500 and company_max_size = 2000 and include = #{include} UNION\n" +
           "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size = 2000 and company_max_size = 2000 and include = #{include} \n")
-   List<PositionDetail> queryCompanySize(@Param("include")String include );
+   List<PositionDetail>   queryCompanySize(@Param("include")String include );
 
     /**
      * 获取昨日信息采集的数量
@@ -107,6 +107,21 @@ public interface PositionDetailMapper {
   @Select("SELECT include,city,count(id) as num from position_detail GROUP BY include,city")
   List<PositionDetail> queryWebCityNums();
 
+    /**
+     * 不同行业的职位数量
+     * @return
+     */
+  @Select("SELECT industry_field as industry_field ,count(id) as num  from position_detail where include = #{include}  and industry_field IS not null  GROUP BY industry_field")
+  List<PositionDetail> queryIndustryFieldNums(@Param("include")String include);
+
+    /**
+     * 不同融资下的职位数量
+     * @param include
+     * @return
+     */
+  @Select("SELECT finance_stage as finance_stage ,count(id) as num  from position_detail where include = #{include}  and finance_stage IS not null  GROUP BY finance_stage" +
+          "ORDER BY num DESC")
+  List<PositionDetail> queryFinanceStage(@Param("include")String include);
     /**
      * 通用查询
      * @param query

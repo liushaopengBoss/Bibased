@@ -18,7 +18,7 @@ public interface CompanyMapper {
      */
     List<Company> queryCityCompanNum(@Param("include") String include);
     /**
-     * 1.各个城市融资情况公司数量
+     * 1.融资情况公司数量
      */
     List<Company> queryFinanceStageCompanNum(@Param("include")String include);
     /**
