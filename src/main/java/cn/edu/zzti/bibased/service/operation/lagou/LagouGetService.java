@@ -272,7 +272,7 @@ public class LagouGetService {
         });
 
         List<Positions> positions = null;
-        List<City> citys =acquisitionService.queryCitys();
+        List<City> citys =acquisitionService.queryCitys(WebsiteEnum.LAGOU.getWebCode());
         try{
             positions = positionListFuter.get();
         }catch (Exception e){}
