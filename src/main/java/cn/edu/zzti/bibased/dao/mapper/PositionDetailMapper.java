@@ -111,7 +111,7 @@ public interface PositionDetailMapper {
      * 不同行业的职位数量
      * @return
      */
-  @Select("SELECT industry_field as industry_field ,count(id) as num  from position_detail where include = #{include}  and industry_field IS not null  GROUP BY industry_field")
+  @Select("SELECT industry_field as industryField ,count(id) as num  from position_detail where include = #{include}  and industry_field IS not null  GROUP BY industry_field")
   List<PositionDetail> queryIndustryFieldNums(@Param("include")String include);
 
     /**

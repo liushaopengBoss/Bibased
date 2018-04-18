@@ -1,14 +1,18 @@
 package cn.edu.zzti.bibased.controller;
 
+import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dto.Company;
 import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.Positions;
+import cn.edu.zzti.bibased.service.operation.boss.BossQueryService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouQueryService;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +27,8 @@ public class DataAnalysisController {
 
     @Resource
     private LagouQueryService lagouQueryService;
+    @Resource
+    private BossQueryService bossQueryService;
 
     /**
      * 每个城市的公司数量
@@ -65,10 +71,29 @@ public class DataAnalysisController {
      *
      * @return
      */
-    @RequestMapping("/v1/queryWorkYearNums")
+    @RequestMapping("/v1/queryWorkYearNums/{webCode}")
     @ResponseBody
-    public List<PositionDetail> queryWorkYearNums(){
-        return lagouQueryService.queryWorkYearNums();
+    public List<PositionDetail> queryWorkYearNums(@PathVariable("webCode") String code){
+        List<PositionDetail> positionDetails = new ArrayList<>();
+        for (WebsiteEnum websiteEnum:WebsiteEnum.values()){
+            if(websiteEnum.getWebCode().equals(code)) {
+                switch (websiteEnum) {
+                    case LAGOU:
+                        positionDetails =  lagouQueryService.queryWorkYearNums();
+                        break;
+                    case JOB:
+                        System.out.printf("job");
+                        break;
+                    case BOSS:
+                        positionDetails =  bossQueryService.queryWorkYearNums();
+                        break;
+                    case ZHILIAN:
+                        System.out.printf("zhilian");
+                        break;
+                }
+            }
+        }
+        return positionDetails;
     }
 
     /**
@@ -76,20 +101,58 @@ public class DataAnalysisController {
      *
      * @return
      */
-    @RequestMapping("/v1/queryEducationNums")
+    @RequestMapping("/v1/queryEducationNums/{webCode}")
     @ResponseBody
-    public List<PositionDetail> queryEducationNums(){
-        return lagouQueryService.queryEducationNums();
+    public List<PositionDetail> queryEducationNums(@PathVariable("webCode") String code){
+        List<PositionDetail> positionDetails = new ArrayList<>();
+        for (WebsiteEnum websiteEnum:WebsiteEnum.values()){
+            if(websiteEnum.getWebCode().equals(code)) {
+                switch (websiteEnum) {
+                    case LAGOU:
+                        positionDetails = lagouQueryService.queryEducationNums();
+                        break;
+                    case JOB:
+                        System.out.printf("job");
+                        break;
+                    case BOSS:
+                        positionDetails =  bossQueryService.queryEducationNums();
+                        break;
+                    case ZHILIAN:
+                        System.out.printf("zhilian");
+                        break;
+                }
+            }
+        }
+        return positionDetails;
     }
     /**
      * 职位类型数据
      *
      * @return
      */
-    @RequestMapping("/v1/queryJobNatureNums")
+    @RequestMapping("/v1/queryJobNatureNums/{webCode}")
     @ResponseBody
-    public List<PositionDetail> queryJobNatureNums(){
-        return lagouQueryService.queryJobNatureNums();
+    public List<PositionDetail> queryJobNatureNums(@PathVariable("webCode") String code){
+        List<PositionDetail> positionDetails = new ArrayList<>();
+        for (WebsiteEnum websiteEnum:WebsiteEnum.values()){
+            if(websiteEnum.getWebCode().equals(code)) {
+                switch (websiteEnum) {
+                    case LAGOU:
+                        positionDetails =  lagouQueryService.queryJobNatureNums();
+                        break;
+                    case JOB:
+                        System.out.printf("job");
+                        break;
+                    case BOSS:
+                        positionDetails =  bossQueryService.queryJobNatureNums();
+                        break;
+                    case ZHILIAN:
+                        System.out.printf("zhilian");
+                        break;
+                }
+            }
+        }
+        return positionDetails;
     }
     /**
      * 拉钩技术类型下 各种职位类型的职位数量
@@ -106,10 +169,29 @@ public class DataAnalysisController {
      *
      * @return
      */
-    @RequestMapping("/v1/queryCompanySize")
+    @RequestMapping("/v1/queryCompanySize/{webCode}")
     @ResponseBody
-    public List<PositionDetail> queryCompanySize(){
-        return lagouQueryService.queryCompanySize();
+    public List<PositionDetail> queryCompanySize(@PathVariable("webCode") String code){
+        List<PositionDetail> positionDetails = new ArrayList<>();
+        for (WebsiteEnum websiteEnum:WebsiteEnum.values()){
+            if(websiteEnum.getWebCode().equals(code)) {
+                switch (websiteEnum) {
+                    case LAGOU:
+                        positionDetails =  lagouQueryService.queryCompanySize();
+                        break;
+                    case JOB:
+                        System.out.printf("job");
+                        break;
+                    case BOSS:
+                        positionDetails =  bossQueryService.queryCompanySize();
+                        break;
+                    case ZHILIAN:
+                        System.out.printf("zhilian");
+                        break;
+                }
+            }
+        }
+        return positionDetails;
     }
     /**
      * 获取每个招聘网站在各个城市的职位数量
@@ -121,4 +203,37 @@ public class DataAnalysisController {
     public Map<String,List<PositionDetail>> queryWebCityNums(){
         return lagouQueryService.queryWebCityNums();
     }
+
+    /**
+     * 不同行业中的职位数量
+     * @return
+     */
+    @RequestMapping("/v1/queryIndustryFieldNums/{webCode}")
+    @ResponseBody
+    public List<PositionDetail> queryIndustryFieldNums(@PathVariable("webCode") String code){
+        List<PositionDetail> positionDetails = new ArrayList<>();
+        for (WebsiteEnum websiteEnum:WebsiteEnum.values()){
+            if(websiteEnum.getWebCode().equals(code)) {
+                switch (websiteEnum) {
+                    case LAGOU:
+
+                        break;
+                    case JOB:
+                        System.out.printf("job");
+                        break;
+                    case BOSS:
+                        positionDetails =  bossQueryService.queryIndustryFieldNums();
+                        break;
+                    case ZHILIAN:
+                        System.out.printf("zhilian");
+                        break;
+                }
+            }
+        }
+        return positionDetails;
+    }
+
+
+
+
 }
