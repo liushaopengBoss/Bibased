@@ -1,4 +1,4 @@
-package cn.edu.zzti.bibased.utils;
+package cn.edu.zzti.bibased.thread;
 
 import org.apache.http.conn.HttpClientConnectionManager;
 

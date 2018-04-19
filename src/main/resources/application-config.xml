@@ -50,7 +50,7 @@
 		  factory-bean="httpClientBuilder" factory-method="build" scope="prototype"  />
 
 	<!-- 定期清理无效的连接 -->
-	<bean class="cn.edu.zzti.bibased.utils.IdleConnectionEvictor" destroy-method="shutdown">
+	<bean class="cn.edu.zzti.bibased.thread.IdleConnectionEvictor" destroy-method="shutdown">
 		<constructor-arg index="0" ref="httpClientConnectionManager" />
 		<!-- 间隔半分钟清理一次 -->
 		<constructor-arg index="1" value="18000" />

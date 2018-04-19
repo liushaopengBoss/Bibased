@@ -152,4 +152,6 @@ public interface PositionDetailMapper {
 //            "  </script>")
     List<PositionDetail> queryPositionDetailWithBaseQuery(PositionDetailQuery query);
 
+
+
 }
