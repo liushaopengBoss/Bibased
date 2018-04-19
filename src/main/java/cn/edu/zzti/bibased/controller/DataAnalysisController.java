@@ -141,10 +141,23 @@ public class DataAnalysisController {
      *
      * @return
      */
-    @RequestMapping("/v1/queryPositionDetailsByJS")
+    @RequestMapping("/v1/queryPositionDetailsByJS/{webCode}")
     @ResponseBody
-    public List<PositionDetail> queryPositionDetailsByFirstTye(){
-        return lagouQueryService.queryPositionDetailsByFirstTye("技术");
+    public List<PositionDetail> queryPositionDetailsByFirstTye(@PathVariable("webCode") String code){
+        List<PositionDetail> positionDetails = new ArrayList<>();
+        for (WebsiteEnum websiteEnum:WebsiteEnum.values()){
+            if(websiteEnum.getWebCode().equals(code)) {
+                switch (websiteEnum) {
+                    case LAGOU:
+                        positionDetails =  lagouQueryService.queryPositionDetailsByFirstTye("技术");
+                        break;
+                    case BOSS:
+                        positionDetails =  bossQueryService.queryPositionDetailsByFirstTye("技术");
+                        break;
+                }
+            }
+        }
+        return positionDetails;
     }
     /**
      * 拉钩  不同公司规模的职位数量

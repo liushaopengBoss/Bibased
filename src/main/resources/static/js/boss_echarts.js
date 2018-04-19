@@ -425,7 +425,7 @@ $(function () {
     /**
      *  1.各城市公司数量信息
      */
-    $.post("/rest/v1/queryPositionDetailsByJS",function(resultData){
+    $.post("/rest/v1/queryPositionDetailsByJS/boss",function(resultData){
         /**
          * 柱状图
          */
