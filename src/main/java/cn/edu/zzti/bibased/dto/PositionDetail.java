@@ -186,6 +186,9 @@ public class PositionDetail {
     }
 
     public String getCity() {
+        if(city != null){
+            return city.trim();
+        }
         return city;
     }
 

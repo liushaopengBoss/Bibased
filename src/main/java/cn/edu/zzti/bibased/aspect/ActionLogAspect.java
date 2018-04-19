@@ -58,6 +58,7 @@ public class ActionLogAspect {
             actionLogDO.setTypeCode(actionLogName.getCode());
             actionLogDO.setInclude("lagou");
             actionLogService.addLog(actionLogDO);
+//            emailService.sendSimpleMail("","");
             return rs;
         }
         Object rs = joinPoint.proceed();

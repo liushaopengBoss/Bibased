@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -125,6 +126,23 @@ public class BossHandler {
         }
     }
 
+    public static List<City>  getHotCity(String sourceJson){
+        List<City> citys = new ArrayList<>();
+        if(StringUtils.isNotEmpty(sourceJson)) {
+            try {
+                JsonElement jsonElement = new JsonParser().parse(sourceJson);
+                String targetJson = jsonElement.getAsJsonObject().get("data").getAsJsonObject().get("hotCityList").toString();
+                if (StringUtils.isNotEmpty(targetJson)) {
+                    List<BossBaseVo> bossBaseVos = JSON.parseArray(targetJson, BossBaseVo.class);
+                    String dateVersion = DateUtils.formatStr(new Date(), DateUtils.YYMMDDHHmmssSSS);
+                    handleCity(bossBaseVos, citys, dateVersion);
+                }
+            }catch (Exception e){
+                logger.info("get boss hot city info faild！",e);
+            }
+        }
+        return citys;
+    }
     public static List<City>  getCity(String sourceJson){
         List<City> citys = new ArrayList<>();
         if(StringUtils.isNotEmpty(sourceJson)) {
@@ -164,17 +182,94 @@ public class BossHandler {
             for(int i = 0;i<jobList.size();i++){
                 Elements jobPrimary = jobList.get(i).getElementsByClass("job-primary");
                 for(int j= 0;j <jobPrimary.size();j++){
-                    Element element = jobList.get(j);
-                    Elements infoPrimary = element.getElementsByClass("info-primary");
-                    Elements infoCompany = element.getElementsByClass("info-company");
-                    Elements infoPublish =element.getElementsByClass("info-publis");
-                    Element infoP = infoCompany.get(0);
-                    String thirdType = infoP.getElementsByClass("job-title").toString();
-//                    infoP.getElementsByClass()
-
+                    Element element = jobPrimary.get(j);
+                    PositionDetail positionDetail = new PositionDetail();
+                    positionDetails.add(positionDetail);
+                    positionDetail.setCity(bossPositionDetails.getElementsByClass("disabled").text());
+                    handlePositionDetails(element,positionDetail);
                 }
             }
         }
         return positionDetails;
     }
+
+    private static  void handlePositionDetails(Element element,PositionDetail positionDetail){
+        Elements infoPrimary = element.getElementsByClass("info-primary");
+        Elements infoCompany = element.getElementsByClass("info-company");
+        Elements infoPublish =element.getElementsByClass("info-publis");
+        Element infoP = infoPrimary.get(0);
+        String positioNname = infoP.getElementsByClass("job-title").text();
+        String salary = infoP.getElementsByTag("h3").get(0).getElementsByClass("red").text();
+        String positionUrl = infoP.getElementsByTag("h3").get(0).getElementsByTag("a").get(0).attr("href").toString();
+        String[] cityWordEduction = infoP.getElementsByTag("p").last().toString().replace("<p>", "").replace("</p>", "").split("<em class=\"vline\"></em>");
+
+        Elements h3Company = infoCompany.get(0).getElementsByTag("h3");
+        String companyName = h3Company.get(0).getElementsByTag("a").text();
+        String[] companyInfo = infoCompany.get(0).getElementsByTag("p").toString().replace("<p>", "").replace("</p>", "").split("<em class=\"vline\"></em>");
+        positionDetail.setPositionName(positioNname);
+        String tags = infoP.getElementsByClass("tags").text();
+        if(StringUtils.isNotBlank(salary)){
+            String[] split = salary.replace("k", "").replace("K", "").replace("以上","").split("-");
+            try {
+                if (split.length == 0) {
+                    positionDetail.setMaxSalary(new BigDecimal(0));
+                    positionDetail.setMinSalary(new BigDecimal(0));
+                } else if (split.length == 1) {
+                    positionDetail.setMaxSalary(new BigDecimal(split[0]));
+                    positionDetail.setMinSalary(new BigDecimal(split[0]));
+                } else {
+                    positionDetail.setMaxSalary(new BigDecimal(split[1]));
+                    positionDetail.setMinSalary(new BigDecimal(split[0]));
+                }
+            }catch (Exception e){
+                logger.info("薪资填充数据失败!!",e);
+            }
+        }
+        if(cityWordEduction.length ==3){
+            positionDetail.setDistrict(cityWordEduction[0]);
+            if(cityWordEduction[1] != null){
+                try {
+                    String[] split = cityWordEduction[1].replace("年", "").replace("以上", "").replace("以内", "").replace("少于", "").split("-");
+                    if (split.length == 0 || "经验不限".equals(split[0]) || "应届生".equals(split[0])) {
+                        positionDetail.setWorkMinYear(0);
+                        positionDetail.setWorkMaxYear(0);
+                    } else if (split.length == 1 && !"经验不限".equals(split[0]) && !"应届生".equals(split[0])) {
+                        positionDetail.setWorkMinYear(Integer.parseInt(split[0]));
+                        positionDetail.setWorkMaxYear(Integer.parseInt(split[0]));
+                    } else {
+                        positionDetail.setWorkMinYear(Integer.parseInt(split[0]));
+                        positionDetail.setWorkMaxYear(Integer.parseInt(split[1]));
+                    }
+                }catch (Exception e){
+                    logger.error("工作年限填充数据失败!",e);
+                }
+            }
+            positionDetail.setEducation(cityWordEduction[2]);
+        }
+        positionDetail.setCompanyShortName(companyName);
+        positionDetail.setCompanyFullName(companyName);
+        if(companyInfo.length == 3){
+            positionDetail.setIndustryField(companyInfo[0]);
+            positionDetail.setFinanceStage(companyInfo[1]);
+            try {
+                String[] split = companyInfo[2].replace("人", "").replace("以上", "").replace("以内", "").replace("少于", "").replace("以上", "").split("-");
+                if (split.length == 0) {
+                    positionDetail.setCompanyMinSize(0);
+                    positionDetail.setCompanyMaxSize(0);
+                } else if (split.length == 1) {
+                    positionDetail.setCompanyMinSize(Integer.parseInt(split[0]));
+                    positionDetail.setCompanyMaxSize(Integer.parseInt(split[0]));
+                } else {
+                    positionDetail.setCompanyMinSize(Integer.parseInt(split[0]));
+                    positionDetail.setCompanyMaxSize(Integer.parseInt(split[1]));
+                }
+            }catch (Exception e){
+                logger.error("公司人数填充数据失败!!",e);
+            }
+        }
+        positionDetail.setPositionLables(tags);
+        positionDetail.setInclude(WebsiteEnum.BOSS.getWebCode());
+    }
+
+
 }

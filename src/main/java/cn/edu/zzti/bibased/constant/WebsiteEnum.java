@@ -6,8 +6,10 @@ package cn.edu.zzti.bibased.constant;
  * Created by huaidou on  2018/1/11
  */
 public enum WebsiteEnum {
-    LAGOU("lagou","拉钩"),ZHILIAN("zhilian","智联"),
-    JOB("job","51Job"),BOSS("boss","Boss直聘");
+    LAGOU("lagou","拉钩"),
+    ZHILIAN("zhilian","智联"),
+    JOB("job","51Job"),
+    BOSS("boss","Boss直聘");
 
     private String webCode;
     private String webName;

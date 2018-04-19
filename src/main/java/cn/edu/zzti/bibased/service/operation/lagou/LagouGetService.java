@@ -101,6 +101,7 @@ public class LagouGetService {
      */
 
     @ActionLog(ProjectItem.CITY)
+    @Async
     public void getCityInformation(){
         String url = "https://www.lagou.com/zhaopin/Java/?labelWords=label";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
@@ -271,7 +272,7 @@ public class LagouGetService {
         });
 
         List<Positions> positions = null;
-        List<City> citys =acquisitionService.queryCitys();
+        List<City> citys =acquisitionService.queryCitys(WebsiteEnum.LAGOU.getWebCode());
         try{
             positions = positionListFuter.get();
         }catch (Exception e){}
@@ -315,6 +316,7 @@ public class LagouGetService {
                                 positonDetailTask.setParams(param2);
                                 positonDetailTask.setHeaders(lagouAjaxHeader);
                                 positonDetailTask.setApiUrl(apiUrl);
+                                positonDetailTask.setWebsiteEnum(WebsiteEnum.LAGOU);
                                 completionService.submit(AnsyTask.newTask().registExecuter(positonDetailTask));
                                 i++;
                             }

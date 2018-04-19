@@ -224,4 +224,9 @@ public class HttpTests extends BaseApplicationTests {
         //bossGetService.getCity();
     }
 
+    @Test
+    public void bossPositionDetailTest(){
+        bossGetService.getPositionDetails();
+    }
+
 }

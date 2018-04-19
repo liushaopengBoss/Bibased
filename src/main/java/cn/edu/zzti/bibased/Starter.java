@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * spring-boot启动类
  */
 @EnableAsync // 启动异步调用
-@ImportResource("classpath:applicationContext-config.xml")//导入配置文件
+@ImportResource("classpath:application-config.xml")//导入配置文件
 @SpringBootApplication()//springboot
 @EnableTransactionManagement//事务
 @MapperScan("cn.edu.zzti.bibased.dao.mapper")//mapper扫描

@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.9.RELEASE</version>
+        <version>1.5.8.RELEASE</version>
     </parent>
 
     <properties>
@@ -35,6 +35,8 @@
         <quartz_version>2.2.1</quartz_version>
         <logback_version>1.2.3</logback_version>
         <gson_version>2.2.4</gson_version>
+        <fastjson-version>1.1.23</fastjson-version>
+        <tess4j-version>3.2.1</tess4j-version>
         <skipTests>true</skipTests>
     </properties>
 
@@ -195,7 +197,12 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.1.23</version>
+            <version>${fastjson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.tess4j</groupId>
+            <artifactId>tess4j</artifactId>
+            <version>${tess4j-version}</version>
         </dependency>
     </dependencies>
 

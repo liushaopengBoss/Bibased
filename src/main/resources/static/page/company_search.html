@@ -37,7 +37,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">省份：</label>
                                 <div  class="col-sm-5">
-                                    <select data-placeholder="选择省份" class="chosen-select" multiple style="width:400px;" tabindex="4">
+                                    <select data-placeholder="选择省份" class="chosen-select" multiple style="width:400px;" tabindex="4" name="province">
                                         <option value="">请选择省份</option>
                                         <option value="110000" hassubinfo="true">北京</option>
                                         <option value="120000" hassubinfo="true">天津</option>
@@ -78,75 +78,86 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-3 control-label">网站类型：</label>
+                                <div class="col-sm-5">
+                                    <select data-placeholder="类型" class="chosen-select" style="width:400px;" tabindex="2"  name="websine">
+                                        <option value="" hassubinfo="true">无要求</option>
+                                        <option value="lagou" hassubinfo="true">拉勾网</option>
+                                        <option value="boss" hassubinfo="true">BOSS直聘</option>
+                                        <option value="job" hassubinfo="true">前程无忧</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label">工作年份：</label>
                                 <div class="col-sm-5">
-                                    <select data-placeholder="工作年份" class="chosen-select" style="width:400px;" tabindex="2">
-                                        <option value="110000" hassubinfo="true">无要求</option>
-                                        <option value="120000" hassubinfo="true">1-3年</option>
-                                        <option value="120000" hassubinfo="true">3-5年</option>
-                                        <option value="120000" hassubinfo="true">5-10年</option>
-                                        <option value="120000" hassubinfo="true">10年以上</option>
+                                    <select data-placeholder="工作年份" class="chosen-select" style="width:400px;" tabindex="2"  name="workYear">
+                                        <option value="" hassubinfo="true">无要求</option>
+                                        <option value="1-3" hassubinfo="true">1-3年</option>
+                                        <option value="3-5" hassubinfo="true">3-5年</option>
+                                        <option value="5-10" hassubinfo="true">5-10年</option>
+                                        <option value="10" hassubinfo="true">10年以上</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">薪资要求：</label>
                                 <div class="col-sm-5">
-                                    <select data-placeholder="月薪" class="chosen-select" style="width:400px;" tabindex="2">
-                                        <option value="110000" hassubinfo="true">无要求</option>
-                                        <option value="120000" hassubinfo="true">2k以下</option>
-                                        <option value="120000" hassubinfo="true">2k-5k</option>
-                                        <option value="120000" hassubinfo="true">5k-10k</option>
-                                        <option value="120000" hassubinfo="true">10k-15k</option>
-                                        <option value="120000" hassubinfo="true">15k-25k</option>
-                                        <option value="120000" hassubinfo="true">25k-50k</option>
-                                        <option value="120000" hassubinfo="true">50k以上</option>
+                                    <select data-placeholder="月薪" class="chosen-select" style="width:400px;" tabindex="2" name="salary">
+                                        <option value="" hassubinfo="true">无要求</option>
+                                        <option value="0-2" hassubinfo="true">2k以下</option>
+                                        <option value="2-5" hassubinfo="true">2k-5k</option>
+                                        <option value="5-10" hassubinfo="true">5k-10k</option>
+                                        <option value="10-15" hassubinfo="true">10k-15k</option>
+                                        <option value="15-25" hassubinfo="true">15k-25k</option>
+                                        <option value="25-50" hassubinfo="true">25k-50k</option>
+                                        <option value="50" hassubinfo="true">50k以上</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">公司规模：</label>
                                 <div class="col-sm-5">
-                                    <select data-placeholder="规模" class="chosen-select" style="width:400px;" tabindex="2">
-                                        <option value="110000" hassubinfo="true">无要求</option>
-                                        <option value="120000" hassubinfo="true">10人以下</option>
-                                        <option value="120000" hassubinfo="true">10人-50人</option>
-                                        <option value="120000" hassubinfo="true">50人-150人</option>
-                                        <option value="120000" hassubinfo="true">150人-500人</option>
-                                        <option value="120000" hassubinfo="true">500人-2000人</option>
-                                        <option value="120000" hassubinfo="true">2000人以上</option>
+                                    <select data-placeholder="规模" class="chosen-select" style="width:400px;" tabindex="2" name="companySize">
+                                        <option value="0" hassubinfo="true">无要求</option>
+                                        <option value="0-10" hassubinfo="true">10人以下</option>
+                                        <option value="10-50" hassubinfo="true">10人-50人</option>
+                                        <option value="50-150" hassubinfo="true">50人-150人</option>
+                                        <option value="150-500" hassubinfo="true">150人-500人</option>
+                                        <option value="500-2000" hassubinfo="true">500人-2000人</option>
+                                        <option value="2000" hassubinfo="true">2000人以上</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">职位类型：</label>
                                 <div class="col-sm-5">
-                                    <select data-placeholder="类型" class="chosen-select" style="width:400px;" tabindex="2">
-                                        <option value="110000" hassubinfo="true">无要求</option>
-                                        <option value="120000" hassubinfo="true">全职</option>
-                                        <option value="120000" hassubinfo="true">实习</option>
-                                        <option value="120000" hassubinfo="true">兼职</option>
+                                    <select data-placeholder="类型" class="chosen-select" style="width:400px;" tabindex="2" name="positionType">
+                                        <option value="" hassubinfo="true">无要求</option>
+                                        <option value="全职" hassubinfo="true">全职</option>
+                                        <option value="实习" hassubinfo="true">实习</option>
+                                        <option value="兼职" hassubinfo="true">兼职</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">融资类型：</label>
                                 <div class="col-sm-5">
-                                    <select data-placeholder="类型" class="chosen-select" style="width:400px;" tabindex="2">
-                                        <option value="110000" hassubinfo="true">无要求</option>
-                                        <option value="120000" hassubinfo="true">A轮</option>
-                                        <option value="120000" hassubinfo="true">B轮</option>
-                                        <option value="120000" hassubinfo="true">C轮</option>
-                                        <option value="120000" hassubinfo="true">D轮及以上</option>
-                                        <option value="120000" hassubinfo="true">上市</option>
-                                        <option value="120000" hassubinfo="true">未融资</option>
-                                        <option value="120000" hassubinfo="true">不需要融资</option>
+                                    <select data-placeholder="类型" class="chosen-select" style="width:400px;" tabindex="2" name="finance">
+                                        <option value="" hassubinfo="true">无要求</option>
+                                        <option value="A轮" hassubinfo="true">A轮</option>
+                                        <option value="B轮" hassubinfo="true">B轮</option>
+                                        <option value="C轮" hassubinfo="true">C轮</option>
+                                        <option value="D轮及以上" hassubinfo="true">D轮及以上</option>
+                                        <option value="上市" hassubinfo="true">上市</option>
+                                        <option value="未融资" hassubinfo="true">未融资</option>
+                                        <option value="不需要融资" hassubinfo="true">不需要融资</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="col-sm-4 col-sm-offset-3">
-                                    <button class="btn btn-primary" type="submit">查询</button>
+                                <div class="col-sm-2 col-sm-offset-3">
+                                    <button class="btn btn-w-m queryButton  btn-primary" type="button">查询公司</button>
                                 </div>
                             </div>
                         </form>
@@ -350,14 +361,43 @@
     <script src="js/bootstrap.min.js?v=3.3.6"></script>
     <script src="js/plugins/footable.all.min.js"></script>
     <script src="js/plugins/chosen.jquery.js"></script>
-    <script src = "js/form-advanced-demo.js"></script>
     <!-- 自定义js -->
     <script src="js/content.js?v=1.0.0"></script>
     <script>
         $(document).ready(function() {
 
-            $('.footable').footable();
-            $('.footable2').footable();
+            var config = {
+                '.chosen-select': {},
+                '.chosen-select-deselect': {
+                    allow_single_deselect: true
+                },
+                '.chosen-select-no-single': {
+                    disable_search_threshold: 10
+                },
+                '.chosen-select-no-results': {
+                    no_results_text: 'Oops, nothing found!'
+                },
+                '.chosen-select-width': {
+                    width: "95%"
+                }
+            }
+            for (var selector in config) {
+                $(selector).chosen(config[selector]);
+            }
+
+            $(".queryButton").click(function () {
+
+                $.post('/rest/query/v1/queryPostionDetail',$("#commentForm").serialize(),function (result) {
+
+                alert(result);
+
+                },'json');
+            })
+
+
+
+
+
 
         });
 

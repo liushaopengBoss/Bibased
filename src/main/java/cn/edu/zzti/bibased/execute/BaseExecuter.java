@@ -77,4 +77,11 @@ public abstract class BaseExecuter implements AnsyTask.Executer {
         this.params = params;
     }
 
+    public WebsiteEnum getWebsiteEnum() {
+        return websiteEnum;
+    }
+
+    public void setWebsiteEnum(WebsiteEnum websiteEnum) {
+        this.websiteEnum = websiteEnum;
+    }
 }

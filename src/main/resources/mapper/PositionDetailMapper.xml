@@ -116,8 +116,29 @@
       #{position.gps,jdbcType=VARCHAR},#{position.include,jdbcType=VARCHAR}, UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()) ,
       1, 0,#{position.thirdType,jdbcType=VARCHAR})
     </foreach>
-
   </insert>
 
+  <select id="queryPositionDetailWithBaseQuery" resultMap="BaseResultMap" parameterType="cn.edu.zzti.bibased.dto.query.PositionDetailQuery">
+    SELECT <include refid="Base_Column_List"/> from position_detail where 1=1
+    <if test="include != null">
+      and include = #{include,jdbcType=VARCHAR}
+    </if>
+    <if test="workMinYear != null " >
+      and work_min_year = #{workMinYear,jdbcType=INTEGER}  and  work_max_year = #{workMaxYear,jdbcType=INTEGER}
+    </if>
 
+    <if test="minSalary != null" >
+      and min_salary = #{minSalary,jdbcType=DECIMAL}  and max_salary = #{maxSalary,jdbcType=DECIMAL}
+    </if>
+    <if test="companyMinSize != null" >
+      and company_min_size = #{companyMinSize,jdbcType=INTEGER}  and company_max_size = #{companyMaxSize,jdbcType=INTEGER}
+    </if>
+    <if test="financeStage != null" >
+      and  finance_stage = #{financeStage,jdbcType=VARCHAR}
+    </if>
+    <if test="jobNature != null" >
+      and job_nature = #{jobNature,jdbcType=VARCHAR}
+    </if>
+    limit 10
+  </select>
 </mapper>

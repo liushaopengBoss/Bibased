@@ -6,6 +6,7 @@ import cn.edu.zzti.bibased.dao.mapper.CompanyMapper;
 import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
 import cn.edu.zzti.bibased.dao.mapper.PositionsMapper;
 import cn.edu.zzti.bibased.dto.*;
+import cn.edu.zzti.bibased.dto.query.PositionDetailQuery;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import org.springframework.stereotype.Repository;
 
@@ -37,7 +38,7 @@ public class LagouDao  {
         Long positionDetail = positionDetailMapper.selectLastPostionCreateTime(WebsiteEnum.LAGOU.getWebCode(),city,thirdType);
         return positionDetail !=null?positionDetail:0L;
     }
-    private List<ActionLogDO> queryActionLog(int typeCode){
+    public List<ActionLogDO> queryActionLog(int typeCode){
         return actionLogDao.queryActionLog(WebsiteEnum.LAGOU.getWebCode(),typeCode);
     }
     /**
@@ -149,5 +150,15 @@ public class LagouDao  {
 
     private String prefix(){
         return DateUtils.formatStr(new Date(),DateUtils.YYMMDD)+WebsiteEnum.LAGOU.getWebCode();
+    }
+
+    /**
+     * 通用查询
+     *
+     * @param query
+     * @return
+     */
+    public List<PositionDetail> queryPositionDetailWithBaseQuery(PositionDetailQuery query){
+        return positionDetailMapper.queryPositionDetailWithBaseQuery(query);
     }
 }

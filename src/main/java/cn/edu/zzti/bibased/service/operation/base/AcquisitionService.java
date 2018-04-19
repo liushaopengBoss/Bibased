@@ -88,8 +88,8 @@ public class AcquisitionService {
         return  acquisitionDao.queryLeafPositions(WebsiteEnum.LAGOU.getWebCode());
     }
 
-    public List<City> queryCitys(){
-        return acquisitionDao.queryCitys(WebsiteEnum.LAGOU.getWebCode());
+    public List<City> queryCitys(String include){
+        return acquisitionDao.queryCitys(include);
     }
 
 }
