@@ -542,7 +542,7 @@ $(function () {
     function chinaPositionNums(resultData) {
         provinceMap.clear();
         for(var i=0;i<resultData.length;i++){
-            var cityPid = chinaCityMap.get(resultData[i].city);
+            var cityPid = chinaCityMap.get(resultData[i].city.trim());
             var province;
             if(cityPid == false){
                 province = resultData[i].city;
@@ -581,7 +581,7 @@ $(function () {
             },
             dataRange: {
                 min: 0,
-                max: 200,
+                max: 500,
                 x: 'left',
                 y: 'bottom',
                 text:['高','低'],           // 文本，默认为数值文本
@@ -621,11 +621,5 @@ $(function () {
         };
         mapChart.setOption(mapoption);
         $(window).resize(mapChart.resize);
-
-
     })
-
-
-
-
 });

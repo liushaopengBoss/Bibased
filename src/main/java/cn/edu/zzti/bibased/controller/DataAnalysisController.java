@@ -81,14 +81,8 @@ public class DataAnalysisController {
                     case LAGOU:
                         positionDetails =  lagouQueryService.queryWorkYearNums();
                         break;
-                    case JOB:
-                        System.out.printf("job");
-                        break;
                     case BOSS:
                         positionDetails =  bossQueryService.queryWorkYearNums();
-                        break;
-                    case ZHILIAN:
-                        System.out.printf("zhilian");
                         break;
                 }
             }
@@ -111,14 +105,8 @@ public class DataAnalysisController {
                     case LAGOU:
                         positionDetails = lagouQueryService.queryEducationNums();
                         break;
-                    case JOB:
-                        System.out.printf("job");
-                        break;
                     case BOSS:
                         positionDetails =  bossQueryService.queryEducationNums();
-                        break;
-                    case ZHILIAN:
-                        System.out.printf("zhilian");
                         break;
                 }
             }
@@ -140,14 +128,8 @@ public class DataAnalysisController {
                     case LAGOU:
                         positionDetails =  lagouQueryService.queryJobNatureNums();
                         break;
-                    case JOB:
-                        System.out.printf("job");
-                        break;
                     case BOSS:
                         positionDetails =  bossQueryService.queryJobNatureNums();
-                        break;
-                    case ZHILIAN:
-                        System.out.printf("zhilian");
                         break;
                 }
             }
@@ -179,14 +161,8 @@ public class DataAnalysisController {
                     case LAGOU:
                         positionDetails =  lagouQueryService.queryCompanySize();
                         break;
-                    case JOB:
-                        System.out.printf("job");
-                        break;
                     case BOSS:
                         positionDetails =  bossQueryService.queryCompanySize();
-                        break;
-                    case ZHILIAN:
-                        System.out.printf("zhilian");
                         break;
                 }
             }
@@ -216,16 +192,9 @@ public class DataAnalysisController {
             if(websiteEnum.getWebCode().equals(code)) {
                 switch (websiteEnum) {
                     case LAGOU:
-
-                        break;
-                    case JOB:
-                        System.out.printf("job");
                         break;
                     case BOSS:
                         positionDetails =  bossQueryService.queryIndustryFieldNums();
-                        break;
-                    case ZHILIAN:
-                        System.out.printf("zhilian");
                         break;
                 }
             }
