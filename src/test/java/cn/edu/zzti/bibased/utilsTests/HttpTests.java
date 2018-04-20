@@ -229,4 +229,9 @@ public class HttpTests extends BaseApplicationTests {
         bossGetService.getPositionDetails();
     }
 
+    @Test
+    public void dateTest(){
+        String s = DateUtils.formatStr(new Date(), DateUtils.YYMMDD);
+    }
+
 }
