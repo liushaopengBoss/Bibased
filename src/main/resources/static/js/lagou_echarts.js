@@ -609,7 +609,7 @@ $(function () {
     /**
      *  1.各城市公司数量信息
      */
-    $.post("/rest/v1/queryPositionDetailsByJS",function(resultData){
+    $.post("/rest/v1/queryPositionDetailsByJS/lagou",function(resultData){
         /**
          * 柱状图
          */
@@ -726,7 +726,7 @@ $(function () {
     function chinaPositionNums(resultData) {
         provinceMap.clear();
         for(var i=0;i<resultData.length;i++){
-            var cityPid = chinaCityMap.get(resultData[i].city);
+            var cityPid = chinaCityMap.get(resultData[i].city.trim());
             var province;
             if(cityPid == false){
                 province = resultData[i].city;
@@ -761,7 +761,7 @@ $(function () {
             legend: {
                 orient: 'vertical',
                 x:'left',
-                data:['拉钩','51Job','智联招聘']
+                data:['拉钩']
             },
             dataRange: {
                 min: 0,
@@ -801,26 +801,6 @@ $(function () {
                         emphasis:{label:{show:true}}
                     },
                     data:chinaPositionNums(resultData.lagou)
-                },
-                {
-                    name: '51Job',
-                    type: 'map',
-                    mapType: 'china',
-                    itemStyle:{
-                        normal:{label:{show:true}},
-                        emphasis:{label:{show:true}}
-                    },
-                    data:chinaPositionNums(resultData.job)
-                },
-                {
-                    name: '智联招聘',
-                    type: 'map',
-                    mapType: 'china',
-                    itemStyle:{
-                        normal:{label:{show:true}},
-                        emphasis:{label:{show:true}}
-                    },
-                    data:chinaPositionNums(resultData.zhilian)
                 }
             ]
         };

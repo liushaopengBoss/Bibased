@@ -48,5 +48,7 @@ public class BossQueryService {
     public List<PositionDetail> queryWorkYearNums(){
         return bossDao.queryWorkYearNums();
     }
-
+    public List<PositionDetail> queryPositionDetailsByFirstTye(String firstType){
+        return bossDao.queryPositionDetailsByFirstTye(firstType);
+    }
 }

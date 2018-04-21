@@ -61,4 +61,8 @@ public class BossDao {
         return positionDetailMapper.queryWorkYearNums(WebsiteEnum.BOSS.getWebCode());
     }
 
+    public List<PositionDetail> queryPositionDetailsByFirstTye(String firstType){
+       return  positionDetailMapper.queryPositionDetailsByFirstTye(WebsiteEnum.BOSS.getWebCode(),firstType);
+    }
+
 }

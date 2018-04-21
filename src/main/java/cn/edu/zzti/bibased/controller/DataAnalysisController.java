@@ -81,14 +81,8 @@ public class DataAnalysisController {
                     case LAGOU:
                         positionDetails =  lagouQueryService.queryWorkYearNums();
                         break;
-                    case JOB:
-                        System.out.printf("job");
-                        break;
                     case BOSS:
                         positionDetails =  bossQueryService.queryWorkYearNums();
-                        break;
-                    case ZHILIAN:
-                        System.out.printf("zhilian");
                         break;
                 }
             }
@@ -111,14 +105,8 @@ public class DataAnalysisController {
                     case LAGOU:
                         positionDetails = lagouQueryService.queryEducationNums();
                         break;
-                    case JOB:
-                        System.out.printf("job");
-                        break;
                     case BOSS:
                         positionDetails =  bossQueryService.queryEducationNums();
-                        break;
-                    case ZHILIAN:
-                        System.out.printf("zhilian");
                         break;
                 }
             }
@@ -140,14 +128,8 @@ public class DataAnalysisController {
                     case LAGOU:
                         positionDetails =  lagouQueryService.queryJobNatureNums();
                         break;
-                    case JOB:
-                        System.out.printf("job");
-                        break;
                     case BOSS:
                         positionDetails =  bossQueryService.queryJobNatureNums();
-                        break;
-                    case ZHILIAN:
-                        System.out.printf("zhilian");
                         break;
                 }
             }
@@ -159,10 +141,23 @@ public class DataAnalysisController {
      *
      * @return
      */
-    @RequestMapping("/v1/queryPositionDetailsByJS")
+    @RequestMapping("/v1/queryPositionDetailsByJS/{webCode}")
     @ResponseBody
-    public List<PositionDetail> queryPositionDetailsByFirstTye(){
-        return lagouQueryService.queryPositionDetailsByFirstTye("技术");
+    public List<PositionDetail> queryPositionDetailsByFirstTye(@PathVariable("webCode") String code){
+        List<PositionDetail> positionDetails = new ArrayList<>();
+        for (WebsiteEnum websiteEnum:WebsiteEnum.values()){
+            if(websiteEnum.getWebCode().equals(code)) {
+                switch (websiteEnum) {
+                    case LAGOU:
+                        positionDetails =  lagouQueryService.queryPositionDetailsByFirstTye("技术");
+                        break;
+                    case BOSS:
+                        positionDetails =  bossQueryService.queryPositionDetailsByFirstTye("技术");
+                        break;
+                }
+            }
+        }
+        return positionDetails;
     }
     /**
      * 拉钩  不同公司规模的职位数量
@@ -179,14 +174,8 @@ public class DataAnalysisController {
                     case LAGOU:
                         positionDetails =  lagouQueryService.queryCompanySize();
                         break;
-                    case JOB:
-                        System.out.printf("job");
-                        break;
                     case BOSS:
                         positionDetails =  bossQueryService.queryCompanySize();
-                        break;
-                    case ZHILIAN:
-                        System.out.printf("zhilian");
                         break;
                 }
             }
@@ -216,17 +205,10 @@ public class DataAnalysisController {
             if(websiteEnum.getWebCode().equals(code)) {
                 switch (websiteEnum) {
                     case LAGOU:
-
-                        break;
-                    case JOB:
-                        System.out.printf("job");
                         break;
                     case BOSS:
                         positionDetails =  bossQueryService.queryIndustryFieldNums();
-                        break;
-                    case ZHILIAN:
-                        System.out.printf("zhilian");
-                        break;
+                      break;
                 }
             }
         }

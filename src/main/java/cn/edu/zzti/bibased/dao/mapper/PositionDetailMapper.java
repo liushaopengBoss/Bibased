@@ -82,12 +82,12 @@ public interface PositionDetailMapper {
      * @param include
      * @return
      */
-  @Select("SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size = 0 and company_max_size = 0 and include = #{include} UNION\n" +
-          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size >= 10 and company_max_size <= 50 and include = #{include} UNION\n" +
-          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size = 50 and company_max_size = 150 and include = #{include} UNION\n" +
-          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size = 150 and company_max_size = 500 and include = #{include} UNION\n" +
-          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size = 500 and company_max_size = 2000 and include = #{include} UNION\n" +
-          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where company_min_size = 2000 and company_max_size = 2000 and include = #{include} \n")
+  @Select("SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and  company_min_size = 0 and company_max_size = 0  UNION\n" +
+          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and  company_min_size >= 10 and company_max_size <= 50  UNION\n" +
+          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and company_min_size = 50 and company_max_size = 150  UNION\n" +
+          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and company_min_size = 150 and company_max_size = 500  UNION\n" +
+          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and company_min_size = 500 and company_max_size = 2000  UNION\n" +
+          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and company_min_size = 2000 and company_max_size = 2000  \n")
    List<PositionDetail>   queryCompanySize(@Param("include")String include );
 
     /**
@@ -127,29 +127,8 @@ public interface PositionDetailMapper {
      * @param query
      * @return
      */
-//    @Select("<script>" +
-//            "    SELECT * from position_detail where 1=1\n" +
-//            "    <if test=\"workMinYear != null \" >\n" +
-//            "      and work_min_year = #{workMinYear,jdbcType=INTEGER}  and  work_max_year = #{workMaxYear,jdbcType=INTEGER}\n" +
-//            "    </if>\n" +
-//            "\n" +
-//            "    <if test=\"minSalary != null\" >\n" +
-//            "      and min_salary = #{minSalary,jdbcType=DECIMAL}  and max_salary = #{maxSalary,jdbcType=DECIMAL}\n" +
-//            "    </if>\n" +
-//            "    <if test=\"include != null\">\n" +
-//            "      and include = #{include,jdbcType=VARCHAR}\n" +
-//            "    </if>\n" +
-//            "    <if test=\"companyMinSize != null\" >\n" +
-//            "      and company_min_size = #{companyMinSize,jdbcType=INTEGER}  and company_max_size = #{companyMaxSize,jdbcType=INTEGER}\n" +
-//            "    </if>\n" +
-//            "    <if test=\"financeStage != null\" >\n" +
-//            "      and  finance_stage = #{financeStage,jdbcType=VARCHAR}\n" +
-//            "    </if>\n" +
-//            "    <if test=\"jobNature != null\" >\n" +
-//            "      and job_nature = #{jobNature,jdbcType=VARCHAR}\n" +
-//            "    </if>\n" +
-//            "     limit 10" +
-//            "  </script>")
     List<PositionDetail> queryPositionDetailWithBaseQuery(PositionDetailQuery query);
+
+
 
 }
