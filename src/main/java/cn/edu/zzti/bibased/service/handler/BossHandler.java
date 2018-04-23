@@ -209,7 +209,7 @@ public class BossHandler {
         positionDetail.setPositionName(positioNname);
         String tags = infoP.getElementsByClass("tags").text();
         if(StringUtils.isNotBlank(salary)){
-            String[] split = salary.replace("k", "").replace("K", "").replace("以上","").split("-");
+            String[] split = salary.replace("k", "").replace("K", "").replace("以上","").replace("不限", "").split("-");
             try {
                 if (split.length == 0) {
                     positionDetail.setMaxSalary(new BigDecimal(0));
@@ -229,7 +229,8 @@ public class BossHandler {
             positionDetail.setDistrict(cityWordEduction[0]);
             if(cityWordEduction[1] != null){
                 try {
-                    String[] split = cityWordEduction[1].replace("年", "").replace("以上", "").replace("以内", "").replace("少于", "").split("-");
+
+                    String[] split = cityWordEduction[1].replace("年", "").replace("以上", "").replace("以内", "").replace("少于", "").replace("不限", "").split("-");
                     if (split.length == 0 || "经验不限".equals(split[0]) || "应届生".equals(split[0])) {
                         positionDetail.setWorkMinYear(0);
                         positionDetail.setWorkMaxYear(0);
@@ -252,7 +253,7 @@ public class BossHandler {
             positionDetail.setIndustryField(companyInfo[0]);
             positionDetail.setFinanceStage(companyInfo[1]);
             try {
-                String[] split = companyInfo[2].replace("人", "").replace("以上", "").replace("以内", "").replace("少于", "").replace("以上", "").split("-");
+                String[] split = companyInfo[2].replace("人", "").replace("以上", "").replace("以内", "").replace("不限", "").replace("少于", "").replace("以上", "").split("-");
                 if (split.length == 0) {
                     positionDetail.setCompanyMinSize(0);
                     positionDetail.setCompanyMaxSize(0);

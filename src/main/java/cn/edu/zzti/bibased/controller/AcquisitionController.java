@@ -5,14 +5,13 @@ import cn.edu.zzti.bibased.dto.ResultMap;
 import cn.edu.zzti.bibased.service.operation.boss.BossGetService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouGetService;
 import cn.edu.zzti.bibased.service.operation.other.ActionLogService;
-import cn.edu.zzti.bibased.utils.RequestHolder;
 import org.springframework.http.converter.json.MappingJacksonValue;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 信息采集

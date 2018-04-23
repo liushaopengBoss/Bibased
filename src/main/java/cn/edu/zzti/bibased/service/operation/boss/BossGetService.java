@@ -135,6 +135,7 @@ public class BossGetService {
                    }
 
                    if (!CollectionUtils.isEmpty(positionDetails)) {
+                       handlePositionDetail(positionDetails,position.getPositionName());
                        logger.info("数据写入数据库！！"+city.getCityName()+" size:" +positionDetails.size());
                        acquisitionService.batchAddPositionDetails(positionDetails);
                    }
@@ -148,6 +149,11 @@ public class BossGetService {
   private void handlePositionDetail(List<PositionDetail> positionList,String positionName){
        if(!CollectionUtils.isEmpty(positionList)){
            positionList.forEach(p->{
+               if(p.getPositionName().contains("实习")){
+                   p.setJobNature("实习");
+               }else{
+                   p.setJobNature("全职");
+               }
                p.setThirdType(positionName);
            });
        }
