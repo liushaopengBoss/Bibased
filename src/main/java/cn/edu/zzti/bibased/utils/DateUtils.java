@@ -1,13 +1,12 @@
 package cn.edu.zzti.bibased.utils;
 
+import org.apache.commons.httpclient.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * 时间工具类
@@ -304,5 +303,78 @@ public class DateUtils {
             }
         }
         return 0L;
+    }
+    /**
+     * 将字符串日期解析成日期对象
+     *
+     * @param date
+     * @param format 取值如：DateUtil.YYMMDD
+     * @return
+     */
+    public static Date parse(String date, String format)  {
+        if (StringUtils.isEmpty(date)) {
+            return null;
+        }
+        SimpleDateFormat formater = new SimpleDateFormat(format);
+        try {
+            return formater.parse(date);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    /**
+     * 将日期对象解析成字符串
+     *
+     * @param date
+     * @param format 取值如：DateUtil.YYMMDD
+     * @return
+     */
+    public static String format(Date date, String format) {
+        SimpleDateFormat formater = new SimpleDateFormat(format);
+        return formater.format(date);
+    }
+
+    /**
+     * 时间范围
+     *
+     * @param startDate
+     * @param endDate
+     * @param formate
+     * @return
+     */
+    private List<String> getDateRange(String startDate, String endDate, String formate) throws Exception{
+        String DATE_FORMAT_YYYYMM = "yyyyMM";
+        String DATE_FORMAT_YYYYMMDD = "yyyyMMdd";
+        List<String> dateRange = new ArrayList<>();
+        Date start, end;
+        if (startDate.length() == DATE_FORMAT_YYYYMM.length() && endDate.length() == DATE_FORMAT_YYYYMM.length()) {
+            start = DateUtils.parse(startDate, DATE_FORMAT_YYYYMM);
+            end = DateUtils.parse(endDate, DATE_FORMAT_YYYYMM);
+            if (start == null || end == null) {
+                throw new Exception("查询日期异常");
+            }
+            // 如果传入日期是 yyyyMM 的形式.  每次加1月
+            while (!start.after(end)) {
+                String dateString = DateUtils.format(start, formate);
+                start =DateUtils.dateAdd(start, 1, Calendar.MONTH);
+                dateRange.add(dateString);
+            }
+        } else if (startDate.length() == DATE_FORMAT_YYYYMMDD.length() && endDate.length() == DATE_FORMAT_YYYYMMDD.length()) {
+            start = DateUtils.parse(startDate, DATE_FORMAT_YYYYMMDD);
+            end = DateUtils.parse(endDate, DATE_FORMAT_YYYYMMDD);
+            if (start == null || end == null) {
+                throw new Exception("查询日期异常");
+            }
+            // 如果传入日期是 yyyyMMdd 的形式.  每次加1天
+            while (!start.after(end)) {
+                String dateString = DateUtils.format(start, formate);
+                start = DateUtils.dateAdd(start, 1, Calendar.DATE);
+                dateRange.add(dateString);
+            }
+        } else {
+            throw new Exception("查询日期异常");
+        }
+        return dateRange;
     }
 }
