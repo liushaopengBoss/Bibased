@@ -1,6 +1,5 @@
 package cn.edu.zzti.bibased.utils;
 
-import org.apache.commons.httpclient.util.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormat;
