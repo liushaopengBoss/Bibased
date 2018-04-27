@@ -189,7 +189,7 @@
                 simpleLoad(btn, false)
             });
             $.ajax({
-                url : "/rest/v1/get_Speed_of_progress?time=0",
+                url : "/acquisition/v1/get_Speed_of_progress?time=0",
                 dataType : "jsonp",
                 type : "POST",
                 jsonpCallback:'callback',
@@ -235,10 +235,10 @@
         function getWebInfo(webType,type) {
             var url ;
             switch (webType){
-                case 1: url = "/rest/v1/get_position_details/"+type; break;
-                case 2: url ="/rest/v1/get_positions/"+type; break;
-                case 3: url = "/rest/v1/get_city/"+type;break;
-                case 4: url = "/rest/v1/get_company/"+type;break;
+                case 1: url = "/acquisition/v1/get_position_details/"+type; break;
+                case 2: url ="/acquisition/v1/get_positions/"+type; break;
+                case 3: url = "/acquisition/v1/get_city/"+type;break;
+                case 4: url = "/acquisition/v1/get_company/"+type;break;
             }
             $.ajax({
                 url : url,
@@ -280,7 +280,7 @@
             var time = 0;
             var interva = setInterval(function() {
                     $.ajax({
-                        url : "/rest/v1/get_Speed_of_progress?time="+time,
+                        url : "/acquisition/v1/get_Speed_of_progress?time="+time,
                         dataType : "jsonp",
                         type : "POST",
                         jsonpCallback:'callback',

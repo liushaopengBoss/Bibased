@@ -5,7 +5,6 @@ import cn.edu.zzti.bibased.dto.ActionLogDO;
 import cn.edu.zzti.bibased.service.email.EmailService;
 import cn.edu.zzti.bibased.service.operation.other.ActionLogService;
 import cn.edu.zzti.bibased.utils.DateUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -56,6 +55,7 @@ public class ActionLogAspect {
             actionLogDO.setStartTime(start);
             actionLogDO.setStatus(1);
             actionLogDO.setTypeCode(actionLogName.getCode());
+
             actionLogDO.setInclude("lagou");
             actionLogService.addLog(actionLogDO);
 //            emailService.sendSimpleMail("","");
