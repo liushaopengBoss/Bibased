@@ -66,6 +66,6 @@
      SELECT finance_stage ,count(distinct company_name) as position_num from company  where include = #{include} GROUP BY finance_stage
   </select>
   <select id="queryIndustryCompanNum" resultMap="BaseResultMap">
-    SELECT industry_field ,count(distinct company_name) as position_num from company where include = #{include} GROUP BY industry_field
+    SELECT industry_field ,count(distinct company_name) as position_num from company where include = #{include} GROUP BY industry_field  ORDER  BY position_num DESC  limit 45
   </select>
 </mapper>
