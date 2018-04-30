@@ -139,6 +139,6 @@
     <if test="jobNature != null" >
       and job_nature = #{jobNature,jdbcType=VARCHAR}
     </if>
-    limit #{pageRow},#{pageSize}
+    limit 10
   </select>
 </mapper>
