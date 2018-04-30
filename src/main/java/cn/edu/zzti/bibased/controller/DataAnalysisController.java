@@ -208,7 +208,7 @@ public class DataAnalysisController {
                         break;
                     case BOSS:
                         positionDetails =  bossQueryService.queryIndustryFieldNums();
-                        break;
+                      break;
                 }
             }
         }

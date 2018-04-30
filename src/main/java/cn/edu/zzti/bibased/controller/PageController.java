@@ -22,6 +22,7 @@ public class PageController {
     private static final String LAGOU_ANALYSIS = PAGE_HOME + "lagou_analysis";
     private static final String BOSS_ANALYSIS = PAGE_HOME + "boss_analysis";
     private static  final String POSITIONdETAIL_SEARCH = PAGE_HOME+"positionDetail_search";
+    private static  final String INDEX_HOME = PAGE_HOME+"index_home";
     /**
      * 首页查询{主页}
      *
@@ -126,4 +127,14 @@ public class PageController {
     public String bossAnalysis() {
         return BOSS_ANALYSIS;
     }
+    /**
+     *index
+     *
+     * @return
+     */
+    @RequestMapping(value = "/index_home")
+    public String indexHome() {
+        return INDEX_HOME;
+    }
+
 }

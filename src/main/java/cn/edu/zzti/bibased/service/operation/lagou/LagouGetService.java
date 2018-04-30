@@ -18,6 +18,7 @@ import cn.edu.zzti.bibased.service.http.HttpClientService;
 import cn.edu.zzti.bibased.service.operation.base.AcquisitionService;
 import cn.edu.zzti.bibased.thread.*;
 import cn.edu.zzti.bibased.utils.DateUtils;
+import cn.edu.zzti.bibased.utils.RequestHolder;
 import cn.edu.zzti.bibased.utils.SpringContextUtils;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletionService;
@@ -266,11 +268,11 @@ public class LagouGetService {
     @Async
     @ActionLog(ProjectItem.POSITIONDETAIL)
     public void getPositionDeailsInfomation(){
+        HttpServletRequest request = RequestHolder.getRequest();
         emailService.sendSimpleMail("信息开始采集！","时间"+DateUtils.formatStr(new Date(),DateUtils.YYMMDD_HHmmSS));
         Future<List<Positions>> positionListFuter = getInfoPool.submit(() -> {
                return acquisitionService.queryLeftPositions();
         });
-
         List<Positions> positions = null;
         List<City> citys =acquisitionService.queryCitys(WebsiteEnum.LAGOU.getWebCode());
         try{
