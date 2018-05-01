@@ -166,7 +166,7 @@ public class LagouDao  {
             return (List<PositionDetail>)cache.getValue(prefix()+"queryWebCityNums");
         }else{
             List<PositionDetail> positionDetails = positionDetailMapper.queryDifferentSalaryNum(WebsiteEnum.LAGOU.getWebCode());
-            cache.add(prefix()+"queryWebCqueryDifferentSalaryNumityNums",positionDetails);
+            cache.add(prefix()+"queryDifferentSalaryNum",positionDetails);
             return positionDetails;
         }
 
