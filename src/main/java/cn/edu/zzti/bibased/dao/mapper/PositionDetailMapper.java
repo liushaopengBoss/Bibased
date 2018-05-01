@@ -128,7 +128,28 @@ public interface PositionDetailMapper {
      * @return
      */
     List<PositionDetail> queryPositionDetailWithBaseQuery(PositionDetailQuery query);
-
+    @Select("\n" +
+            "SELECT min_salary as  minSalary,max_salary as maxSalary,count(id) as num \n" +
+            "from position_detail where  max_salary <10 and include = #{include} UNION\n" +
+            "\n" +
+            "SELECT min_salary as  minSalary,max_salary as maxSalary,count(id) as num \n" +
+            "from position_detail where min_salary >= 10 and max_salary =15 and include = #{include} UNION\n" +
+            "\n" +
+            "SELECT min_salary as  minSalary,max_salary as maxSalary,count(id) as num \n" +
+            "from position_detail where min_salary >= 15 and max_salary =20 and include = #{include} UNION\n" +
+            "\n" +
+            "SELECT min_salary as  minSalary,max_salary as maxSalary,count(id) as num \n" +
+            "from position_detail where min_salary >= 20 and max_salary =35 and include = #{include} UNION\n" +
+            "\n" +
+            "SELECT min_salary as  minSalary,max_salary as maxSalary,count(id) as num \n" +
+            "from position_detail where min_salary >= 35 and max_salary =50 and include = #{include} UNION\n" +
+            "\n" +
+            "SELECT min_salary as  minSalary,max_salary as maxSalary,count(id) as num \n" +
+            "from position_detail where min_salary >= 50 and max_salary =70 and include = #{include} UNION\n" +
+            "\n" +
+            "SELECT min_salary as  minSalary,max_salary as maxSalary,count(id) as num \n" +
+            "from position_detail where min_salary >= 70  and include = #{include}")
+    List<PositionDetail> queryDifferentSalaryNum(@Param("include")String include);
 
 
 }

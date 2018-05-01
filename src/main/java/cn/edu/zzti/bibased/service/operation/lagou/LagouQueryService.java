@@ -148,4 +148,8 @@ public class LagouQueryService {
         query.setPageSize(pageSize);
         return lagouDao.queryPositionDetailWithBaseQuery(query);
     }
+
+    public List<PositionDetail> queryDifferentSalaryNum(){
+      return  lagouDao.queryDifferentSalaryNum();
+    }
 }
