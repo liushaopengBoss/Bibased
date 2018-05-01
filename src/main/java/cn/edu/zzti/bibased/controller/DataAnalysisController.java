@@ -216,6 +216,16 @@ public class DataAnalysisController {
     }
 
 
+    /**
+     * 不同行业中的职位数量
+     * @return
+     */
+    @RequestMapping("/v1/queryDifferentSalaryNum")
+    @ResponseBody
+    public List<PositionDetail> queryDifferentSalaryNum(){
+        return lagouQueryService.queryDifferentSalaryNum();
+    }
+
 
 
 }

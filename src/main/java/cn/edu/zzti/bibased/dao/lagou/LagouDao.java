@@ -161,4 +161,14 @@ public class LagouDao  {
     public List<PositionDetail> queryPositionDetailWithBaseQuery(PositionDetailQuery query){
         return positionDetailMapper.queryPositionDetailWithBaseQuery(query);
     }
+    public List<PositionDetail> queryDifferentSalaryNum(){
+        if(cache.containsKey(prefix()+"queryDifferentSalaryNum")){
+            return (List<PositionDetail>)cache.getValue(prefix()+"queryWebCityNums");
+        }else{
+            List<PositionDetail> positionDetails = positionDetailMapper.queryDifferentSalaryNum(WebsiteEnum.LAGOU.getWebCode());
+            cache.add(prefix()+"queryWebCqueryDifferentSalaryNumityNums",positionDetails);
+            return positionDetails;
+        }
+
+    }
 }
