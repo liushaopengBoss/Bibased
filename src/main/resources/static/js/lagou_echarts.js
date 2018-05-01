@@ -208,7 +208,7 @@ $(function () {
                 obj.value = result[i].num;
                 obj.name = "50K-70K";
                 arr.push(obj)
-            }else if(result[i].minSalary >70){
+            }else if(result[i].minSalary >=70){
                 var obj = new Object();
                 obj.value = result[i].num;
                 obj.name = "70K以上";
@@ -238,7 +238,7 @@ $(function () {
             }
             else if(result[i].minSalary == 50){
                 arr.push("50K-70K")
-            }else if(result[i].minSalary >70){
+            }else if(result[i].minSalary >=70){
                 arr.push("70K以上")
             }
         }
