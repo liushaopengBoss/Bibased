@@ -195,7 +195,7 @@ $(function () {
             else if(result[i].minSalary == 20){
                 var obj = new Object();
                 obj.value = result[i].num;
-                obj.name = "20-35K";
+                obj.name = "20K-35K";
                 arr.push(obj)
             }else if(result[i].minSalary == 35){
                 var obj = new Object();
@@ -232,7 +232,7 @@ $(function () {
                 arr.push("15K-20K")
             }
             else if(result[i].minSalary == 20){
-                arr.push("20-35K")
+                arr.push("20K-35K")
             }else if(result[i].minSalary == 35){
                 arr.push("35K-50K")
             }
