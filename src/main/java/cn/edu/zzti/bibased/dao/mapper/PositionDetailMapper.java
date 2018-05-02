@@ -75,7 +75,15 @@ public interface PositionDetailMapper {
     @Select("SELECT third_type as thirdType ,count(id) as num from position_detail where include = #{include} and first_type =#{firstType}" +
             " GROUP BY third_type ORDER BY num desc limit 60")
     List<PositionDetail> queryPositionDetailsByFirstTye(@Param("include")String include,@Param("firstType")String firstType);
-
+    /**
+     *总的职位数量
+     * eg:技术-->
+     *
+     * @param
+     * @return
+     */
+    @Select("SELECT count(id) from position_detail"  )
+    Integer queryPositionDetailsByCount();
     /**
      * 不同公司规模的职位数量
      *

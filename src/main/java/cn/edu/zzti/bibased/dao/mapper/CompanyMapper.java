@@ -25,4 +25,6 @@ public interface CompanyMapper {
      * 1.分析各个城市行业领域公司数量 去重
      */
     List<Company> queryIndustryCompanNum(@Param("include")String include);
+
+
 }
