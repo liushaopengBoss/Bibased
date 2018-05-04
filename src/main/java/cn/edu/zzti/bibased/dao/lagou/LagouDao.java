@@ -42,6 +42,12 @@ public class LagouDao  {
         return actionLogDao.queryActionLog(WebsiteEnum.LAGOU.getWebCode(),typeCode);
     }
     /**
+     *总的公司数量
+     */
+    public int queryCompanyDetailsByCount(){
+        return companyMapper.queryCompanyDetailsByCount();
+    }
+    /**
      * 1.分析各个城市的公司数量 去重
      */
     public List<Company> queryCityCompanNum(){

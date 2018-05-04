@@ -34,20 +34,19 @@
                                 <div id="vertical-timeline" class="vertical-container light-timeline">
                                     <div class="vertical-timeline-block">
                                         <div class="vertical-timeline-icon navy-bg">
-                                  +          <i class="fa fa-briefcase"></i>
+                                            <i class="fa fa-briefcase"></i>
                                         </div>
 
                                         <div class="vertical-timeline-content">
                                             <h2>信息采集</h2>
-                                            <p>选择想要采集的信息
-                                            </p>
+                                            <p>选择想要采集的信息</p>
                                             <a href="boss_projects.html" class="btn btn-sm btn-primary"> 更多信息</a>
                                             <span class="vertical-date">
-                                        采集的网站：<br>
-                                        <small>拉勾网</small><br>
-                                        <small>boss直聘</small><br>
-                                        <small>智联</small><br>
-                                    </span>
+                                                采集的网站：<br>
+                                                <small>拉勾网</small><br>
+                                                <small>boss直聘</small><br>
+                                                <small>智联</small><br>
+                                            </span>
                                         </div>
                                     </div>
 
@@ -61,11 +60,11 @@
                                             <p>各大招聘网站综合性分析</p>
                                             <a href="charts.html" class="btn btn-sm btn-success"> 更多信息</a>
                                             <span class="vertical-date">
-                                        分析的网站：<br>
-                                        <small>拉勾网</small><br>
-                                        <small>boss直聘</small><br>
-                                        <small>智联</small><br>
-                                    </span>
+                                                分析的网站：<br>
+                                                <small>拉勾网</small><br>
+                                                <small>boss直聘</small><br>
+                                                <small>智联</small><br>
+                                            </span>
                                         </div>
                                     </div>
 
@@ -89,9 +88,10 @@
 
                                         <div class="vertical-timeline-content">
                                             <h2>职位</h2>
-                                            <p>目前软件行业职位总数：</p>
+                                            <p id="numposition">目前软件行业职位总数：</p>
                                             <span class="vertical-date"><br><small></small></span>
                                         </div>
+
                                     </div>
 
                                     <div class="vertical-timeline-block">
@@ -101,7 +101,7 @@
 
                                         <div class="vertical-timeline-content">
                                             <h2>公司</h2>
-                                            <p>目前软件行业公司总数：</p>
+                                            <p id="numcompany">目前软件行业公司总数：</p>
                                             <span class="vertical-date"> <br><small></small></span>
                                         </div>
                                     </div>
@@ -137,8 +137,21 @@
             $(".J_iframe").attr("src",htmlName)
         }
     </script>
+    <script>
+        $.post("/rest/v1/queryPositionDetailsByCount", function(data) {
+
+            $("#numposition").html("目前软件行业职位总数："+data);
+        });
+
+    </script>
+    <script>
+        $.post("/rest/v1/queryCompanyDetailsByCount", function(data){
+            $("#numcompany").html("目前软件行业公司总数："+data);
+        });
+    </script>
     <script src="js/plugins/jquery.metisMenu.js"></script>
     <script src="js/plugins/jquery.slimscroll.min.js"></script>
+
     <script src="js/plugins/layer.min.js"></script>
     <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
     <!--统计代码，可删除-->

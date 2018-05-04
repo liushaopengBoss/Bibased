@@ -84,6 +84,7 @@ public interface PositionDetailMapper {
      */
     @Select("SELECT count(id) from position_detail"  )
     Integer queryPositionDetailsByCount();
+
     /**
      * 不同公司规模的职位数量
      *
