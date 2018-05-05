@@ -55,6 +55,7 @@ public class DataQueryController {
     public Object queryPostionDetail(String[] province,String websine,String workYear,String salary ,String companySize,String positionType,String finance,Integer pageNum,Integer pageSize){
         pageNum = 0;
         pageSize = 20;
+
         return  queryService.queryPositionDetailWithBaseQuery(province,websine,workYear,salary,companySize,positionType,finance,pageNum,pageSize);
     }
 
