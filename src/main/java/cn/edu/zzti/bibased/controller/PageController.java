@@ -23,6 +23,8 @@ public class PageController {
     private static final String BOSS_ANALYSIS = PAGE_HOME + "boss_analysis";
     private static  final String POSITIONdETAIL_SEARCH = PAGE_HOME+"positionDetail_search";
     private static  final String INDEX_HOME = PAGE_HOME+"index_home";
+    private static  final String FINAL_ANALYSIS = PAGE_HOME+"final_analysis";
+
     /**
      * 首页查询{主页}
      *
@@ -135,6 +137,15 @@ public class PageController {
     @RequestMapping(value = "/index_home")
     public String indexHome() {
         return INDEX_HOME;
+    }
+    /**
+     *最终的分析结果
+     *
+     * @return
+     */
+    @RequestMapping(value = "/final_analysis")
+    public String final_analysis() {
+        return FINAL_ANALYSIS;
     }
 
 }

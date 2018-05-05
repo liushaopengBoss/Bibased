@@ -42,6 +42,12 @@ public class LagouDao  {
         return actionLogDao.queryActionLog(WebsiteEnum.LAGOU.getWebCode(),typeCode);
     }
     /**
+     *总的公司数量
+     */
+    public int queryCompanyDetailsByCount(){
+        return companyMapper.queryCompanyDetailsByCount();
+    }
+    /**
      * 1.分析各个城市的公司数量 去重
      */
     public List<Company> queryCityCompanNum(){
@@ -163,10 +169,10 @@ public class LagouDao  {
     }
     public List<PositionDetail> queryDifferentSalaryNum(){
         if(cache.containsKey(prefix()+"queryDifferentSalaryNum")){
-            return (List<PositionDetail>)cache.getValue(prefix()+"queryWebCityNums");
+            return (List<PositionDetail>)cache.getValue(prefix()+"queryDifferentSalaryNum");
         }else{
             List<PositionDetail> positionDetails = positionDetailMapper.queryDifferentSalaryNum(WebsiteEnum.LAGOU.getWebCode());
-            cache.add(prefix()+"queryWebCqueryDifferentSalaryNumityNums",positionDetails);
+            cache.add(prefix()+"queryDifferentSalaryNum",positionDetails);
             return positionDetails;
         }
 

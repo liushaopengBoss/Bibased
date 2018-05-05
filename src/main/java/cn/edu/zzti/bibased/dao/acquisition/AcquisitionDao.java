@@ -57,4 +57,8 @@ public class AcquisitionDao {
     public void batchInsertPositionDetails(List<PositionDetail> positionDetails){
         positionDetailMapper.batchInsert(positionDetails);
     }
+
+    public int queryPositionDetailsByCount() {
+        return positionDetailMapper.queryPositionDetailsByCount();
+    }
 }

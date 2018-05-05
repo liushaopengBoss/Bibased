@@ -175,6 +175,12 @@
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>${spring_boot_version}</version>
         </dependency>
+        <!--分词器-->
+        <dependency>
+            <groupId>com.janeluo</groupId>
+            <artifactId>ikanalyzer</artifactId>
+            <version>2012_u6</version>
+        </dependency>
     <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
@@ -223,6 +229,7 @@
                     <include>**/*.properties</include>
                     <include>**/*.xml</include>
                     <include>**/*.yaml</include>
+                    <include>**/*.dic</include>
                     <include>**/mapper/*.xml</include>
                     <include>**/static/*/*</include>
                     <include>**/static/*/*/*</include>

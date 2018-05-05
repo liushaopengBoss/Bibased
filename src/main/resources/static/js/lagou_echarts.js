@@ -15,6 +15,7 @@ $(function () {
         }
         return array;
     }
+
     var cityNumBarChart = echarts.init(document.getElementById("echarts-bar-chart"));
     cityNumBarChart.showLoading({
         text: "正在加载中...请稍后"

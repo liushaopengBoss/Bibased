@@ -7,6 +7,7 @@ import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.Company;
 import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.ResultMap;
+import cn.edu.zzti.bibased.dto.page.PageResult;
 import cn.edu.zzti.bibased.service.operation.base.AcquisitionService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouQueryService;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -53,9 +54,15 @@ public class DataQueryController {
     @RequestMapping("/v1/queryPostionDetail")
     @ResponseBody
     public Object queryPostionDetail(String[] province,String websine,String workYear,String salary ,String companySize,String positionType,String finance,Integer pageNum,Integer pageSize){
-        pageNum = 0;
+        PageResult pageResult = new PageResult();
+        if(pageNum == null || pageNum <1){
+            pageNum = 1;
+        }
         pageSize = 20;
-        return  queryService.queryPositionDetailWithBaseQuery(province,websine,workYear,salary,companySize,positionType,finance,pageNum,pageSize);
+        List<PositionDetail> positionDetails = queryService.queryPositionDetailWithBaseQuery(province, websine, workYear, salary, companySize, positionType, finance, pageNum, pageSize);
+        pageResult.setPageNum(pageNum);
+        pageResult.setPositionDetailList(positionDetails);
+        return pageResult;
     }
 
     @RequestMapping("/v1/queryCity")

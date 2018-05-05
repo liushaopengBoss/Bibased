@@ -30,6 +30,9 @@ public class DataAnalysisController {
     @Resource
     private BossQueryService bossQueryService;
 
+    public DataAnalysisController() {
+    }
+
     /**
      * 每个城市的公司数量
      * @return
@@ -64,6 +67,26 @@ public class DataAnalysisController {
     @ResponseBody
     public List<Positions> queryPositionTypeNums(){
         return lagouQueryService.queryPositionTypeNums();
+    }
+
+    /**
+     * 总职位数量
+     * @return
+     */
+    @RequestMapping("/v1/queryPositionDetailsByCount")
+    @ResponseBody
+    public int queryPositionDetailsByCount(){
+        return lagouQueryService.queryPositionDetailsByCount();
+    }
+
+    /**
+     * 总职位数量
+     * @return
+     */
+    @RequestMapping("/v1/queryCompanyDetailsByCount")
+    @ResponseBody
+    public int queryCompanyDetailsByCount(){
+        return lagouQueryService.queryCompanyDetailsByCount();
     }
 
     /**

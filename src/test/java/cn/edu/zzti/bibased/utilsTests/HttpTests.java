@@ -13,6 +13,7 @@ import cn.edu.zzti.bibased.service.email.EmailService;
 import cn.edu.zzti.bibased.service.handler.BossHandler;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
+import cn.edu.zzti.bibased.service.ikanalyzer.IKAnalzyerService;
 import cn.edu.zzti.bibased.service.operation.base.AcquisitionService;
 import cn.edu.zzti.bibased.service.operation.boss.BossGetService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouQueryService;
@@ -47,6 +48,8 @@ public class HttpTests extends BaseApplicationTests {
     AcquisitionService acquisitionService;
     @Resource
     private BossGetService bossGetService;
+    @Resource
+    private IKAnalzyerService kAnalzyerService;
     @Test
     public void getService() throws Exception {
         // String url = "http://search.51job.com/list/080200,000000,0000,00,9,99,Java%2B%25E5%25BC%2580%25E5%258F%2591,2,1.html?lang=c&stype=1&postchannel=0000&workyear=99&cotype=99&degreefrom=99&jobterm=99&companysize=99&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=1&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=";
@@ -232,6 +235,16 @@ public class HttpTests extends BaseApplicationTests {
     @Test
     public void dateTest(){
         String s = DateUtils.formatStr(new Date(), DateUtils.YYMMDD);
+    }
+
+    @Test
+    public void kAnalzyerServiceTest(){
+
+        try {
+            kAnalzyerService.queryWords("Java是很流行的语言,很对啊SpringMvc");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

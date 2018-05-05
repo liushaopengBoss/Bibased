@@ -1,6 +1,7 @@
 package cn.edu.zzti.bibased.service.operation.lagou;
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
+import cn.edu.zzti.bibased.dao.acquisition.AcquisitionDao;
 import cn.edu.zzti.bibased.dao.lagou.LagouDao;
 import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.Company;
@@ -30,6 +31,8 @@ import java.util.stream.Collectors;
 public class LagouQueryService {
     @Resource
     private LagouDao lagouDao;
+    @Resource
+    private AcquisitionDao acquisitionDao;
     /**
      * 获取最后一起信息抓取的时间
      * @param city
@@ -57,6 +60,22 @@ public class LagouQueryService {
      */
     public List<Company> queryIndustryCompanNum(){
         return lagouDao.queryIndustryCompanNum();
+    }
+    /**
+     * 总职位数据统计
+     *
+     * @return
+     */
+    public int queryPositionDetailsByCount(){
+        return acquisitionDao.queryPositionDetailsByCount();
+    }
+    /**
+     * 总公司数据统计
+     *
+     * @return
+     */
+    public int queryCompanyDetailsByCount(){
+        return lagouDao.queryCompanyDetailsByCount();
     }
     /**
      * 分析 职位类型数据统计
@@ -144,7 +163,7 @@ public class LagouQueryService {
         if(StringUtils.isNotEmpty(finance)){
             query.setFinanceStage(finance);
         }
-        query.setPageRow(pageNum*pageSize);
+        query.setPageRow((pageNum-1)*pageSize);
         query.setPageSize(pageSize);
         return lagouDao.queryPositionDetailWithBaseQuery(query);
     }
