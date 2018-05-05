@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 public class LagouQueryService {
     @Resource
     private LagouDao lagouDao;
+    @Resource
     private AcquisitionDao acquisitionDao;
     /**
      * 获取最后一起信息抓取的时间
