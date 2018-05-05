@@ -253,12 +253,13 @@
         $(".webSite").change(function () {
             var value = $(".webSite").val();
             $.post("/rest/query/v1/queryCity?code="+value,function (result) {
-                    $("#citySelect").html("");
-                    $("#citySelect").prepend("<option value=''>请选择城市</option>");
-//                    for(var i=0;5;i++){
-//                        var option = $("<option value='"+result[i]+"'>"+result[i]+"</option>");
-//                         $("#citySelect").append(option);
-//                    }
+                    var select = $("#citySelect");
+                     select.html("");
+                     select.prepend("<option value=''>请选择城市</option>");
+                    for(var i=0;result.length;i++){
+                        var option = $("<option value='"+result[i]+"'>"+result[i]+"</option>");
+                        select.append(option);
+                    }
             });
         });
         <!--点击搜索按钮首次请求-->
