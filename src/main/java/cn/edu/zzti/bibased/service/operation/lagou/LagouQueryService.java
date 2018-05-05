@@ -70,6 +70,14 @@ public class LagouQueryService {
         return acquisitionDao.queryPositionDetailsByCount();
     }
     /**
+     * 总公司数据统计
+     *
+     * @return
+     */
+    public int queryCompanyDetailsByCount(){
+        return lagouDao.queryCompanyDetailsByCount();
+    }
+    /**
      * 分析 职位类型数据统计
      *
      * @return

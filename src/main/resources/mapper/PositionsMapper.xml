@@ -29,7 +29,6 @@
          select <include refid="fields" /> FROM  positions
     </sql>
     <sql id="insertSql">
-         insert into positions (<include refid="fields" />) values
     </sql>
     <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.Positions">
         <include refid="insertSql" />

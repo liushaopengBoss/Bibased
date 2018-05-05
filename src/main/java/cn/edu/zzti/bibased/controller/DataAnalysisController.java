@@ -80,6 +80,16 @@ public class DataAnalysisController {
     }
 
     /**
+     * 总职位数量
+     * @return
+     */
+    @RequestMapping("/v1/queryCompanyDetailsByCount")
+    @ResponseBody
+    public int queryCompanyDetailsByCount(){
+        return lagouQueryService.queryCompanyDetailsByCount();
+    }
+
+    /**
      * 职位类型数据
      *
      * @return
