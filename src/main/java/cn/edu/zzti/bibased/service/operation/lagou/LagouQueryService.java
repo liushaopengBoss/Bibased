@@ -163,7 +163,7 @@ public class LagouQueryService {
         if(StringUtils.isNotEmpty(finance)){
             query.setFinanceStage(finance);
         }
-        query.setPageRow(pageNum*pageSize);
+        query.setPageRow((pageNum-1)*pageSize);
         query.setPageSize(pageSize);
         return lagouDao.queryPositionDetailWithBaseQuery(query);
     }

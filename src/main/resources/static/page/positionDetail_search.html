@@ -48,6 +48,8 @@
                     </div>
                     <div class="ibox-content">
                         <form class="form-horizontal m-t" id="commentForm">
+                            <!-- 隐藏式向后端传递某页的参数-->
+                            <input type="text" id="pageNum" name = "pageNum" style="display: none" value="1">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">网站类型：</label>
                                 <div class="col-sm-5">
@@ -191,16 +193,13 @@
                             <tr>
                                 <td>
                                     <div id="Pagination-logistic    " class="logistic">
-                                        <a href=" javascript:void(0)" onclick="sy('logistic')">首页</a>
-                                        <input type="text" id="ssq-logistic" style="display: none">
-                                        <input type="text" id="zys-logistic" style="display: none">
-                                        <a href=" javascript:void(0)" onclick="syy('logistic')">上一页</a>
-                                        <a href="javascript:void(0)" onclick="xyy('logistic')">下一页</a>
-                                        <a href="javascript:void(0)" onclick="wy('logistic')">尾页</a>
+                                        <a href=" javascript:queryData('first')">首页</a>
+                                        <a href="javascript:queryData('up')" >上一页</a>
+                                        <a href="javascript:queryData('down')" >下一页</a>
                                     </div>
                                 </td>
                                 <td>
-                                    <h4> 当前为：【<span id="ff-logistic"></span>/<span id="fffs-logistic"></span>】页
+                                    <h4> 当前为：【<span id="nowPage"></span>】页
                                     </h4>
                                 </td>
                             </tr>
@@ -262,13 +261,20 @@
 //                    }
             });
         });
-
+        <!--点击搜索按钮首次请求-->
         $(".queryButton").click(function () {
-
-            $.post('/rest/query/v1/queryPostionDetail',$("#commentForm").serialize(),function (result) {
+            sendAjax();
+        })
+        //ajax请求并且，渲染界面
+        function  sendAjax() {
+            $.post('/rest/query/v1/queryPostionDetail',$("#commentForm").serialize(),function (resultData) {
                 var dataBox = $("#dataBox");
+                //清空数据 避免数据叠加
                 dataBox.html("");
-                if(result.length >0){
+                if(resultData.positionDetailList.length >0){
+                    //获取positionDetailList数据
+                    var result = resultData.positionDetailList;
+                    //创建数据
                     for(var i=0;i<result.length;i++){
                         var tr  = $(" <tr>\n" +
                             "                                    <td>"+result[i].thirdType+"</td>\n" +
@@ -282,12 +288,35 @@
                             "                                    <td><a href=\"#\"><i class=\"fa fa-check text-navy\"></i> 有效</a></td>\n" +
                             "                                </tr>\n" +
                             "                               ");
+                        //添加数据
                         dataBox.append(tr);
                     }
+                    //向表单中设置pageNum
+                    $("#pageNum").val(resultData.pageNum);
+                    $("#nowPage").html(resultData.pageNum);
                 }
 
             },'json');
-        })
+        }
+
+        queryData = function (flag){
+            //判断是下一页还是上一页或者首页
+            //首页
+            if(flag=="first"){
+                $("#pageNum").val(1);
+            }else if(flag == "up"){ //上一页
+                if($("#pageNum").val() >1){
+                    $("#pageNum").val( Number($("#pageNum").val()) -1);
+                }
+            }else if(flag == "down"){//下一页
+                $("#pageNum").val(Number($("#pageNum").val()) +1);
+            }
+            //ajax请求并且，渲染界面
+            sendAjax();
+        }
+
+
+
 
 
 
