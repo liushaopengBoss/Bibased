@@ -22,19 +22,6 @@ spring:
     content-type: text/html
     check-template: true
     mode: LEGACYHTML5
-#Mail
-  mail:
-    host: smtp.163.com
-    username: liushaopeng186@163.com
-    sendusername: 1396647019@qq.com
-    password: lsp123456789
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls: true
-          required: true
-
 
 ##热部署
 #  devtools:

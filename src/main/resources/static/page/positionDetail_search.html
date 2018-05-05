@@ -151,7 +151,7 @@
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>公司信息</h5>
+                        <h5>职位信息</h5>
 
                         <div class="ibox-tools">
                             <a class="collapse-link">
@@ -255,7 +255,7 @@
             $.post("/rest/query/v1/queryCity?code="+value,function (result) {
                     var select = $("#citySelect");
                      select.html("");
-                     select.prepend("<option value=''>请选择城市</option>");
+                        select.prepend("<option value=''>请选择城市</option>");
 //                    for(var i=0;result.length;i++){
 //                        var option = $("<option value='"+result[i]+"'>"+result[i]+"</option>");
 //                        select.append(option);
