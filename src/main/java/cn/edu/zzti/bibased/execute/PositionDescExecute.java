@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 /**
  * 职位描述信息
  *
- * Created by huaidou on  2018/1/31
+ * Created by huaidou on  2018/5/6
  */
 @Service
 @Scope(value = "prototype")
