@@ -41,9 +41,9 @@ public class IKAnalzyerService {
         Set<String> sensitiveWordList = new HashSet<>();
         List<String> wordList = queryWords(txt);
         for (String word : wordList) {
-            if (sensitiveWordMap.get(word) != null) {
+            //if (sensitiveWordMap.get(word) != null) {
                 sensitiveWordList.add(word);
-            }
+            //}
         }
         return sensitiveWordList;
     }

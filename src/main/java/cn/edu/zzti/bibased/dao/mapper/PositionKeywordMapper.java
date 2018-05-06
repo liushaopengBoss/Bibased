@@ -2,6 +2,7 @@ package cn.edu.zzti.bibased.dao.mapper;
 
 
 import cn.edu.zzti.bibased.dto.PositionKeyword;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -10,13 +11,16 @@ import java.util.List;
 public interface PositionKeywordMapper {
 
     /**
-     * 批量写入
-     * （不用写）
+     * 添加数据 有则更新，无则添加
      *
-     * @param keywords
+     *
+     * @param keyword
      */
-    void bactchAddPositionKeyWord(List<PositionKeyword> keywords);
-
+    @Insert("      REPLACE into position_keyword set  curr_date =#{currDate},\n" +
+            "      keyword_name =  #{keywordName}, keyword_num = keyword_num+#{keywordNum}, position_type = #{positionType}, \n" +
+            "      include =  #{include}, create_time = UNIX_TIMESTAMP(now()), op_time = UNIX_TIMESTAMP(now()), \n" +
+            "      is_valid=1, last_ver = last_ver+1")
+    void repaceAddPositionKeyWord(PositionKeyword keyword);
     /**
      * 通过日期和职位类型查找某一天的关键字（要全部的字段）
      *  写到controller层

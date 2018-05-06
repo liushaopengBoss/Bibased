@@ -4,13 +4,12 @@ import cn.edu.zzti.bibased.aspect.ActionLog;
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
 import cn.edu.zzti.bibased.constant.ProjectItem;
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
-import cn.edu.zzti.bibased.dto.City;
-import cn.edu.zzti.bibased.dto.Company;
-import cn.edu.zzti.bibased.dto.PositionDetail;
-import cn.edu.zzti.bibased.dto.Positions;
+import cn.edu.zzti.bibased.dao.position.PositionDescDao;
+import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.dto.lagou.*;
 import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.CompanyExecute;
+import cn.edu.zzti.bibased.execute.PositionDescExecute;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
 import cn.edu.zzti.bibased.service.email.EmailService;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
@@ -20,6 +19,7 @@ import cn.edu.zzti.bibased.thread.*;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import cn.edu.zzti.bibased.utils.RequestHolder;
 import cn.edu.zzti.bibased.utils.SpringContextUtils;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +35,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 /**
  * 采集拉勾网数据
@@ -57,6 +58,8 @@ public class LagouGetService {
     private EmailService emailService;
     @Resource
     private AcquisitionService acquisitionService;
+    @Resource
+    private PositionDescDao positionDescDao;
 
     public String startGetDate(String apiUrl, Map<String,Object> param,String httpType) throws Exception{
         LaGouTask laGouTask = new LaGouTask(apiUrl,param, httpType);
@@ -358,6 +361,10 @@ public class LagouGetService {
                                 break;
                             }
 
+                            List<PositionDesc> positionDescs = handlePositionDesc(positionDetails);
+                            if(!CollectionUtils.isEmpty(positionDescs)){
+                                positionDescDao.batchPositionDesc(positionDescs);
+                            }
                         }
 
                     }
@@ -449,5 +456,46 @@ public class LagouGetService {
         String cookie = header.get("Cookie").toString().substring(0,header.get("Cookie").toString().indexOf("SEARCH_ID=")+10).toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
         logger.debug(cookie);
         header.put("Cookie",cookie);
+    }
+
+    /**
+     * 职位描述
+     *
+     * @param positionDetails
+     * @return
+     */
+    private List<PositionDesc> handlePositionDesc( List<PositionDetail> positionDetails){
+        List<PositionDesc>  positionDescsList = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(positionDetails)){
+            //每份分为10条数据
+            List<List<PositionDetail>> lists = Lists.partition(positionDetails, 10);
+            for(int i=0;i<lists.size();i++){
+                List<Integer> ids = lists.get(i).stream().map(PositionDetail::getPositionId).collect(Collectors.toList());
+                for (int j = 0; j < ids.size(); j++) {
+                    String apiUrl = "https://www.lagou.com/jobs/"+ids.get(j)+".html";
+                    BaseExecuter positonDetailTask = (PositionDescExecute) SpringContextUtils.getBean(PositionDescExecute.class);
+                    positonDetailTask.setHeaders(HttpHeaderConstant.lagouGetHeader);
+                    positonDetailTask.setApiUrl(apiUrl);
+                    positonDetailTask.setPositionId(ids.get(j));
+                    positonDetailTask.setWebsiteEnum(WebsiteEnum.LAGOU);
+                    completionService.submit(AnsyTask.newTask().registExecuter(positonDetailTask));
+                }
+
+                for (int j = 0; j < ids.size(); j++) {
+                    try {
+                        Future<PositionDesc> positionDescFuture = completionService.take();
+                        PositionDesc positionDesc = positionDescFuture.get();
+                        positionDesc.setPositionType(positionDetails.get(0).getThirdType());
+                        positionDesc.setInclude(WebsiteEnum.LAGOU.getWebCode());
+                        positionDesc.setCurrDate(DateUtils.formatInt(Integer.parseInt(positionDetails.get(0).getPositionCreateTime()/1000+""),"yyyyMMdd"));
+                        positionDescsList.add(positionDesc);
+                    } catch (Exception e) {
+                        logger.error("职位描述获取失败！",e);
+                    }
+                }
+            }
+
+        }
+        return  positionDescsList;
     }
 }

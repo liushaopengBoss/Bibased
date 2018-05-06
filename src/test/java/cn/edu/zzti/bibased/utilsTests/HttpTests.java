@@ -3,10 +3,7 @@ package cn.edu.zzti.bibased.utilsTests;
 import cn.edu.zzti.bibased.BaseApplicationTests;
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
 import cn.edu.zzti.bibased.dao.lagou.LagouDao;
-import cn.edu.zzti.bibased.dto.City;
-import cn.edu.zzti.bibased.dto.Company;
-import cn.edu.zzti.bibased.dto.PositionDetail;
-import cn.edu.zzti.bibased.dto.Positions;
+import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
 import cn.edu.zzti.bibased.service.email.EmailService;
@@ -18,6 +15,7 @@ import cn.edu.zzti.bibased.service.operation.base.AcquisitionService;
 import cn.edu.zzti.bibased.service.operation.boss.BossGetService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouQueryService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouGetService;
+import cn.edu.zzti.bibased.service.operation.other.PositionKeyWordSevice;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import cn.edu.zzti.bibased.utils.IDUtils;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
@@ -83,9 +81,9 @@ public class HttpTests extends BaseApplicationTests {
     }
     @Test
     public void tt423() throws Exception {
-        String url = "https://www.lagou.com/gongsi/";
+        String url = "https://www.lagou.com/jobs/4477797.html";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
-        List<Company> companys = LagouHandler.getCompanys(html, "");
+        PositionDesc positionDesc = LagouHandler.getPositionDesc(html);
     }
 
     @Test
@@ -236,15 +234,16 @@ public class HttpTests extends BaseApplicationTests {
     public void dateTest(){
         String s = DateUtils.formatStr(new Date(), DateUtils.YYMMDD);
     }
-
+    @Resource
+    private PositionKeyWordSevice keyWordSevice;
     @Test
     public void kAnalzyerServiceTest(){
-
-        try {
-            kAnalzyerService.queryWords("Java是很流行的语言,很对啊SpringMvc");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        keyWordSevice.keyWord();;
+//        try {
+//            kAnalzyerService.queryWords("Java是很流行的语言,很对啊SpringMvc");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
 }
