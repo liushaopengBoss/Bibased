@@ -1,5 +1,6 @@
 $(function () {
-    var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
+    var lineChart = echarts.init(document.getElementById("echarts-line-day"));
+
     var lineoption = {
         title : {
             text: '职位发布数量的变化'
@@ -53,4 +54,7 @@ $(function () {
     lineChart.setOption(lineoption);
     $(window).resize(lineChart.resize);
 
+    var lineMonth = echarts.init(document.getElementById("echarts-month"));
+    lineMonth.setOption(lineoption);
+    window.onresize = lineMonth.resize;
 });

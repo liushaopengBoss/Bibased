@@ -53,5 +53,6 @@ public interface PositionKeywordMapper {
             " ORDER BY keywordNum DESC  limit 20")
     List<PositionKeyword>  queryPositionKeyWordNumsByDateRangeAndPosition(@Param("startDate")String startDate,@Param("endDate")String endDate,
                                                                                   @Param("positionType")String positionType, @Param("include")String include);
-
+    @Select("select position_type  from position_keyword group by position_type")
+    List<String> queryPositionTypes();
 }

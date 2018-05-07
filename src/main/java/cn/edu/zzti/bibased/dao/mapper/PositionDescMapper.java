@@ -40,4 +40,6 @@ public interface PositionDescMapper {
   */
  @Select("select position_type from position_desc where curr_date = #{currDate} group by position_type")
  List<String> queryPositionTypes(@Param("currDate")String currDate);
+
+
 }

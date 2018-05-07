@@ -99,4 +99,9 @@ public class PositionKeyWordSevice {
             }
         }
     }
+
+
+    public List<String> queryPositionTypes(){
+        return positionKeywordDao.queryPositionTypes();
+    }
 }

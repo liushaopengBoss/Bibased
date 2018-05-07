@@ -361,10 +361,15 @@ public class LagouGetService {
                                 break;
                             }
 
-                            List<PositionDesc> positionDescs = handlePositionDesc(positionDetails);
-                            if(!CollectionUtils.isEmpty(positionDescs)){
-                                positionDescDao.batchPositionDesc(positionDescs);
+                            try{
+                                List<PositionDesc> positionDescs = handlePositionDesc(positionDetails);
+                                if(!CollectionUtils.isEmpty(positionDescs)){
+                                    positionDescDao.batchPositionDesc(positionDescs);
+                                }
+                            }catch (Exception e){
+                                logger.info("职位描述失败",e);
                             }
+
                         }
 
                     }
@@ -466,6 +471,7 @@ public class LagouGetService {
      */
     private List<PositionDesc> handlePositionDesc( List<PositionDetail> positionDetails){
         List<PositionDesc>  positionDescsList = new ArrayList<>();
+        logger.info("职位描述开始采集！！ ");
         if(!CollectionUtils.isEmpty(positionDetails)){
             //每份分为10条数据
             List<List<PositionDetail>> lists = Lists.partition(positionDetails, 10);
@@ -494,8 +500,9 @@ public class LagouGetService {
                     }
                 }
             }
-
+            logger.info("职位描述采集结束!!!!");
         }
+        logger.info("职位描述采集数量： "+positionDescsList.size()+"职位类型："+positionDetails.get(0).getThirdType());
         return  positionDescsList;
     }
 }

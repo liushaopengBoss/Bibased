@@ -221,6 +221,14 @@ public class LagouHandler {
         if(text != null){
             int index1 = text.indexOf("岗位职责");
             int index2 = text.indexOf("任职要求");
+            if(index1 < 0){
+                index1 = 0;
+            }
+            if(index2 < 0){
+                desc.setPostDuties(text);
+                desc.setTenureRequirements(text);
+                return desc;
+            }
             String substring = text.substring(index1+5, index2);
             String substring1 = text.substring(index2+5);
             desc.setPostDuties(substring);

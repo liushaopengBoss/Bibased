@@ -22,4 +22,9 @@ public class PositionKeywordDao {
 
     }
 
+
+    public List<String> queryPositionTypes(){
+        return positionKeywordMapper.queryPositionTypes();
+    }
+
 }

@@ -19,16 +19,15 @@
   </sql>
 
   <insert id="batchPositionDetail" parameterType="cn.edu.zzti.bibased.dto.PositionDesc" >
-      insert into position_desc (id, position_id, curr_date,
+      insert into position_desc ( position_id, curr_date,
       post_duties, tenure_requirements, position_type,
       include, create_time, op_time,
       is_valid)
     values
     <foreach collection="list" item="positiondesc" index="index" separator="," >
-    ( #{positiondesc.positionId,jdbcType=INTEGER}, #{positiondesc.currDate,jdbcType=VARCHAR},
+      (#{positiondesc.positionId,jdbcType=INTEGER}, #{positiondesc.currDate,jdbcType=VARCHAR},
       #{positiondesc.postDuties,jdbcType=VARCHAR}, #{positiondesc.tenureRequirements,jdbcType=VARCHAR}, #{positiondesc.positionType,jdbcType=VARCHAR},
-      #{positiondesc.include,jdbcType=VARCHAR},  UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now())
-      1)
+      #{positiondesc.include,jdbcType=VARCHAR},  UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),1)
     </foreach>
   </insert>
 </mapper>

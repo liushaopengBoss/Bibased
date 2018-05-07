@@ -239,7 +239,7 @@ public class HttpTests extends BaseApplicationTests {
     private PositionKeyWordSevice keyWordSevice;
     @Test
     public void kAnalzyerServiceTest(){
-        keyWordSevice.keyWord();;
+        keyWordSevice.keyWord();
 //        try {
 //            kAnalzyerService.queryWords("Java是很流行的语言,很对啊SpringMvc");
 //        } catch (Exception e) {
