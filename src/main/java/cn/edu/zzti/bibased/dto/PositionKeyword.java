@@ -1,5 +1,8 @@
 package cn.edu.zzti.bibased.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PositionKeyword {
     private Integer id;
 

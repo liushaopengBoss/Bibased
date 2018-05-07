@@ -254,4 +254,11 @@ public class HttpTests extends BaseApplicationTests {
         positionKeywordMapper.queryPositionKeyWordNumsByDateRangeAndPosition("20180503","20180505","Java","lagou");
     }
 
+    @Test
+    public void afterMonthTest(){
+        String format = DateUtils.format(DateUtils.getAfterMonth(new Date(), 3), "yyyyMM");
+
+    }
+
+
 }

@@ -65,6 +65,7 @@ public class DateUtils {
 
     /**
      *将日期转换为int 型时间
+     *
      * @param date
      * @return
      */
@@ -136,6 +137,7 @@ public class DateUtils {
 
     /**
      * 计算两个日期之间相差的天数
+     *
      * @param smdate 较小的时间
      * @param bdate  较大的时间
      * @return 相差天数
@@ -193,6 +195,19 @@ public class DateUtils {
         return now.getTime();
     }
 
+    /**
+     * 获得距指定时间多少月 之后的日期
+     *
+     * @return
+     */
+    public static Date getAfterMonth(Date date, int month) {
+
+        Calendar now = Calendar.getInstance();
+        now.setTime(date);
+        now.set(Calendar.MONTH, now.get(Calendar.MONTH) + month);
+        return now.getTime();
+    }
+
 
     /**
      * 获得指定月份的周数
@@ -230,7 +245,25 @@ public class DateUtils {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         return sdf.format(cal.getTime());
     }
-
+    /**
+     * 获取指定年月的 最后一天
+     * @param date yyyyMM
+     * @return
+     */
+    public static String getMonthFirstday(String date) {
+        Calendar cal = Calendar.getInstance();
+        int year = Integer.valueOf(date.substring(0,4));
+        int month = Integer.valueOf(date.substring(4,6));
+        //设置年份
+        cal.set(Calendar.YEAR,year);
+        //设置月份
+        cal.set(Calendar.MONTH,month-1);
+        //设置日历中月份的最大天数
+        cal.set(Calendar.DAY_OF_MONTH, 0);
+        //格式化日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        return sdf.format(cal.getTime());
+    }
     /**
      * 获得指定月份的天数
      *
@@ -342,7 +375,7 @@ public class DateUtils {
      * @param formate
      * @return
      */
-    private List<String> getDateRange(String startDate, String endDate, String formate) throws Exception{
+    public static List<String> getDateRange(String startDate, String endDate, String formate) throws Exception{
         String DATE_FORMAT_YYYYMM = "yyyyMM";
         String DATE_FORMAT_YYYYMMDD = "yyyyMMdd";
         List<String> dateRange = new ArrayList<>();
@@ -389,6 +422,7 @@ public class DateUtils {
         cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
         return getStartDate(cal.getTime());
     }
+
 
     /**
      * 获取一天的开始时间

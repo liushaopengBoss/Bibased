@@ -106,4 +106,15 @@ public class DataQueryController {
     public List<PositionKeyword>  queryDataRangePositionKeyWordNums(String positionType){
         return positionKeyWordSevice.queryPositionKeyWordNumsByDateRangeAndPosition(positionType.trim(),null);
     }
+
+    @RequestMapping("/v1/queryDateRangPositionNumDay")
+    @ResponseBody
+    public List<PositionNumDay> queryDateRangPositionNumDay(String positionType){
+        return positionNumDayService.queryDateRangPositionNumDay(positionType);
+    }
+    @RequestMapping("/v1/queryDateRangPositionNumDaySum")
+    @ResponseBody
+    public List<PositionNumDay> queryDateRangPositionNumDaySum(String positionType){
+        return positionNumDayService.queryDateRangPositionNumDaySum(positionType);
+    }
 }
