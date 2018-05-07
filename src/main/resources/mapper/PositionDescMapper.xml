@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.zzti.bibased.dao.mapper.PositionDescMapper" >
+  <resultMap id="BaseResultMap" type="cn.edu.zzti.bibased.dto.PositionDesc" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="position_id" property="positionId" jdbcType="INTEGER" />
+    <result column="curr_date" property="currDate" jdbcType="VARCHAR" />
+    <result column="post_duties" property="postDuties" jdbcType="VARCHAR" />
+    <result column="tenure_requirements" property="tenureRequirements" jdbcType="VARCHAR" />
+    <result column="position_type" property="positionType" jdbcType="VARCHAR" />
+    <result column="include" property="include" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="op_time" property="opTime" jdbcType="BIGINT" />
+    <result column="is_valid" property="isValid" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, position_id, curr_date, post_duties, tenure_requirements, position_type, include,
+    create_time, op_time, is_valid
+  </sql>
+
+  <insert id="batchPositionDetail" parameterType="cn.edu.zzti.bibased.dto.PositionDesc" >
+      insert into position_desc ( position_id, curr_date,
+      post_duties, tenure_requirements, position_type,
+      include, create_time, op_time,
+      is_valid)
+    values
+    <foreach collection="list" item="positiondesc" index="index" separator="," >
+      (#{positiondesc.positionId,jdbcType=INTEGER}, #{positiondesc.currDate,jdbcType=VARCHAR},
+      #{positiondesc.postDuties,jdbcType=VARCHAR}, #{positiondesc.tenureRequirements,jdbcType=VARCHAR}, #{positiondesc.positionType,jdbcType=VARCHAR},
+      #{positiondesc.include,jdbcType=VARCHAR},  UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),1)
+    </foreach>
+  </insert>
+</mapper>

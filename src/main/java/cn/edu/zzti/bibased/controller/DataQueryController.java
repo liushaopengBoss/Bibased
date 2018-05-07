@@ -3,13 +3,12 @@ package cn.edu.zzti.bibased.controller;
 
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
-import cn.edu.zzti.bibased.dto.City;
-import cn.edu.zzti.bibased.dto.Company;
-import cn.edu.zzti.bibased.dto.PositionDetail;
-import cn.edu.zzti.bibased.dto.ResultMap;
+import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.dto.page.PageResult;
 import cn.edu.zzti.bibased.service.operation.base.AcquisitionService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouQueryService;
+import cn.edu.zzti.bibased.service.operation.other.PositionKeyWordSevice;
+import cn.edu.zzti.bibased.service.operation.other.PositionNumDayService;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +32,10 @@ public class DataQueryController {
     private LagouQueryService queryService;
     @Resource
     private AcquisitionService acquisitionService;
+    @Resource
+    private PositionKeyWordSevice positionKeyWordSevice;
+    @Resource
+    private PositionNumDayService positionNumDayService;
 
     /**
      * 查询公司
@@ -81,5 +84,37 @@ public class DataQueryController {
     }
 
 
+     @RequestMapping("/v1/queryKeyWordPositionTypes")
+    @ResponseBody
+    public List<String> queryKeyWordPositionTypes(){
+        return positionKeyWordSevice.queryPositionTypes();
+    }
 
+
+    @RequestMapping("/v1/queryNumDayPositionTypes")
+    @ResponseBody
+    public List<String> queryNumDayPositionTypes(){
+        return positionNumDayService.queryPositionTypes();
+    }
+    @RequestMapping("/v1/queryYestodayPositionKeyWord")
+    @ResponseBody
+    public List<PositionKeyword> queryYestodayPositionKeyWord(String positionType){
+        return positionKeyWordSevice.queryPositionKeyWordByCurrrDate(positionType.trim());
+    }
+    @RequestMapping("/v1/queryDataRangePositionKeyWordNums")
+    @ResponseBody
+    public List<PositionKeyword>  queryDataRangePositionKeyWordNums(String positionType){
+        return positionKeyWordSevice.queryPositionKeyWordNumsByDateRangeAndPosition(positionType.trim(),null);
+    }
+
+    @RequestMapping("/v1/queryDateRangPositionNumDay")
+    @ResponseBody
+    public List<PositionNumDay> queryDateRangPositionNumDay(String positionType){
+        return positionNumDayService.queryDateRangPositionNumDay(positionType);
+    }
+    @RequestMapping("/v1/queryDateRangPositionNumDaySum")
+    @ResponseBody
+    public List<PositionNumDay> queryDateRangPositionNumDaySum(String positionType){
+        return positionNumDayService.queryDateRangPositionNumDaySum(positionType);
+    }
 }

@@ -99,8 +99,7 @@ public class HttpClientService {
 //            }
         }catch(IOException e){
             httpGet.abort();
-            logger.error("https get请求失败：uri:"+apiUrl+"\n"+e);
-            e.printStackTrace();
+            logger.error("https get请求失败：uri:"+apiUrl+"\n",e);
         } finally {
             changeStatus(data);
             closeConnection(response,httpGet);

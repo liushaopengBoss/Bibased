@@ -28,6 +28,8 @@ public abstract class BaseExecuter implements AnsyTask.Executer {
      * 网站类型
      */
     protected WebsiteEnum websiteEnum;
+
+    protected int positionId;
     @Resource
     protected HttpClientService httpClientService;
 
@@ -83,5 +85,13 @@ public abstract class BaseExecuter implements AnsyTask.Executer {
 
     public void setWebsiteEnum(WebsiteEnum websiteEnum) {
         this.websiteEnum = websiteEnum;
+    }
+
+    public int getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(int positionId) {
+        this.positionId = positionId;
     }
 }

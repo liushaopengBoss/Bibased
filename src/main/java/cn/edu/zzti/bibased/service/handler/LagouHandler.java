@@ -3,6 +3,7 @@ package cn.edu.zzti.bibased.service.handler;
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.Company;
+import cn.edu.zzti.bibased.dto.PositionDesc;
 import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import cn.edu.zzti.bibased.utils.IDUtils;
@@ -211,5 +212,29 @@ public class LagouHandler {
         return  pageNum;
     }
 
+
+    public static PositionDesc  getPositionDesc(String html){
+        PositionDesc desc = new PositionDesc();
+        Document lagouPositionDesc = Jsoup.parse(html);
+        Elements jobBtElement = lagouPositionDesc.getElementsByClass("job_bt");
+        String text = jobBtElement.get(0).text();
+        if(text != null){
+            int index1 = text.indexOf("岗位职责");
+            int index2 = text.indexOf("任职要求");
+            if(index1 < 0){
+                index1 = 0;
+            }
+            if(index2 < 0){
+                desc.setPostDuties(text);
+                desc.setTenureRequirements(text);
+                return desc;
+            }
+            String substring = text.substring(index1+5, index2);
+            String substring1 = text.substring(index2+5);
+            desc.setPostDuties(substring);
+            desc.setTenureRequirements(substring1);
+        }
+        return desc;
+    }
 
 }
