@@ -104,4 +104,16 @@ public class PositionKeyWordSevice {
     public List<String> queryPositionTypes(){
         return positionKeywordDao.queryPositionTypes();
     }
+
+    public List<PositionKeyword> queryPositionKeyWordByCurrrDate(String positionType){
+        String yestoday = DateUtils.format(DateUtils.getAfterDate(new Date(), -1), "yyyyMMdd");
+        return positionKeywordDao.queryPositionKeyWordByCurrrDate(yestoday,positionType);
+    }
+
+    public List<PositionKeyword>  queryPositionKeyWordNumsByDateRangeAndPosition(String positionType, String include){
+
+        String startDate = DateUtils.format(DateUtils.getStartMonth(new Date()), "yyyyMMdd");
+        String endDate = DateUtils.format(DateUtils.getAfterDate(new Date(), -1), "yyyyMMdd");
+        return positionKeywordDao.queryPositionKeyWordNumsByDateRangeAndPosition(startDate,endDate,positionType,include);
+    }
 }

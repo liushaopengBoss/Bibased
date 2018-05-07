@@ -27,4 +27,12 @@ public class PositionKeywordDao {
         return positionKeywordMapper.queryPositionTypes();
     }
 
+    public List<PositionKeyword> queryPositionKeyWordByCurrrDate(String currDate,String positionType){
+        return positionKeywordMapper.queryPositionKeyWordByCurrrDate(currDate,positionType);
+    }
+
+    public List<PositionKeyword>  queryPositionKeyWordNumsByDateRangeAndPosition(String startDate,String endDate,
+                                                                          String positionType, String include){
+        return positionKeywordMapper.queryPositionKeyWordNumsByDateRangeAndPosition(startDate,endDate,positionType,include);
+    }
 }

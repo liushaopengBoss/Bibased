@@ -3,10 +3,7 @@ package cn.edu.zzti.bibased.controller;
 
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
-import cn.edu.zzti.bibased.dto.City;
-import cn.edu.zzti.bibased.dto.Company;
-import cn.edu.zzti.bibased.dto.PositionDetail;
-import cn.edu.zzti.bibased.dto.ResultMap;
+import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.dto.page.PageResult;
 import cn.edu.zzti.bibased.service.operation.base.AcquisitionService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouQueryService;
@@ -87,7 +84,7 @@ public class DataQueryController {
     }
 
 
-    @RequestMapping("/v1/queryKeyWordPositionTypes")
+     @RequestMapping("/v1/queryKeyWordPositionTypes")
     @ResponseBody
     public List<String> queryKeyWordPositionTypes(){
         return positionKeyWordSevice.queryPositionTypes();
@@ -99,6 +96,14 @@ public class DataQueryController {
     public List<String> queryNumDayPositionTypes(){
         return positionNumDayService.queryPositionTypes();
     }
-
-
+    @RequestMapping("/v1/queryYestodayPositionKeyWord")
+    @ResponseBody
+    public List<PositionKeyword> queryYestodayPositionKeyWord(String positionType){
+        return positionKeyWordSevice.queryPositionKeyWordByCurrrDate(positionType.trim());
+    }
+    @RequestMapping("/v1/queryDataRangePositionKeyWordNums")
+    @ResponseBody
+    public List<PositionKeyword>  queryDataRangePositionKeyWordNums(String positionType){
+        return positionKeyWordSevice.queryPositionKeyWordNumsByDateRangeAndPosition(positionType.trim(),null);
+    }
 }

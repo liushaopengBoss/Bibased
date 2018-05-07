@@ -376,4 +376,54 @@ public class DateUtils {
         }
         return dateRange;
     }
+
+    /**
+     * 获取该月的第一天
+     *
+     * @param date
+     * @return
+     */
+    public static Date getStartMonth(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+        return getStartDate(cal.getTime());
+    }
+
+    /**
+     * 获取一天的开始时间
+     *
+     * @param date
+     * @return
+     */
+    public static Date getStartDate(Date date) {
+        if (date == null) {
+            return null;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+    /**
+     * 获取一天的结束时间
+     *
+     * @param date
+     * @return
+     */
+    public static Date getEndDate(Date date) {
+        if (date == null) {
+            return null;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 999);
+        return cal.getTime();
+    }
 }
