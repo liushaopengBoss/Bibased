@@ -3,6 +3,7 @@ package cn.edu.zzti.bibased.utilsTests;
 import cn.edu.zzti.bibased.BaseApplicationTests;
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
 import cn.edu.zzti.bibased.dao.lagou.LagouDao;
+import cn.edu.zzti.bibased.dao.mapper.PositionKeywordMapper;
 import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
@@ -244,6 +245,13 @@ public class HttpTests extends BaseApplicationTests {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+    }
+
+    @Resource
+    PositionKeywordMapper positionKeywordMapper;
+    @Test
+    public void keyWordTest(){
+        positionKeywordMapper.queryPositionKeyWordNumsByDateRangeAndPosition("20180503","20180505","Java","lagou");
     }
 
 }

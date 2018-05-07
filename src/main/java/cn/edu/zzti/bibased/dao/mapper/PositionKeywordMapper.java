@@ -43,7 +43,8 @@ public interface PositionKeywordMapper {
      * @param positionType  职位类型
      * @return
      */
-    @Select(" SELECT keyword_name, SUM(keyword_num) AS keywordNum\n" +
+    @Select(
+            " SELECT keyword_name, SUM(keyword_num) AS keywordNum\n" +
             " FROM  position_keyword\n" +
             " WHERE curr_date >= #{startDate}\n" +
             " AND curr_date <= #{endDate}\n" +
@@ -51,6 +52,6 @@ public interface PositionKeywordMapper {
             " GROUP BY keyword_name \n" +
             " ORDER BY keywordNum DESC  limit 20")
     List<PositionKeyword>  queryPositionKeyWordNumsByDateRangeAndPosition(@Param("startDate")String startDate,@Param("endDate")String endDate,
-                                                                                  @Param("positionType")String positionType);
+                                                                                  @Param("positionType")String positionType, @Param("include")String include);
 
 }
