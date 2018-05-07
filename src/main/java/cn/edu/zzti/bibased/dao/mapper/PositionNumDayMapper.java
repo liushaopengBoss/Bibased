@@ -2,6 +2,7 @@ package cn.edu.zzti.bibased.dao.mapper;
 
 
 import cn.edu.zzti.bibased.dto.PositionNumDay;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -11,6 +12,9 @@ public interface PositionNumDayMapper {
 
     @Select("select position_type  from position_num_day group by position_type")
     List<String> queryPositionTypes();
+
+    @Insert("INSERT INTO `position_num_day`(curr_date,position_type,position_num,include,create_time,op_time,is_valid) VALUES (#{currDate}, #{positionType}, #{positionNum}, #{include},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()), 1)")
+    void addPositionTypes(PositionNumDay positionNumDay);
 
     /**
      * 时间范围内某种职位类型数据统计之和

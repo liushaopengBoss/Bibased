@@ -82,7 +82,7 @@ public interface PositionDetailMapper {
      * @param
      * @return
      */
-    @Select("SELECT count(id) from position_detail"  )
+    @Select("SELECT count(id) from position_detail "  )
     Integer queryPositionDetailsByCount();
 
     /**
@@ -160,5 +160,9 @@ public interface PositionDetailMapper {
             "from position_detail where min_salary >= 70  and include = #{include}")
     List<PositionDetail> queryDifferentSalaryNum(@Param("include")String include);
 
+    @Select("Select third_type from position_detail where include = 'lagou'  group by third_type ")
+    List<String> queryPositionType();
 
+    @Select("Select count(id) from position_detail   where third_type = #{thirdTpe} and cr_time>= #{startTime} and cr_time <= #{endTine}  ")
+    Integer queryPositionTypeNums(@Param("startTime")long startTime,@Param("endTine")long endTine,@Param("thirdTpe")String thirdTpe);
 }

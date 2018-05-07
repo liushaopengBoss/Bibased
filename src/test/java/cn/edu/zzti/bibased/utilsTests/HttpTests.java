@@ -3,7 +3,9 @@ package cn.edu.zzti.bibased.utilsTests;
 import cn.edu.zzti.bibased.BaseApplicationTests;
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
 import cn.edu.zzti.bibased.dao.lagou.LagouDao;
+import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
 import cn.edu.zzti.bibased.dao.mapper.PositionKeywordMapper;
+import cn.edu.zzti.bibased.dao.mapper.PositionNumDayMapper;
 import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
@@ -249,9 +251,46 @@ public class HttpTests extends BaseApplicationTests {
 
     @Resource
     PositionKeywordMapper positionKeywordMapper;
+    @Resource
+    PositionDetailMapper  positionDetailMapper;
+
+    @Resource
+    PositionNumDayMapper positionNumDayMapper;
+
     @Test
     public void keyWordTest(){
-        positionKeywordMapper.queryPositionKeyWordNumsByDateRangeAndPosition("20180503","20180505","Java","lagou");
+        //positionKeywordMapper.queryPositionKeyWordNumsByDateRangeAndPosition("20180503","20180505","Java","lagou");
+        List<String> strings = positionDetailMapper.queryPositionType();
+        for(String positionType:strings){
+            System.out.printf(""+positionType+":");
+            try {
+                List<String> yyyyMMdd = DateUtils.getDateRange("20180101", "20180507", "yyyyMMdd");
+                for(String dateSte :yyyyMMdd){
+                    int startTime = (int)(DateUtils.getStartDate(DateUtils.parse(dateSte,"yyyyMMdd")).getTime()/1000);
+                    int endTime = (int)(DateUtils.getEndDate(DateUtils.parse(dateSte,"yyyyMMdd")).getTime()/1000);
+                    Integer aLong = positionDetailMapper.queryPositionTypeNums(startTime, endTime, positionType);
+
+                    if(aLong >0 ){
+                        System.out.printf(""+dateSte+" num:"+aLong);
+                        PositionNumDay po = new PositionNumDay();
+                        po.setPositionType(positionType);
+                        po.setCurrDate(dateSte);
+                        po.setPositionNum((Integer)aLong);
+                        po.setInclude("lagou");
+                        positionNumDayMapper.addPositionTypes(po);
+                    }
+
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+
     }
 
     @Test
