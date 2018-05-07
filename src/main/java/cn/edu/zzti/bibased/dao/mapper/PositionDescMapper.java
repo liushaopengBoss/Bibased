@@ -32,7 +32,8 @@ public interface PositionDescMapper {
      Integer queryPositionDescCount(@Param("currDate")String currDate,@Param("positionType")String positionType);
 
  /**
-  * 查询出某天职位描述的数量
+  * 查询出某天职位描述的职位类型
+  * eg: Java PHP Python
   *
   * @param currDate
   * @return

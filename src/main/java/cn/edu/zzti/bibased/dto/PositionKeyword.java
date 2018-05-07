@@ -21,6 +21,7 @@ public class PositionKeyword {
 
     private Byte isValid;
 
+
     public Integer getId() {
         return id;
     }
