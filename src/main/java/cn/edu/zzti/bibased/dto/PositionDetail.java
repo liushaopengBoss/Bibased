@@ -1,5 +1,7 @@
 package cn.edu.zzti.bibased.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.math.BigDecimal;
 
 /**
@@ -7,6 +9,7 @@ import java.math.BigDecimal;
  *
  * Created by huaidou on  2018/1/15
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PositionDetail {
 
     private Integer id;
@@ -79,6 +82,7 @@ public class PositionDetail {
 
     private String gps;
     private String include;
+    private String thirdType;
 
     private Long crTime;
 
@@ -87,6 +91,19 @@ public class PositionDetail {
     private Byte isValid;
 
     private Long lastVer;
+
+    /**
+     * 数据分析使用
+     */
+    private int num;
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
 
     public Integer getId() {
         return id;
@@ -169,6 +186,9 @@ public class PositionDetail {
     }
 
     public String getCity() {
+        if(city != null){
+            return city.trim();
+        }
         return city;
     }
 
@@ -406,5 +426,13 @@ public class PositionDetail {
 
     public void setInclude(String include) {
         this.include = include;
+    }
+
+    public String getThirdType() {
+        return thirdType;
+    }
+
+    public void setThirdType(String thirdType) {
+        this.thirdType = thirdType;
     }
 }

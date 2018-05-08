@@ -13,8 +13,6 @@ spring:
       idle-timeout: 600000  #一个连接idle状态的最大时长（毫秒），超时则被释放（retired）
       read-only: false
       connection-test-query: SELECT 1
-
-
 #mvc
   thymeleaf:
     prefix: classpath:/static/
@@ -24,6 +22,7 @@ spring:
     content-type: text/html
     check-template: true
     mode: LEGACYHTML5
+
 ##热部署
 #  devtools:
 #    restart:

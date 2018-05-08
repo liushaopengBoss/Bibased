@@ -38,6 +38,7 @@
     <result column="op_time" property="opTime" jdbcType="BIGINT" />
     <result column="is_valid" property="isValid" jdbcType="TINYINT" />
     <result column="last_ver" property="lastVer" jdbcType="BIGINT" />
+    <result column="third_type" property="thirdType" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, position_name, work_min_year, work_max_year, education, job_nature, position_id, 
@@ -45,7 +46,7 @@
     max_salary, company_short_name, company_min_size, company_max_size, position_lables, 
     industry_lables, finance_stage, company_label_List, district, business_zones, company_full_name, 
     first_type, second_type, subwayline, stationname, linestaion, last_login, gps,include, cr_time,
-    op_time, is_valid, last_ver
+    op_time, is_valid, last_ver,third_type
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -53,11 +54,11 @@
     from position_detail
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectLastPostionCreateTime" resultType="cn.edu.zzti.bibased.dto.PositionDetail"  parameterType="java.lang.String">
+  <select id="selectLastPostionCreateTime" resultType="java.lang.Long" >
     select
     position_create_time
     from position_detail
-    WHERE  include = #{include} AND is_valid = 1
+    WHERE  include = #{include} AND city = #{city} AND third_type = #{thirdType} AND is_valid = 1
     ORDER BY position_create_time desc limit 1;
   </select>
 
@@ -73,7 +74,7 @@
       first_type, second_type, subwayline, 
       stationname, linestaion, last_login, 
       gps,include, cr_time, op_time,
-      is_valid, last_ver)
+      is_valid, last_ver,third_type)
     values (#{id,jdbcType=INTEGER}, #{positionName,jdbcType=VARCHAR}, #{workMinYear,jdbcType=INTEGER}, 
       #{workMaxYear,jdbcType=INTEGER}, #{education,jdbcType=VARCHAR}, #{jobNature,jdbcType=VARCHAR}, 
       #{positionId,jdbcType=INTEGER}, #{positionCreateTime,jdbcType=BIGINT}, #{city,jdbcType=VARCHAR}, 
@@ -85,7 +86,7 @@
       #{firstType,jdbcType=VARCHAR}, #{secondType,jdbcType=VARCHAR}, #{subwayline,jdbcType=VARCHAR}, 
       #{stationname,jdbcType=VARCHAR}, #{linestaion,jdbcType=VARCHAR}, #{lastLogin,jdbcType=BIGINT}, 
       #{gps,jdbcType=VARCHAR},#{include,jdbcType=VARCHAR}, UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()) ,
-      1, 0)
+      1, 0,#{thirdType,jdbcType=VARCHAR})
   </insert>
   <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.PositionDetail" >
     insert into position_detail ( position_name, work_min_year,
@@ -99,7 +100,7 @@
     first_type, second_type, subwayline,
     stationname, linestaion, last_login,
     gps, include,cr_time, op_time,
-    is_valid, last_ver)
+    is_valid, last_ver,third_type)
     values
     <foreach collection="list" item="position" index="index" separator="," >
       ( #{position.positionName,jdbcType=VARCHAR}, #{position.workMinYear,jdbcType=INTEGER},
@@ -113,10 +114,31 @@
       #{position.firstType,jdbcType=VARCHAR}, #{position.secondType,jdbcType=VARCHAR}, #{position.subwayline,jdbcType=VARCHAR},
       #{position.stationname,jdbcType=VARCHAR}, #{position.linestaion,jdbcType=VARCHAR}, #{position.lastLogin,jdbcType=BIGINT},
       #{position.gps,jdbcType=VARCHAR},#{position.include,jdbcType=VARCHAR}, UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()) ,
-      1, 0)
+      1, 0,#{position.thirdType,jdbcType=VARCHAR})
     </foreach>
-
   </insert>
 
+  <select id="queryPositionDetailWithBaseQuery" resultMap="BaseResultMap" parameterType="cn.edu.zzti.bibased.dto.query.PositionDetailQuery">
+    SELECT <include refid="Base_Column_List"/> from position_detail where 1=1
+    <if test="include != null">
+      and include = #{include,jdbcType=VARCHAR}
+    </if>
+    <if test="workMinYear != null " >
+      and work_min_year = #{workMinYear,jdbcType=INTEGER}  and  work_max_year = #{workMaxYear,jdbcType=INTEGER}
+    </if>
 
+    <if test="minSalary != null" >
+      and min_salary = #{minSalary,jdbcType=DECIMAL}  and max_salary = #{maxSalary,jdbcType=DECIMAL}
+    </if>
+    <if test="companyMinSize != null" >
+      and company_min_size = #{companyMinSize,jdbcType=INTEGER}  and company_max_size = #{companyMaxSize,jdbcType=INTEGER}
+    </if>
+    <if test="financeStage != null" >
+      and  finance_stage = #{financeStage,jdbcType=VARCHAR}
+    </if>
+    <if test="jobNature != null" >
+      and job_nature = #{jobNature,jdbcType=VARCHAR}
+    </if>
+    limit #{pageRow},#{pageSize}
+  </select>
 </mapper>

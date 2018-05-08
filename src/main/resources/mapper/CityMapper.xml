@@ -6,38 +6,41 @@
     <result column="city_name" property="cityName" jdbcType="VARCHAR" />
     <result column="include" property="include" jdbcType="VARCHAR" />
     <result column="date_version" property="dateVersion" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
     <result column="is_valid" property="isValid" jdbcType="TINYINT" />
     <result column="create_time" property="createTime" jdbcType="BIGINT" />
     <result column="op_time" property="opTime" jdbcType="BIGINT" />
     <result column="last_ver" property="lastVer" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, city_name, include,date_version, is_valid, create_time, op_time, last_ver
+    id, city_name, include,date_version, code,is_valid, create_time, op_time, last_ver
   </sql>
   <select id="queryCity" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from city
     where include = #{include,jdbcType=VARCHAR} AND  date_version = (
-      select date_version  from city ORDER BY date_version DESC limit 1
+      select date_version  from city WHERE include = #{include,jdbcType=VARCHAR} ORDER BY date_version DESC limit 1
     )
   </select>
 
   <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.City" >
-    insert into city (id, city_name, include, date_version,
+    insert into city (id, city_name, include, date_version,code,
       is_valid, create_time, op_time, 
       last_ver) values
     <foreach collection="list" item="city" index="index" separator="," >
        (#{city.id,jdbcType=INTEGER}, #{city.cityName,jdbcType=VARCHAR}, #{city.include,jdbcType=VARCHAR},#{city.dateVersion,jdbcType=VARCHAR},
+      #{city.code,jdbcType=VARCHAR},
       1,UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),0)
     </foreach>
 
   </insert>
 
   <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.City" >
-    insert into city (id, city_name, include,date_version,
+    insert into city (id, city_name, include,date_version,code,
     is_valid, create_time, op_time,
     last_ver) values (#{id,jdbcType=INTEGER}, #{cityName,jdbcType=VARCHAR}, #{include,jdbcType=VARCHAR},#{dateVersion,jdbcType=VARCHAR},
+    #{code,jdbcType=VARCHAR},
       1,UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),0)
   </insert>
 

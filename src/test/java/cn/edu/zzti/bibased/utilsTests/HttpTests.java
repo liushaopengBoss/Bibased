@@ -3,15 +3,22 @@ package cn.edu.zzti.bibased.utilsTests;
 import cn.edu.zzti.bibased.BaseApplicationTests;
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
 import cn.edu.zzti.bibased.dao.lagou.LagouDao;
-import cn.edu.zzti.bibased.dto.City;
-import cn.edu.zzti.bibased.dto.Company;
-import cn.edu.zzti.bibased.dto.Positions;
+import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
+import cn.edu.zzti.bibased.dao.mapper.PositionKeywordMapper;
+import cn.edu.zzti.bibased.dao.mapper.PositionNumDayMapper;
+import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
+import cn.edu.zzti.bibased.service.email.EmailService;
+import cn.edu.zzti.bibased.service.handler.BossHandler;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
-import cn.edu.zzti.bibased.service.operation.lagou.LagouOperationService;
-import cn.edu.zzti.bibased.service.operation.lagou.LagouService;
+import cn.edu.zzti.bibased.service.ikanalyzer.IKAnalzyerService;
+import cn.edu.zzti.bibased.service.operation.base.AcquisitionService;
+import cn.edu.zzti.bibased.service.operation.boss.BossGetService;
+import cn.edu.zzti.bibased.service.operation.lagou.LagouQueryService;
+import cn.edu.zzti.bibased.service.operation.lagou.LagouGetService;
+import cn.edu.zzti.bibased.service.operation.other.PositionKeyWordSevice;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import cn.edu.zzti.bibased.utils.IDUtils;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
@@ -20,6 +27,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -29,11 +38,19 @@ public class HttpTests extends BaseApplicationTests {
     @Resource
     private HttpClientService httpClientService;
     @Resource
-    private LagouOperationService lagouOperationService;
+    private LagouQueryService lagouOperationService;
     @Resource
     private LagouDao lagouDao;
     @Resource
-    LagouService lagouService;
+    LagouGetService lagouService;
+    @Resource
+    private EmailService emailService;
+    @Resource
+    AcquisitionService acquisitionService;
+    @Resource
+    private BossGetService bossGetService;
+    @Resource
+    private IKAnalzyerService kAnalzyerService;
     @Test
     public void getService() throws Exception {
         // String url = "http://search.51job.com/list/080200,000000,0000,00,9,99,Java%2B%25E5%25BC%2580%25E5%258F%2591,2,1.html?lang=c&stype=1&postchannel=0000&workyear=99&cotype=99&degreefrom=99&jobterm=99&companysize=99&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=1&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=";
@@ -67,9 +84,9 @@ public class HttpTests extends BaseApplicationTests {
     }
     @Test
     public void tt423() throws Exception {
-        String url = "https://www.lagou.com/gongsi/";
+        String url = "https://www.lagou.com/jobs/4477797.html";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
-        List<Company> companys = LagouHandler.getCompanys(html, "");
+        PositionDesc positionDesc = LagouHandler.getPositionDesc(html);
     }
 
     @Test
@@ -164,9 +181,123 @@ public class HttpTests extends BaseApplicationTests {
         logger.info(header.get("Cookie").toString().substring(0,header.get("Cookie").toString().indexOf("SEARCH_ID=")+10));
     }
 
+    @Test
+    public void sendMail(){
+        emailService.sendSimpleMail("采集系统告警！","请尽快处理！");
+    }
+
 
     @Test
     public void lastCreatTime(){
-        Long aLong = lagouOperationService.queryLastPositionCreateTime();
+        Long aLong = lagouOperationService.queryLastPositionCreateTime("北京","Java");
+        logger.info(aLong+"");
     }
+
+    @Test
+    public void positionWorkYearTest(){
+        List<PositionDetail> positionDetails = lagouOperationService.queryWorkYearNums();
+    }
+    @Resource
+    JavaMailSenderImpl mailSender;
+    @Test
+    public void senfTets(){
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo("1093591277@qq.com");//收件人邮箱地址
+        mail.setFrom("biggress@163.com");//收件人
+        mail.setSubject("spring自带javamail发送给儿子的的邮件");//主题
+        mail.setText("hello this mail is from spring javaMail ");//正文
+        mailSender.send(mail);
+    }
+
+    @Test
+    public void lagouLoginTest() {
+        String url = "https://www.lagou.com/frontLogin.do";
+        String s = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
+    }
+    @Test
+    public void BossPositionTest(){
+        String apiUrl = "https://www.zhipin.com/";
+        String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.bossGetHeader);
+        List<Positions> jobs = BossHandler.getJobs(html);
+        acquisitionService.batchAddJob(jobs);
+    }
+
+    @Test
+    public void BossCityTest(){
+        bossGetService.getBossPositionTypeV2();
+        //bossGetService.getCity();
+    }
+
+    @Test
+    public void bossPositionDetailTest(){
+        bossGetService.getPositionDetails();
+    }
+
+    @Test
+    public void dateTest(){
+        String s = DateUtils.formatStr(new Date(), DateUtils.YYMMDD);
+    }
+    @Resource
+    private PositionKeyWordSevice keyWordSevice;
+    @Test
+    public void kAnalzyerServiceTest(){
+        keyWordSevice.keyWord();
+//        try {
+//            kAnalzyerService.queryWords("Java是很流行的语言,很对啊SpringMvc");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    @Resource
+    PositionKeywordMapper positionKeywordMapper;
+    @Resource
+    PositionDetailMapper  positionDetailMapper;
+
+    @Resource
+    PositionNumDayMapper positionNumDayMapper;
+
+    @Test
+    public void keyWordTest(){
+//        positionKeywordMapper.queryPositionKeyWordNumsByDateRangeAndPosition("20180503","20180505","Java","lagou");
+        List<String> strings = positionDetailMapper.queryPositionType();
+        for(String positionType:strings){
+            System.out.printf(""+positionType+":");
+            try {
+                List<String> yyyyMMdd = DateUtils.getDateRange("20180502", "20180507", "yyyyMMdd");
+                for(String dateSte :yyyyMMdd){
+                    int startTime = (int)(DateUtils.getStartDate(DateUtils.parse(dateSte,"yyyyMMdd")).getTime()/1000);
+                    int endTime = (int)(DateUtils.getEndDate(DateUtils.parse(dateSte,"yyyyMMdd")).getTime()/1000);
+                    Integer aLong = positionDetailMapper.queryPositionTypeNums(startTime, endTime, positionType);
+
+                    if(aLong >0 ){
+                        System.out.printf(""+dateSte+" num:"+aLong);
+                        PositionNumDay po = new PositionNumDay();
+                        po.setPositionType(positionType);
+                        po.setCurrDate(dateSte);
+                        po.setPositionNum((Integer)aLong);
+                        po.setInclude("lagou");
+                        positionNumDayMapper.addPositionTypes(po);
+                    }
+
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+
+    }
+
+    @Test
+    public void afterMonthTest(){
+        String format = DateUtils.format(DateUtils.getAfterMonth(new Date(), 3), "yyyyMM");
+
+    }
+
+
 }

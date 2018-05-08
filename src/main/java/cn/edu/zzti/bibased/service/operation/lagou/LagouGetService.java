@@ -2,22 +2,24 @@ package cn.edu.zzti.bibased.service.operation.lagou;
 
 import cn.edu.zzti.bibased.aspect.ActionLog;
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
-import cn.edu.zzti.bibased.constant.HttpType;
 import cn.edu.zzti.bibased.constant.ProjectItem;
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
-import cn.edu.zzti.bibased.dto.City;
-import cn.edu.zzti.bibased.dto.Company;
-import cn.edu.zzti.bibased.dto.PositionDetail;
-import cn.edu.zzti.bibased.dto.Positions;
+import cn.edu.zzti.bibased.dao.position.PositionDescDao;
+import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.dto.lagou.*;
 import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.CompanyExecute;
+import cn.edu.zzti.bibased.execute.PositionDescExecute;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
+import cn.edu.zzti.bibased.service.email.EmailService;
 import cn.edu.zzti.bibased.service.handler.LagouHandler;
 import cn.edu.zzti.bibased.service.http.HttpClientService;
+import cn.edu.zzti.bibased.service.operation.base.AcquisitionService;
 import cn.edu.zzti.bibased.thread.*;
 import cn.edu.zzti.bibased.utils.DateUtils;
+import cn.edu.zzti.bibased.utils.RequestHolder;
 import cn.edu.zzti.bibased.utils.SpringContextUtils;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,26 +30,36 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
+/**
+ * 采集拉勾网数据
+ */
 @Service
-public class LagouService {
-    private static final Logger logger = LoggerFactory.getLogger(LagouService.class);
+public class LagouGetService {
+    private static final Logger logger = LoggerFactory.getLogger(LagouGetService.class);
     @Resource
-    private ThreadPoolTaskExecutor lagouPool;
+    private ThreadPoolTaskExecutor getInfoPool;
     /**
      * 注入无阻塞的
      */
     @Resource
     private CompletionService completionService;
     @Resource
-    private LagouOperationService lagouOperationService;
+    private LagouQueryService lagouQueryService;
     @Resource
     private HttpClientService httpClientService;
+    @Resource
+    private EmailService emailService;
+    @Resource
+    private AcquisitionService acquisitionService;
+    @Resource
+    private PositionDescDao positionDescDao;
 
     public String startGetDate(String apiUrl, Map<String,Object> param,String httpType) throws Exception{
         LaGouTask laGouTask = new LaGouTask(apiUrl,param, httpType);
@@ -68,10 +80,10 @@ public class LagouService {
      * 多线程执行数据
      */
     public void initLagouInfo(){
-        lagouPool.execute(()-> {
+        getInfoPool.execute(()-> {
                 getJobInformation();
         });
-        lagouPool.execute(()->{
+        getInfoPool.execute(()->{
             getCityInformation();
         });
 
@@ -86,19 +98,20 @@ public class LagouService {
         String url = "https://www.lagou.com";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
         List<Positions> jobs = LagouHandler.getJobs(html);
-        lagouOperationService.batchAddJob(jobs);
+        acquisitionService.batchAddJob(jobs);
     }
     /**
      * 采集拉勾网的城市信息
      *
      */
-    @Async
+
     @ActionLog(ProjectItem.CITY)
+    @Async
     public void getCityInformation(){
         String url = "https://www.lagou.com/zhaopin/Java/?labelWords=label";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
         List<City> jobs = LagouHandler.getCitys(html);
-        lagouOperationService.batchAddCity(jobs);
+        acquisitionService.batchAddCity(jobs);
     }
     /**
      * 采集拉勾网的公司信息
@@ -171,7 +184,7 @@ public class LagouService {
         for (int i = 1; i < cityByCompany.size()-1; i++) {
             Gson gson = new Gson();
             String url = apiUrl+cityByCompany.get(i).getLinkId()+"-0-0.json";
-            logger.debug("num:"+i+" "+cityByCompany.get(i).getCityName()+"  "+url);
+            logger.info("num:"+i+" "+cityByCompany.get(i).getCityName()+"  "+url);
             Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
             setCookie(lagouAjaxHeader);
             lagouAjaxHeader.put("Referer",url.replace(".json",""));
@@ -187,7 +200,7 @@ public class LagouService {
             }
             CompanyResultJsonVO companyResultJsonVO = gson.fromJson(data!=null?data:"{}", CompanyResultJsonVO.class);
             int totalPageNo = companyResultJsonVO.getTotalCount()/companyResultJsonVO.getPageSize();
-            logger.debug("-----------page:"+totalPageNo+"\n");
+            logger.info("-----------page:"+totalPageNo+"\n");
             BaseExecuter companyTask = (CompanyExecute)SpringContextUtils.getBean(CompanyExecute.class);
             companyTask.setApiUrl(url);
             companyTask.setHeaders(lagouAjaxHeader);
@@ -247,7 +260,7 @@ public class LagouService {
                 company.setPositionSlogan(vo.getCompanyFeatures());
             }
             companyVOS.clear();
-            lagouOperationService.batchAddCompany(targetCompany);
+            acquisitionService.batchAddCompany(targetCompany);
         }
     }
 
@@ -258,106 +271,114 @@ public class LagouService {
     @Async
     @ActionLog(ProjectItem.POSITIONDETAIL)
     public void getPositionDeailsInfomation(){
-        Future<List<Positions>> positionListFuter = lagouPool.submit(() -> {
-               return lagouOperationService.queryLeftPositions();
+        HttpServletRequest request = RequestHolder.getRequest();
+        emailService.sendSimpleMail("信息开始采集！","时间"+DateUtils.formatStr(new Date(),DateUtils.YYMMDD_HHmmSS));
+        Future<List<Positions>> positionListFuter = getInfoPool.submit(() -> {
+               return acquisitionService.queryLeftPositions();
         });
-
-        Future<Long> lastPositionCreateTime = lagouPool.submit(new Callable<Long>() {
-            @Override
-            public Long call() throws Exception {
-                return lagouOperationService.queryLastPositionCreateTime();
-            }
-        });
-
         List<Positions> positions = null;
-        List<City> citys =lagouOperationService.queryCitys();
-
+        List<City> citys =acquisitionService.queryCitys(WebsiteEnum.LAGOU.getWebCode());
         try{
             positions = positionListFuter.get();
         }catch (Exception e){}
         if(!CollectionUtils.isEmpty(positions) && !CollectionUtils.isEmpty(citys)){
             positions.forEach(position -> {
                 String positionName = position.getPositionName();
-                Map<String,Object> param = new LinkedHashMap<>();
-                param.put("first",true);
-                param.put("pn",1);
-                param.put("kd",positionName);
+                Map<String, Object> param = new LinkedHashMap<>();
+                param.put("first", true);
+                param.put("pn", 1);
+                param.put("kd", positionName);
                 Map<String, Object> lagouAjaxHeader = HttpHeaderConstant.lagouAjaxHeader;
-                citys.stream().forEach(city -> {
-                    String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city="+city.getCityName()+"&needAddtionalResult=false&isSchoolJob=0";
-                    logger.debug("---->  "+apiUrl);
-                    logger.debug("---->  https://www.lagou.com/jobs/list_"+positionName.trim()+"?px=default&city="+city.getCityName());
-                    lagouAjaxHeader.put("Referer","https://www.lagou.com/jobs/list_"+positionName.trim()+"?px=default&city="+city.getCityName());
+                for (City city : citys) {
+                    if (city.getCityName().contains("城市")||city.getCityName().contains("全部")) {
+                        continue;
+                    }
+                    String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city=" + city.getCityName() + "&needAddtionalResult=false&isSchoolJob=0";
+                    logger.info("---->  " + apiUrl);
+                    logger.info("---->  https://www.lagou.com/jobs/list_" + positionName.trim() + "?px=default&city=" + city.getCityName());
+                    lagouAjaxHeader.put("Referer", "https://www.lagou.com/jobs/list_" + positionName.trim() + "?px=default&city=" + city.getCityName());
                     setCookie(lagouAjaxHeader);
-                    BaseExecuter executer = (PositionDetailExecute)SpringContextUtils.getBean(PositionDetailExecute.class);
+                    BaseExecuter executer = (PositionDetailExecute) SpringContextUtils.getBean(PositionDetailExecute.class);
                     executer.setApiUrl(apiUrl);
                     executer.setHeaders(lagouAjaxHeader);
                     executer.setParams(param);
-                    int pageSize = executer.getPageSize() ;
-                      pageSize = pageSize >20 ? 20:pageSize;
+                    int pageSize = executer.getPageSize();
+                    pageSize = pageSize > 20 ? 20 : pageSize;
                     isSleep(pageSize);
-                    if(pageSize != 0){
-                        logger.info("---->执行数据");
-                        for(int i=1;i<=pageSize;i++){
-                            for (int j=0;j<10;j++){
-                                Map<String,Object> param2 = new LinkedHashMap<>();
-                                param2.put("first",false);
-                                param2.put("pn",i);
-                                param2.put("kd",positionName);
-                                logger.debug("页数为---->  "+i);
+                    Long lastCreateTime = lagouQueryService.queryLastPositionCreateTime(city.getCityName(), positionName);
+                    if (pageSize != 0 || pageSize != 1) {
+                        logger.info("爬虫开始获取数据：城市："+city.getCityName()+"  职位："+positionName);
+                        for (int i = 1; i <= pageSize; i++) {
+                            int pageNum = pageSize < 10  ? pageSize : 10;
+                            for (int j = 0; j < pageNum; j++) {
+                                Map<String, Object> param2 = new LinkedHashMap<>();
+                                param2.put("first", false);
+                                param2.put("pn", i);
+                                param2.put("kd", positionName);
+                                logger.debug("页数为---->  " + i);
                                 setCookie(lagouAjaxHeader);
-                                BaseExecuter positonDetailTask = (PositionDetailExecute)SpringContextUtils.getBean(PositionDetailExecute.class);
+                                BaseExecuter positonDetailTask = (PositionDetailExecute) SpringContextUtils.getBean(PositionDetailExecute.class);
                                 positonDetailTask.setParams(param2);
                                 positonDetailTask.setHeaders(lagouAjaxHeader);
                                 positonDetailTask.setApiUrl(apiUrl);
+                                positonDetailTask.setWebsiteEnum(WebsiteEnum.LAGOU);
                                 completionService.submit(AnsyTask.newTask().registExecuter(positonDetailTask));
                                 i++;
                             }
                             boolean isBreak = false;
                             List<PositionDetail> positionDetails = new LinkedList<>();
-                            int  count = 0;
-                            for (int k = 0; k <10; k++) {
+                            int count = 0;
+                            for (int k = 0; k < pageNum; k++) {
                                 try {
-                                    Long  lastCreateTime  = lastPositionCreateTime.get();
                                     Future<PositionDetailResultJsonVo> take = completionService.take();
-                                    if(take.get() != null){
+                                    if (take.get() != null) {
                                         PositionDetailResultJsonVo positionDetailResultJsonVo = take.get();
                                         List<PositionDetailVo> result = positionDetailResultJsonVo.getResult();
-                                        if(result !=null || result.size() == 0) {
-                                            isBreak =true;
+                                        if (result == null || (result != null && result.size() == 0) ) {
+                                            isBreak = true;
                                         }
-                                        List<PositionDetail> positionDetailsList = handlePositionDetails(result, lastCreateTime);
-                                        if(positionDetailsList.size()<result.size()){
+                                        List<PositionDetail> positionDetailsList = handlePositionDetails(result, lastCreateTime, positionName);
+                                        if (result == null ||  (result!=null &&positionDetailsList.size() < result.size())) {
                                             count++;
                                         }
                                         positionDetails.addAll(positionDetailsList);
 
-                                    }else{
+                                    } else {
                                         logger.error("future -->获取数据失败！");
                                     }
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     isBreak = true;
-                                    logger.error("获取数据失败！",e);
+                                    logger.error("获取数据失败！", e);
+                                    emailService.sendSimpleMail("信息告警","获取数据失败！"+e);
                                 }
                             }
 
-                            if(positionDetails.size()>0 ){
-                                lagouOperationService.batchAddPositionDetails(positionDetails);
+                            if (positionDetails.size() > 0) {
+                                acquisitionService.batchAddPositionDetails(positionDetails);
                                 i--;
-                                logger.info("----写入数据>  ");
-                            }else if(isBreak || positionDetails.size() == 0 || count ==2){
+                                logger.info("数据获取成功-->异步写入数据  ");
+                            } else if (isBreak || positionDetails.size() == 0 || count == 2) {
                                 break;
                             }
 
-                          }
+                            try{
+                                List<PositionDesc> positionDescs = handlePositionDesc(positionDetails);
+                                if(!CollectionUtils.isEmpty(positionDescs)){
+                                    positionDescDao.batchPositionDesc(positionDescs);
+                                }
+                            }catch (Exception e){
+                                logger.info("职位描述失败",e);
+                            }
+
+                        }
 
                     }
-
-                });
-
+                    logger.info("职位："+positionName+"城市："+city.getCityName());
+                }
+                logger.info("职位："+positionName+"抓取完成");
             });
-
         }
+        emailService.sendSimpleMail("信息采集结束！","时间"+DateUtils.formatStr(new Date(),DateUtils.YYMMDD_HHmmSS));
     }
 
     /**
@@ -377,7 +398,7 @@ public class LagouService {
      * @param lastCreateTime
      * @return
      */
-    private List<PositionDetail> handlePositionDetails(List<PositionDetailVo> positionDetailVos,Long  lastCreateTime){
+    private List<PositionDetail> handlePositionDetails(List<PositionDetailVo> positionDetailVos,Long  lastCreateTime,String positionName){
         List<PositionDetail>   positionDetails = new LinkedList<>();
         if(!CollectionUtils.isEmpty(positionDetailVos)){
             for (int i = 0; i < positionDetailVos.size(); i++) {
@@ -386,6 +407,7 @@ public class LagouService {
                 BeanUtils.copyProperties(positionDetailVo,positionDetail);
                 String gps = new Gson().toJson(new GPS(positionDetailVo.getLongitude(), positionDetailVo.getLatitude()));
                 positionDetail.setGps(gps);
+                positionDetail.setThirdType(positionName);
                 String[] workYears = positionDetailVo.getWorkYear().replace("年", "").replace("不限","").replace("以上","").split("-");
                 if(workYears==null || workYears.length==0 || workYears.length ==1){
                     positionDetail.setWorkMaxYear(0);
@@ -439,5 +461,48 @@ public class LagouService {
         String cookie = header.get("Cookie").toString().substring(0,header.get("Cookie").toString().indexOf("SEARCH_ID=")+10).toString()+ UUID.randomUUID().toString().replace("-","").toString()+";";
         logger.debug(cookie);
         header.put("Cookie",cookie);
+    }
+
+    /**
+     * 职位描述
+     *
+     * @param positionDetails
+     * @return
+     */
+    private List<PositionDesc> handlePositionDesc( List<PositionDetail> positionDetails){
+        List<PositionDesc>  positionDescsList = new ArrayList<>();
+        logger.info("职位描述开始采集！！ ");
+        if(!CollectionUtils.isEmpty(positionDetails)){
+            //每份分为10条数据
+            List<List<PositionDetail>> lists = Lists.partition(positionDetails, 10);
+            for(int i=0;i<lists.size();i++){
+                List<Integer> ids = lists.get(i).stream().map(PositionDetail::getPositionId).collect(Collectors.toList());
+                for (int j = 0; j < ids.size(); j++) {
+                    String apiUrl = "https://www.lagou.com/jobs/"+ids.get(j)+".html";
+                    BaseExecuter positonDetailTask = (PositionDescExecute) SpringContextUtils.getBean(PositionDescExecute.class);
+                    positonDetailTask.setHeaders(HttpHeaderConstant.lagouGetHeader);
+                    positonDetailTask.setApiUrl(apiUrl);
+                    positonDetailTask.setPositionId(ids.get(j));
+                    positonDetailTask.setWebsiteEnum(WebsiteEnum.LAGOU);
+                    completionService.submit(AnsyTask.newTask().registExecuter(positonDetailTask));
+                }
+
+                for (int j = 0; j < ids.size(); j++) {
+                    try {
+                        Future<PositionDesc> positionDescFuture = completionService.take();
+                        PositionDesc positionDesc = positionDescFuture.get();
+                        positionDesc.setPositionType(positionDetails.get(0).getThirdType());
+                        positionDesc.setInclude(WebsiteEnum.LAGOU.getWebCode());
+                        positionDesc.setCurrDate(DateUtils.formatInt(Integer.parseInt(positionDetails.get(0).getPositionCreateTime()/1000+""),"yyyyMMdd"));
+                        positionDescsList.add(positionDesc);
+                    } catch (Exception e) {
+                        logger.error("职位描述获取失败！",e);
+                    }
+                }
+            }
+            logger.info("职位描述采集结束!!!!");
+        }
+        logger.info("职位描述采集数量： "+positionDescsList.size()+"职位类型："+positionDetails.get(0).getThirdType());
+        return  positionDescsList;
     }
 }

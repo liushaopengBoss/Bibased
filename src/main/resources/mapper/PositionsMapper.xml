@@ -29,7 +29,6 @@
          select <include refid="fields" /> FROM  positions
     </sql>
     <sql id="insertSql">
-         insert into positions (<include refid="fields" />) values
     </sql>
     <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.Positions">
         <include refid="insertSql" />
@@ -44,7 +43,7 @@
     <select id="queryLeafPositions" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT   position_url, position_name, include from positions
         WHERE  include = #{include}  and leaf = 1 and date_version = (
-          SELECT date_version from positions ORDER BY date_version Desc limit 1
-        )
+          SELECT date_version from positions WHERE  include = #{include} ORDER BY date_version Desc limit 1
+        ) AND  root_id != parent_id
     </select>
 </mapper>

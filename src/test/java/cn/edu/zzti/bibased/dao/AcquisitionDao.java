@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * Created by huaidou on  2018/1/11
  */
 @Component
-public abstract class BaseDao<T> extends SqlSessionDaoSupport {
+public abstract class AcquisitionDao<T> extends SqlSessionDaoSupport {
 
     @Autowired
     public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {

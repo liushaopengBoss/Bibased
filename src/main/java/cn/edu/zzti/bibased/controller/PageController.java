@@ -1,6 +1,5 @@
 package cn.edu.zzti.bibased.controller;
 
-import cn.edu.zzti.bibased.aspect.ActionLog;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,10 +15,17 @@ public class PageController {
     private static final String INDEX= PAGE_HOME + "index";
     private static final String INDEHOMEPAGE= PAGE_HOME + "index_homepage";
     private static final String CHARTS= PAGE_HOME + "charts";
-    private static final String PROJECT= PAGE_HOME + "projects";
+    private static final String LAGOU_PROJECT= PAGE_HOME + "lagou_projects";
+    private static final String BOSS_PROJECT= PAGE_HOME + "boss_projects";
     private static final String PROJECT_DETAIL= PAGE_HOME + "project_detail";
     private static final String COMPANY_SEARCH = PAGE_HOME + "company_search";
     private static final String LAGOU_ANALYSIS = PAGE_HOME + "lagou_analysis";
+    private static final String BOSS_ANALYSIS = PAGE_HOME + "boss_analysis";
+    private static  final String POSITIONdETAIL_SEARCH = PAGE_HOME+"positionDetail_search";
+    private static  final String INDEX_HOME = PAGE_HOME+"index_home";
+    private static  final String FINAL_ANALYSIS = PAGE_HOME+"final_analysis";
+    private static  final String ZHILIAN_PROJECT= PAGE_HOME+"zhilian_projects";
+    private static  final String ZHILIAN_ANALYSIS = PAGE_HOME+"zhilian_analysis";
     /**
      * 首页查询{主页}
      *
@@ -63,9 +69,18 @@ public class PageController {
      *
      * @return
      */
-    @RequestMapping(value = "/projects")
-    public String project() {
-        return PROJECT;
+    @RequestMapping(value = "/lagou_projects")
+    public String lagouProject() {
+        return LAGOU_PROJECT;
+    }
+    /**
+     *项目采集信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/boss_projects")
+    public String bossPproject() {
+        return BOSS_PROJECT;
     }
     /**
      *项目采集详情
@@ -87,6 +102,16 @@ public class PageController {
     public String companySearch() {
         return COMPANY_SEARCH;
     }
+
+    /**
+     *公司搜索
+     *
+     * @return
+     */
+    @RequestMapping(value = "/positionDetail_search")
+    public String positionDetailSearch() {
+        return POSITIONdETAIL_SEARCH;
+    }
     /**
      *lagou 数据分析
      *
@@ -96,4 +121,52 @@ public class PageController {
     public String lagouAnalysis() {
         return LAGOU_ANALYSIS;
     }
+    /**
+     *lagou 数据分析
+     *
+     * @return
+     */
+    @RequestMapping(value = "/boss_analysis")
+    public String bossAnalysis() {
+        return BOSS_ANALYSIS;
+    }
+    /**
+     *index
+     *
+     * @return
+     */
+    @RequestMapping(value = "/index_home")
+    public String indexHome() {
+        return INDEX_HOME;
+    }
+    /**
+     *最终的分析结果
+     *
+     * @return
+     */
+    @RequestMapping(value = "/final_analysis")
+    public String final_analysis() {
+        return FINAL_ANALYSIS;
+    }
+
+    /**
+     * 智联
+     *
+     * @return
+     */
+    @RequestMapping(value = "/zhilian_projects")
+    public String zhilianProject() {
+        return ZHILIAN_PROJECT;
+    }
+
+    /**
+     * 智联
+     *
+     * @return
+     */
+    @RequestMapping(value = "/zhilian_analysis")
+    public String zhiliannalysis() {
+        return ZHILIAN_ANALYSIS;
+    }
+
 }

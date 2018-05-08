@@ -1,13 +1,15 @@
 package cn.edu.zzti.bibased.constant;
 
 /**
- * 用途
- * <p>
+ * 信息采集的网站
+ *
  * Created by huaidou on  2018/1/11
  */
 public enum WebsiteEnum {
-    LAGOU("lagou","拉钩"),ZHILIAN("zhilian","智联"),
-    JOB("51job","51Job");
+    LAGOU("lagou","拉钩"),
+    ZHILIAN("zhilian","智联"),
+    JOB("job","51Job"),
+    BOSS("boss","Boss直聘");
 
     private String webCode;
     private String webName;

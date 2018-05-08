@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <title>首页</title>
+
+
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link href="../css/bootstrap.min.css?v=3.3.6" rel="stylesheet"/>
+    <link href="../css/font-awesome.css?v=4.4.0" rel="stylesheet"/>
+    <link href="../css/animate.css" rel="stylesheet"/>
+    <link href="../css/style.css?v=4.1.0" rel="stylesheet"/>
+
+</head>
+
+<body class="gray-bg">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="wrapper wrapper-content">
+                <div class="row animated fadeInRight">
+                    <div class="col-sm-12">
+                        <div class="ibox float-e-margins">
+                            <!--<div class="text-center float-e-margins p-md">-->
+                                <!--<a href="#" class="btn btn-xs btn-primary" id="leftVersion">布局切换</a>-->
+                            <!--</div>-->
+                            <div class="" id="ibox-content">
+
+                                <div id="vertical-timeline" class="vertical-container light-timeline">
+                                    <div class="vertical-timeline-block">
+                                        <div class="vertical-timeline-icon navy-bg">
+                                            <i class="fa fa-briefcase"></i>
+                                        </div>
+
+                                        <div class="vertical-timeline-content">
+                                            <h2>信息采集</h2>
+                                            <p>选择想要采集的信息</p>
+                                            <a href="boss_projects.html" class="btn btn-sm btn-primary"> 更多信息</a>
+                                            <span class="vertical-date">
+                                                采集的网站：<br>
+                                                <small>拉勾网</small><br>
+                                                <small>boss直聘</small><br>
+                                                <small>智联</small><br>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="vertical-timeline-block">
+                                        <div class="vertical-timeline-icon blue-bg">
+                                            <i class="fa fa-file-text"></i>
+                                        </div>
+
+                                        <div class="vertical-timeline-content">
+                                            <h2>信息分析</h2>
+                                            <p>各大招聘网站综合性分析</p>
+                                            <a href="charts.html" class="btn btn-sm btn-success"> 更多信息</a>
+                                            <span class="vertical-date">
+                                                分析的网站：<br>
+                                                <small>拉勾网</small><br>
+                                                <small>boss直聘</small><br>
+                                                <small>智联</small><br>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="vertical-timeline-block">
+                                        <div class="vertical-timeline-icon lazur-bg">
+                                            <i class="fa fa-coffee"></i>
+                                        </div>
+
+                                        <div class="vertical-timeline-content">
+                                            <h2>信息查看</h2>
+                                            <p>按需查询适合自己的职位</p>
+                                            <a href="positionDetail_search.html" class="btn btn-sm btn-info">更多信息</a>
+                                            <span class="vertical-date">  <br><small></small></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="vertical-timeline-block">
+                                        <div class="vertical-timeline-icon yellow-bg">
+                                            <i class="fa fa-phone"></i>
+                                        </div>
+
+                                        <div class="vertical-timeline-content">
+                                            <h2>职位</h2>
+                                            <p id="numposition">目前软件行业职位总数：</p>
+                                            <span class="vertical-date"><br><small></small></span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="vertical-timeline-block">
+                                        <div class="vertical-timeline-icon lazur-bg">
+                                            <i class="fa fa-user-md"></i>
+                                        </div>
+
+                                        <div class="vertical-timeline-content">
+                                            <h2>公司</h2>
+                                            <p id="numcompany">目前软件行业公司总数：</p>
+                                            <span class="vertical-date"> <br><small></small></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+
+
+    <!-- 自定义js -->
+    <script src="js/content.js?v=1.0.0"></script>
+
+
+    <script>
+        $(document).ready(function () {
+                event.preventDefault()
+                $('#vertical-timeline').toggleClass('center-orientation');
+        });
+    </script>
+    <script>
+        function getHtml(htmlName) {
+            $(".J_iframe").attr("src",htmlName)
+        }
+    </script>
+    <script>
+        $.post("/rest/v1/queryPositionDetailsByCount", function(data) {
+
+            $("#numposition").html("目前软件行业职位总数："+data);
+        });
+
+    </script>
+    <script>
+        $.post("/rest/v1/queryCompanyDetailsByCount", function(data){
+            $("#numcompany").html("目前软件行业公司总数："+data);
+        });
+    </script>
+    <script src="js/plugins/jquery.metisMenu.js"></script>
+    <script src="js/plugins/jquery.slimscroll.min.js"></script>
+
+    <script src="js/plugins/layer.min.js"></script>
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+    <!--统计代码，可删除-->
+</body>
+
+</html>

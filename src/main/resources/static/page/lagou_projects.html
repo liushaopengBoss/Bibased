@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <title>采集项目</title>
+    <link href="../css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link href="../css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+
+    <div class="wrapper wrapper-content animated fadeInUp">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>拉勾网 采集项目</h5>
+
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row m-b-sm m-t-sm">
+                            <div class="col-md-1">
+                                <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> 刷新</button>
+                            </div>
+                            <div class="col-md-11">
+                                <div class="input-group">
+                                    <input type="text" placeholder="请输入项目名称" class="input-sm form-control"> <span class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="project-list">
+
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td class="project-status">
+                                            <span class="label">1</span>
+                                        </td>
+                                        <td class="project-title">
+                                            <a href="project_detail.html">城市信息</a>
+                                            <br/>
+                                            <small>创建于 2018.03.15</small>
+                                        </td>
+                                        <td class="project-completion">
+                                                <small id = "cityLabel">当前进度： 0%</small>
+                                                <div class="progress progress-mini">
+                                                    <div style="width: 0%;" class="progress-bar" id = "cityProgressBar"></div>
+                                                </div>
+                                        </td>
+                                        <td class="project-people" id="city">
+                                            <span class="label label-default">未开始</span>
+                                        </td>
+                                        <td class="project-actions">
+                                            <a href="javascript:getWebInfo(3,'lagou')" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
+                                            <a href="/view/v1/get_project_detail?webType=lagou&typeCode=1" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="project-status">
+                                            <span class="label">2</span>
+                                        </td>
+                                        <td class="project-title">
+                                            <a href="project_detail.html">公司信息</a>
+                                            <br/>
+                                            <small>创建于 2018.03.15</small>
+                                        </td>
+                                        <td class="project-completion">
+                                            <small id = "companyLabel">当前进度： 0%</small>
+                                            <div class="progress progress-mini">
+                                                <div style="width: 0%;" class="progress-bar" id = "companyProgressBar"></div>
+                                            </div>
+                                        </td>
+                                        <td class="project-people" id="company">
+                                            <span class="label label-default ">未开始</span>
+                                        </td>
+                                        <td class="project-actions">
+                                            <a href="javascript:getWebInfo(4,'lagou')" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
+                                            <a href="/view/v1/get_project_detail?webType=lagou&typeCode=3" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="project-status">
+                                            <span class="label ">3</span>
+                                        </td>
+                                        <td class="project-title">
+                                            <a href="project_detail.html">职位信息</a>
+                                            <br/>
+                                            <small>创建于 2018.03.15</small>
+                                        </td>
+                                        <td class="project-completion">
+                                            <small id = "positionLabel">当前进度： 0%</small>
+                                            <div class="progress progress-mini">
+                                                <div style="width: 0%;" class="progress-bar" id = "positionProgressBar"></div>
+                                            </div>
+                                        </td>
+                                        <td class="project-people" id="position">
+                                            <span class="label label-default">未开始</span>
+                                        </td>
+                                        <td class="project-actions">
+                                            <a href="javascript:getWebInfo(2,'lagou')" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
+                                            <a href="/view/v1/get_project_detail?webType=lagou&typeCode=2" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情  </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="project-status">
+                                            <span class="label ">4</span>
+                                        </td>
+                                        <td class="project-title">
+                                            <a href="project_detail.html">职位详情</a>
+                                            <br/>
+                                            <small>创建于 2018.03.15</small>
+                                        </td>
+                                        <td class="project-completion">
+                                            <small id = "positionDetailLabel">当前进度： 0%</small>
+                                            <div class="progress progress-mini"> <div style="width: 0%;"></div>
+                                                <div style="width: 0%;" class="progress-bar" id = "positionDetailProgressBar"></div>
+                                            </div>
+                                        </td>
+                                        <td class="project-people" id="positionDetail">
+                                            <span class="label label-default">未开始</span>
+                                        </td>
+                                        <td class="project-actions">
+                                            <a href="javascript:javascript:getWebInfo(1,'lagou')" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 开始采集 </a>
+                                            <a href="/view/v1/get_project_detail?webType=lagou&typeCode=4" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 采集详情 </a>
+                                        </td>
+                                    </tr>
+                                    <!--
+                                    <tr>
+                                        <td class="project-status">
+                                            <span class="label label-primary">进行中
+                                        </td>
+                                        <td class="project-title">
+                                            <a href="project_detail.html">乐活未来</a>
+                                            <br/>
+                                            <small>创建于 2014.08.15</small>
+                                        </td>
+                                        <td class="project-completion">
+                                            <small>当前进度： 97%</small>
+                                            <div class="progress progress-mini">
+                                                <div style="width: 97%;" class="progress-bar"></div>
+                                            </div>
+                                        </td>
+                                        <td class="project-people">
+                                            <a href="lagou_projects.html"><img alt="image" class="img-circle" src="img/a4.jpg"></a>
+                                        </td>
+                                        <td class="project-actions">
+                                            <a href="lagou_projects.html#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> 查看 </a>
+                                            <a href="lagou_projects.html#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> 编辑 </a>
+                                        </td>
+                                    </tr>
+                                    -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- 全局js -->
+    <script src="../js/jquery.min.js?v=2.1.4"></script>
+    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
+
+
+    <!-- 自定义js -->
+    <script src="../js/plugins/content.js?v=1.0.0"></script>
+
+
+    <script>
+        $(document).ready(function(){
+
+            $('#loading-example-btn').click(function () {
+                btn = $(this);
+                simpleLoad(btn, true)
+                simpleLoad(btn, false)
+            });
+            $.ajax({
+                url : "/acquisition/v1/get_Speed_of_progress?time=0",
+                dataType : "jsonp",
+                type : "POST",
+                jsonpCallback:'callback',
+                success : function(resultData){
+//                    if(resultData.data >= 100){
+
+                        $("#positionDetailProgressBar").width('100%');
+                        $("#positionProgressBar").width('100%');
+                        $("#cityProgressBar").width('100%');
+                        $("#companyProgressBar").width('100%');
+
+                        $("#positionDetailLabel").text("当前进度： 100%")
+                        $("#cityLabel").text("当前进度： 100%")
+                        $("#companyLabel").text("当前进度： 100%")
+                        $("#positionLabel").text("当前进度： 100%")
+
+                        $("#position").html($("<span class=\"label label-success\">成 &nbsp;&nbsp;功</span>"));
+                        $("#positionDetail").html($("<span class=\"label label-success\">成 &nbsp;&nbsp;功</span>"));
+                        $("#city").html($("<span class=\"label label-success\">成 &nbsp;&nbsp;功</span>"));
+                        $("#company").html($("<span class=\"label label-success\">成 &nbsp;&nbsp;功</span>"));
+
+//                    }
+                },
+                error:function(){
+
+                }
+
+            });
+
+        });
+
+        function simpleLoad(btn, state) {
+            if (state) {
+                btn.children().addClass('fa-spin');
+                btn.contents().last().replaceWith(" Loading");
+            } else {
+                setTimeout(function () {
+                    btn.children().removeClass('fa-spin');
+                    btn.contents().last().replaceWith(" Refresh");
+                }, 2000);
+            }
+        }
+        function getWebInfo(webType,type) {
+            var url ;
+            switch (webType){
+                case 1: url = "/acquisition/v1/get_position_details/"+type; break;
+                case 2: url ="/acquisition/v1/get_positions/"+type; break;
+                case 3: url = "/acquisition/v1/get_city/"+type;break;
+                case 4: url = "/acquisition/v1/get_company/"+type;break;
+            }
+            $.ajax({
+                url : url,
+                dataType : "jsonp",
+                type : "POST",
+                jsonpCallback:'callback',
+                success : function(data){
+                    if(data.code == 200){
+                        var status = $("<span class=\"label label-primary\">进行中</span>");
+                        switch (webType){
+                            case 1: $("#positionDetail").html(status); setTimeout("positionDetail"); break;
+                            case 2: $("#position").html(status);setTimeout("position"); break;
+                            case 3: $("#city").html(status); setTimeout("city");break;
+                            case 4: $("#company").html(status); setTimeout("company");break;
+                        }
+                    }else{
+                        alert(data.message)
+                    }
+
+                 },
+                error:function(){
+                    var status = $("<span class=\"label label-danger\">失 &nbsp;&nbsp;败</span>");
+                    switch (webType){
+                        case 1: $("#positionDetail").html(status); break;
+                        case 2: $("#position").html(status); break;
+                        case 3: $("#city").html(status);break;
+                        case 4: $("#company").html(status);break;
+                    }
+                    alert("请检查你的网络！")
+                }
+
+        });
+        }
+        function callback() {
+
+        }
+        function setTimeout(id) {
+            init(id);
+            var time = 0;
+            var interva = setInterval(function() {
+                    $.ajax({
+                        url : "/acquisition/v1/get_Speed_of_progress?time="+time,
+                        dataType : "jsonp",
+                        type : "POST",
+                        jsonpCallback:'callback',
+                        success : function(resultData){
+                            if(resultData.code == 200){
+                                time = resultData.data;
+                                $("#"+id+"Label").text("当前进度： "+resultData.data+"%")
+                                $("#"+id+"ProgressBar").width(resultData.data);
+                            }else{
+                                alert(resultData.message)
+                            }
+                            if(resultData.data >= 100){
+                                var status = $("<span class=\"label label-success\">成 &nbsp;&nbsp;功</span>");
+                                $("#"+id).html(status);
+                                $("#"+id+"ProgressBar").width('100%');
+                                clearInterval(interva);
+                            }
+                        },
+                        error:function(){
+                            clearInterval(interva);
+                            var status = $("<span class=\"label label-danger\">失 &nbsp;&nbsp;败</span>");
+                            $("#"+id).html(status);
+                            alert("失败！")
+                        }
+
+                    });
+
+                },2000);
+        }
+
+        function init(id) {
+            $("#"+id+"Label").text("当前进度： 0%")
+            $("#"+id+"ProgressBar").width(0);
+        }
+    </script>
+
+    </body>
+</html>
