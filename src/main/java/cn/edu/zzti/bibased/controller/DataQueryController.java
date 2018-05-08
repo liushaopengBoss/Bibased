@@ -117,4 +117,10 @@ public class DataQueryController {
     public List<PositionNumDay> queryDateRangPositionNumDaySum(String positionType){
         return positionNumDayService.queryDateRangPositionNumDaySum(positionType);
     }
+
+    @RequestMapping("/v1/queryLastMonthPositionKeyWord")
+    @ResponseBody
+    public List<PositionKeyword> queryLastMonthPositionKeyWordByPositionType(String positionType){
+        return positionKeyWordSevice.queryLastMonthPositionKeyWordByPositionType(positionType);
+    }
 }
