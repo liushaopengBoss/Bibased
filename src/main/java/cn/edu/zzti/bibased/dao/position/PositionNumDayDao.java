@@ -27,5 +27,8 @@ public class PositionNumDayDao {
     public PositionNumDay queryDateRangPositionNumDaySum(String startDate, String endDate, String positionType){
         return positionNumDayMapper.queryDateRangPositionNumDaySum(startDate,endDate,positionType);
     }
+    public void addPositionTypes(PositionNumDay positionNumDay){
+        positionNumDayMapper.addPositionTypes(positionNumDay);
+    }
 
 }

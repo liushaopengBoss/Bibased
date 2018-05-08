@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:p="http://www.springframework.org/schema/p" 
-	xmlns:aop="http://www.springframework.org/schema/aop"
-    xmlns:tx="http://www.springframework.org/schema/tx"
+
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
@@ -131,6 +128,19 @@
 		<!-- 指定spring容器的key，如果不设定在job中的jobmap中是获取不到spring容器的 -->
 		<property name="applicationContextJobDataKey" value="applicationContext"/>
 	</bean>
+	<!-- 定义任务bean 统计每天的发布职位数量 -->
+	<bean name="positionNumDayJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<!-- 指定具体的job类 -->
+		<property name="jobClass" value="cn.edu.zzti.bibased.jobs.positionNumDayJob" />
+		<!-- 指定job的名称 -->
+		<property name="name" value="positionNumDayJob" />
+		<!-- 指定job的分组 -->
+		<property name="group" value="Lagou" />
+		<!-- 必须设置为true，如果为false，当没有活动的触发器与之关联时会在调度器中删除该任务  -->
+		<property name="durability" value="true"/>
+		<!-- 指定spring容器的key，如果不设定在job中的jobmap中是获取不到spring容器的 -->
+		<property name="applicationContextJobDataKey" value="applicationContext"/>
+	</bean>
 	<!-- 定义触发器 -->
 	<bean name="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="lagouJobDetail" />
@@ -139,8 +149,13 @@
 	</bean>
 	<bean name="cronTriggerClearCache" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="clearCache" />
-		<!-- 每天的凌晨点执行 -->
+		<!-- 每天的凌晨0点执行 -->
 		<property name="cronExpression" value="0 0 0 * * ?" />
+	</bean>
+	<bean name="cronTriggerpositionNumDayJob" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="positionNumDayJob" />
+		<!-- 每天的凌晨3点执行 -->
+		<property name="cronExpression" value="0 0 3 * * ?" />
 	</bean>
 	<!--分词-->
 	<bean name="cronTriggerLagouKeyWord" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
@@ -155,6 +170,7 @@
 				<!--<ref bean="cronTrigger" />-->
 				<ref bean="cronTriggerClearCache" />
 				<ref bean="cronTriggerLagouKeyWord" />
+				<ref bean="cronTriggerpositionNumDayJob" />
 			</list>
 		</property>
 	</bean>

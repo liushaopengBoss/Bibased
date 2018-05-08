@@ -24,7 +24,8 @@ public class PageController {
     private static  final String POSITIONdETAIL_SEARCH = PAGE_HOME+"positionDetail_search";
     private static  final String INDEX_HOME = PAGE_HOME+"index_home";
     private static  final String FINAL_ANALYSIS = PAGE_HOME+"final_analysis";
-
+    private static  final String ZHILIAN_PROJECT= PAGE_HOME+"zhilian_projects";
+    private static  final String ZHILIAN_ANALYSIS = PAGE_HOME+"zhilian_analysis";
     /**
      * 首页查询{主页}
      *
@@ -146,6 +147,26 @@ public class PageController {
     @RequestMapping(value = "/final_analysis")
     public String final_analysis() {
         return FINAL_ANALYSIS;
+    }
+
+    /**
+     * 智联
+     *
+     * @return
+     */
+    @RequestMapping(value = "/zhilian_projects")
+    public String zhilianProject() {
+        return ZHILIAN_PROJECT;
+    }
+
+    /**
+     * 智联
+     *
+     * @return
+     */
+    @RequestMapping(value = "/zhilian_analysis")
+    public String zhiliannalysis() {
+        return ZHILIAN_ANALYSIS;
     }
 
 }

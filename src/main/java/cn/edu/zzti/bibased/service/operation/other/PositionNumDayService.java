@@ -1,5 +1,6 @@
 package cn.edu.zzti.bibased.service.operation.other;
 
+import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
 import cn.edu.zzti.bibased.dao.position.PositionNumDayDao;
 import cn.edu.zzti.bibased.dto.PositionNumDay;
 import cn.edu.zzti.bibased.utils.DateUtils;
@@ -14,6 +15,8 @@ public class PositionNumDayService {
 
     @Resource
     private PositionNumDayDao positionNumDayDao;
+    @Resource
+    private PositionDetailMapper positionDetailMapper;
 
     public List<String> queryPositionTypes(){
         return positionNumDayDao.queryPositionTypes();
@@ -84,5 +87,33 @@ public class PositionNumDayService {
     }
 
 
+    public void numDays() {
+
+        List<String> strings = positionDetailMapper.queryPositionType();
+        for (String positionType : strings) {
+            try {
+                String dateSte = DateUtils.format(DateUtils.getAfterDate(new Date(), -1), "yyyyMMdd");
+                int startTime = (int) (DateUtils.getStartDate(DateUtils.parse(dateSte, "yyyyMMdd")).getTime() / 1000);
+                    int endTime = (int) (DateUtils.getEndDate(DateUtils.parse(dateSte, "yyyyMMdd")).getTime() / 1000);
+                    Integer aLong = positionDetailMapper.queryPositionTypeNums(startTime, endTime, positionType);
+
+                    if (aLong > 0) {
+                        PositionNumDay po = new PositionNumDay();
+                        po.setPositionType(positionType);
+                        po.setCurrDate(dateSte);
+                        po.setPositionNum((Integer) aLong);
+                        po.setInclude("lagou");
+                        positionNumDayDao.addPositionTypes(po);
+
+
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
 
 }
