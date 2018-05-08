@@ -22,7 +22,7 @@ public class PositionNumDayService {
 
     public List<PositionNumDay> queryDateRangPositionNumDay(String positionType){
         List<PositionNumDay> result = new ArrayList<>();
-        String startDate = DateUtils.format(DateUtils.getAfterDate(new Date(), -30), "yyyyMMdd");
+        String startDate = DateUtils.format(DateUtils.getAfterDate(new Date(), -60), "yyyyMMdd");
         String endDate = DateUtils.format(new Date(), "yyyyMMdd");
         List<PositionNumDay> positionNumDays = positionNumDayDao.queryDateRangPositionNumDay(startDate, endDate, positionType);
         Map<String,PositionNumDay> positionNumDaysMap = handlePositionNumDaysToMap(positionNumDays);

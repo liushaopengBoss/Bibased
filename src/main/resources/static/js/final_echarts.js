@@ -75,6 +75,17 @@ $(function () {
                                 formatter: '{value} '
                             }
                         }
+                    ],dataZoom: [
+                        {
+                            type: 'slider',	//支持鼠标滚轮缩放
+                            start: 0,			//默认数据初始缩放范围为10%到90%
+                            end: 100
+                        },
+                        {
+                            type: 'inside',	//支持单独的滑动条缩放
+                            start: 0,			//默认数据初始缩放范围为10%到90%
+                            end: 100
+                        }
                     ],
                     series : [
                         {
@@ -99,7 +110,7 @@ $(function () {
                 lineChart.setOption(lineoption);
                 $(window).resize(lineChart.resize);
             }else{
-                alert("没数据！")
+
             }
         })
         //本月
@@ -159,7 +170,7 @@ $(function () {
                 lineChartMonth.setOption(lineoption);
                 $(window).resize(lineChartMonth.resize);
             }else{
-                alert("没数据！")
+
             }
         })
 
@@ -188,7 +199,7 @@ $(function () {
                     keyWordtboday.append(tr);
                 }
             }else{
-                alert("没数据！")
+
             }
         })
         //本月
@@ -207,7 +218,7 @@ $(function () {
                     keyWordtboday.append(tr);
                 }
             }else{
-                alert("没数据！")
+
             }
         })
 
