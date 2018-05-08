@@ -100,4 +100,20 @@ public class PositionDesc {
     public void setCurrDate(String currDate) {
         this.currDate = currDate;
     }
+
+    @Override
+    public String toString() {
+        return "PositionDesc{" +
+                "id=" + id +
+                ", positionId=" + positionId +
+                ", currDate='" + currDate + '\'' +
+                ", postDuties='" + postDuties + '\'' +
+                ", tenureRequirements='" + tenureRequirements + '\'' +
+                ", positionType='" + positionType + '\'' +
+                ", include='" + include + '\'' +
+                ", createTime=" + createTime +
+                ", opTime=" + opTime +
+                ", isValid=" + isValid +
+                '}';
+    }
 }

@@ -2,10 +2,12 @@ package cn.edu.zzti.bibased.utilsTests;
 
 import cn.edu.zzti.bibased.BaseApplicationTests;
 import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
+import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dao.lagou.LagouDao;
 import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
 import cn.edu.zzti.bibased.dao.mapper.PositionKeywordMapper;
 import cn.edu.zzti.bibased.dao.mapper.PositionNumDayMapper;
+import cn.edu.zzti.bibased.dao.position.PositionDescDao;
 import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.execute.BaseExecuter;
 import cn.edu.zzti.bibased.execute.PositionDetailExecute;
@@ -24,11 +26,13 @@ import cn.edu.zzti.bibased.utils.IDUtils;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -298,6 +302,47 @@ public class HttpTests extends BaseApplicationTests {
         String format = DateUtils.format(DateUtils.getAfterMonth(new Date(), 3), "yyyyMM");
 
     }
+    @Resource
+    private PositionDescDao positionDescDao;
+    @Test
+    public void  positionDescTest(){
+        List<Integer> java = positionDetailMapper.queryPositionDetailByZhiLian("C++");
+        List<PositionDesc>  positionDescsList = new ArrayList<>();
+        try{
+            int i=0;
+            for(Integer javaStr:java){
+                String apiUrl = "https://www.lagou.com/jobs/"+javaStr+".html";
+                String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);
+                if(StringUtils.isNotEmpty(html)){
+                    PositionDesc positionDesc = LagouHandler.getPositionDesc(html);
+                    positionDesc.setPositionId(javaStr);
+                    positionDesc.setPositionType("C++");
+                    positionDesc.setInclude(WebsiteEnum.LAGOU.getWebCode());
+                    positionDesc.setCurrDate(DateUtils.format(new Date(),"yyyyMMdd"));
+                    positionDescsList.add(positionDesc);
+                    logger.info(positionDesc.toString());
+                    positionDescDao.batchPositionDesc(positionDescsList);
+                    positionDescsList.clear();
+                }
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(i%100 ==0){
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+  }
 
 
 }

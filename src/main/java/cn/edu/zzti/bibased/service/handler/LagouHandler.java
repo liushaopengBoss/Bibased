@@ -217,6 +217,9 @@ public class LagouHandler {
         PositionDesc desc = new PositionDesc();
         Document lagouPositionDesc = Jsoup.parse(html);
         Elements jobBtElement = lagouPositionDesc.getElementsByClass("job_bt");
+        if(jobBtElement == null){
+            return desc;
+        }
         String text = jobBtElement.get(0).text();
         if(text != null){
             int index1 = text.indexOf("岗位职责");
