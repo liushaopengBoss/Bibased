@@ -183,11 +183,10 @@ $(function () {
     $("#keyWordButton").click(function () {
         var postionTypeName = $('#keyWord option:selected').text();
         //昨日
-        $.post("/rest/query/v1/queryYestodayPositionKeyWord?positionType="+postionTypeName,function (data) {
+        $.post("/rest/query/v1/queryLastMonthPositionKeyWord?positionType="+postionTypeName,function (data) {
+            var keyWordtboday = $("#keyWordtboday");
             if(data.length > 0 ){
-                var keyWordtboday = $("#keyWordtboday");
                 keyWordtboday.html("");
-
                 for(var i=0;i<data.length;i++){
                     var tr =  $("  <tr>\n" +
                         " <td>"+(i+1)+"</td>\n" +
@@ -199,13 +198,13 @@ $(function () {
                     keyWordtboday.append(tr);
                 }
             }else{
-
+                keyWordtboday.html("没有数据！");
             }
         })
         //本月
         $.post("/rest/query/v1/queryDataRangePositionKeyWordNums?positionType="+postionTypeName,function (data) {
+            var keyWordtboday = $("#keyWordtbodayMonth");
             if(data.length > 0 ){
-                var keyWordtboday = $("#keyWordtbodayMonth");
                 keyWordtboday.html("");
                 for(var i=0;i<data.length;i++){
                     var tr =  $("  <tr>\n" +
@@ -218,7 +217,7 @@ $(function () {
                     keyWordtboday.append(tr);
                 }
             }else{
-
+                keyWordtboday.html("没有数据！");
             }
         })
 

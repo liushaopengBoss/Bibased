@@ -6,6 +6,7 @@ import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.service.operation.boss.BossQueryService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouQueryService;
+import cn.edu.zzti.bibased.service.operation.zhilian.ZhilianQueryService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,6 +30,8 @@ public class DataAnalysisController {
     private LagouQueryService lagouQueryService;
     @Resource
     private BossQueryService bossQueryService;
+    @Resource
+    private ZhilianQueryService zhilianQueryService;
 
     public DataAnalysisController() {
     }
@@ -176,6 +179,9 @@ public class DataAnalysisController {
                         break;
                     case BOSS:
                         positionDetails =  bossQueryService.queryPositionDetailsByFirstTye("技术");
+                        break;
+                    case ZHILIAN:
+                        positionDetails =  zhilianQueryService.queryPositionDetailsByFirstTye("技术");
                         break;
                 }
             }

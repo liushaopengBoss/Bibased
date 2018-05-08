@@ -110,6 +110,19 @@ public class PositionKeyWordSevice {
         return positionKeywordDao.queryPositionKeyWordByCurrrDate(yestoday,positionType);
     }
 
+    /**
+     * 上一月
+     *
+     * @param positionType
+     * @return
+     */
+    public List<PositionKeyword> queryLastMonthPositionKeyWordByPositionType(String positionType){
+        String month = DateUtils.format(DateUtils.getAfterMonth(new Date(), -1),"yyyyMM");
+        String beginDate=  DateUtils.getMonthFirstday(month);
+        String endDate = DateUtils.getMonthLastday(month);
+        return positionKeywordDao.queryPositionKeyWordNumsByDateRangeAndPosition(beginDate,endDate,positionType,null);
+    }
+
     public List<PositionKeyword>  queryPositionKeyWordNumsByDateRangeAndPosition(String positionType, String include){
 
         String startDate = DateUtils.format(DateUtils.getStartMonth(new Date()), "yyyyMMdd");

@@ -165,4 +165,8 @@ public interface PositionDetailMapper {
 
     @Select("Select count(id) from position_detail   where third_type = #{thirdTpe} and cr_time>= #{startTime} and cr_time <= #{endTine}  ")
     Integer queryPositionTypeNums(@Param("startTime")long startTime,@Param("endTine")long endTine,@Param("thirdTpe")String thirdTpe);
+
+
+    @Select("SELECT position_id from position_detail where include = 'zhilian' and third_type = #{thirdTpe}")
+    List<Integer> queryPositionDetailByZhiLian(@Param("thirdTpe")String thirdTpe);
 }
