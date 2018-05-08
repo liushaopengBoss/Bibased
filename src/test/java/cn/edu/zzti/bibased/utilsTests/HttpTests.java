@@ -259,36 +259,36 @@ public class HttpTests extends BaseApplicationTests {
 
     @Test
     public void keyWordTest(){
-        //positionKeywordMapper.queryPositionKeyWordNumsByDateRangeAndPosition("20180503","20180505","Java","lagou");
-        List<String> strings = positionDetailMapper.queryPositionType();
-        for(String positionType:strings){
-            System.out.printf(""+positionType+":");
-            try {
-                List<String> yyyyMMdd = DateUtils.getDateRange("20180101", "20180507", "yyyyMMdd");
-                for(String dateSte :yyyyMMdd){
-                    int startTime = (int)(DateUtils.getStartDate(DateUtils.parse(dateSte,"yyyyMMdd")).getTime()/1000);
-                    int endTime = (int)(DateUtils.getEndDate(DateUtils.parse(dateSte,"yyyyMMdd")).getTime()/1000);
-                    Integer aLong = positionDetailMapper.queryPositionTypeNums(startTime, endTime, positionType);
+        positionKeywordMapper.queryPositionKeyWordNumsByDateRangeAndPosition("20180503","20180505","Java","lagou");
+//        List<String> strings = positionDetailMapper.queryPositionType();
+//        for(String positionType:strings){
+//            System.out.printf(""+positionType+":");
+//            try {
+//                List<String> yyyyMMdd = DateUtils.getDateRange("20180101", "20180507", "yyyyMMdd");
+//                for(String dateSte :yyyyMMdd){
+//                    int startTime = (int)(DateUtils.getStartDate(DateUtils.parse(dateSte,"yyyyMMdd")).getTime()/1000);
+//                    int endTime = (int)(DateUtils.getEndDate(DateUtils.parse(dateSte,"yyyyMMdd")).getTime()/1000);
+//                    Integer aLong = positionDetailMapper.queryPositionTypeNums(startTime, endTime, positionType);
+//
+//                    if(aLong >0 ){
+//                        System.out.printf(""+dateSte+" num:"+aLong);
+//                        PositionNumDay po = new PositionNumDay();
+//                        po.setPositionType(positionType);
+//                        po.setCurrDate(dateSte);
+//                        po.setPositionNum((Integer)aLong);
+//                        po.setInclude("lagou");
+//                        positionNumDayMapper.addPositionTypes(po);
+//                    }
+//
+//                }
+//
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
 
-                    if(aLong >0 ){
-                        System.out.printf(""+dateSte+" num:"+aLong);
-                        PositionNumDay po = new PositionNumDay();
-                        po.setPositionType(positionType);
-                        po.setCurrDate(dateSte);
-                        po.setPositionNum((Integer)aLong);
-                        po.setInclude("lagou");
-                        positionNumDayMapper.addPositionTypes(po);
-                    }
-
-                }
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-        }
+//        }
 
 
     }
