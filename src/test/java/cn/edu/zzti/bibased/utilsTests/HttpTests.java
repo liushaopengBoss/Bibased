@@ -266,16 +266,16 @@ public class HttpTests extends BaseApplicationTests {
 //        positionKeywordMapper.queryPositionKeyWordNumsByDateRangeAndPosition("20180503","20180505","Java","lagou");
         List<String> strings = positionDetailMapper.queryPositionType();
         for(String positionType:strings){
-            System.out.printf(""+positionType+":");
+            logger.info(""+positionType+":");
             try {
-                List<String> yyyyMMdd = DateUtils.getDateRange("20180502", "20180507", "yyyyMMdd");
+                List<String> yyyyMMdd = DateUtils.getDateRange("20180507", "20180508", "yyyyMMdd");
                 for(String dateSte :yyyyMMdd){
                     int startTime = (int)(DateUtils.getStartDate(DateUtils.parse(dateSte,"yyyyMMdd")).getTime()/1000);
                     int endTime = (int)(DateUtils.getEndDate(DateUtils.parse(dateSte,"yyyyMMdd")).getTime()/1000);
                     Integer aLong = positionDetailMapper.queryPositionTypeNums(startTime, endTime, positionType);
 
                     if(aLong >0 ){
-                        System.out.printf(""+dateSte+" num:"+aLong);
+                        logger.info(""+dateSte+" num:"+aLong);
                         PositionNumDay po = new PositionNumDay();
                         po.setPositionType(positionType);
                         po.setCurrDate(dateSte);
@@ -306,7 +306,7 @@ public class HttpTests extends BaseApplicationTests {
     private PositionDescDao positionDescDao;
     @Test
     public void  positionDescTest(){
-        List<Integer> java = positionDetailMapper.queryPositionDetailByZhiLian("C++");
+        List<Integer> java = positionDetailMapper.queryPositionDetailByZhiLian("PHP");
         List<PositionDesc>  positionDescsList = new ArrayList<>();
         try{
             int i=0;
@@ -316,7 +316,7 @@ public class HttpTests extends BaseApplicationTests {
                 if(StringUtils.isNotEmpty(html)){
                     PositionDesc positionDesc = LagouHandler.getPositionDesc(html);
                     positionDesc.setPositionId(javaStr);
-                    positionDesc.setPositionType("C++");
+                    positionDesc.setPositionType("PHP");
                     positionDesc.setInclude(WebsiteEnum.LAGOU.getWebCode());
                     positionDesc.setCurrDate(DateUtils.format(new Date(),"yyyyMMdd"));
                     positionDescsList.add(positionDesc);

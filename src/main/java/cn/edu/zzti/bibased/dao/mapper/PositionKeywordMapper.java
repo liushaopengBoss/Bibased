@@ -30,7 +30,7 @@ public interface PositionKeywordMapper {
      */
     @Select(" SELECT curr_date as currDate, keyword_name as keywordName ,keyword_num as keywordNum from position_keyword \n" +
             "                  where curr_date = #{currDate}  and position_type = #{positionType}\n" +
-            "                   GROUP BY keyword_name ORDER BY keywordNum DESC")
+            "                   GROUP BY keyword_name ORDER BY keywordNum DESC limit 200")
     List<PositionKeyword> queryPositionKeyWordByCurrrDate(@Param("currDate")String currDate,@Param("positionType")String positionType);
 
     /**
@@ -51,7 +51,7 @@ public interface PositionKeywordMapper {
             " AND position_type = #{positionType}\n" +
             " AND is_valid = 1\n" +
             " GROUP BY keyword_name \n" +
-            " ORDER BY keywordNum DESC  ")
+            " ORDER BY keywordNum DESC  limit 200")
     List<PositionKeyword>  queryPositionKeyWordNumsByDateRangeAndPosition(@Param("startDate")String startDate,@Param("endDate")String endDate,
                                                                                   @Param("positionType")String positionType, @Param("include")String include);
 

@@ -29,7 +29,7 @@ public class PositionKeyWordSevice {
      */
     public void keyWord(){
 
-        String yestodayDate = DateUtils.format(DateUtils.getAfterDate(new Date(), -1), "yyyyMMdd");
+        String yestodayDate = DateUtils.format(DateUtils.getAfterDate(new Date(), 0), "yyyyMMdd");
         List<String> positionTypes = positionDescDao.queryPositionTypes(yestodayDate);
         if(!CollectionUtils.isEmpty(positionTypes)){
             for(String positionType:positionTypes){
@@ -76,7 +76,7 @@ public class PositionKeyWordSevice {
             PositionKeyword positionKeyword = new PositionKeyword();
             positionKeywords.add(positionKeyword);
             String keyWord = iterator.next();
-            String yestodayDate = DateUtils.format(DateUtils.getAfterDate(new Date(), -1), "yyyyMMdd");
+            String yestodayDate = DateUtils.format(DateUtils.getAfterDate(new Date(), 0), "yyyyMMdd");
             positionKeyword.setCurrDate(yestodayDate);
             positionKeyword.setInclude(WebsiteEnum.LAGOU.getWebCode());
             positionKeyword.setKeywordName(keyWord);
@@ -126,7 +126,7 @@ public class PositionKeyWordSevice {
     public List<PositionKeyword>  queryPositionKeyWordNumsByDateRangeAndPosition(String positionType, String include){
 
         String startDate = DateUtils.format(DateUtils.getStartMonth(new Date()), "yyyyMMdd");
-        String endDate = DateUtils.format(DateUtils.getAfterDate(new Date(), -1), "yyyyMMdd");
+        String endDate = DateUtils.format(DateUtils.getAfterDate(new Date(), 0), "yyyyMMdd");
         return positionKeywordDao.queryPositionKeyWordNumsByDateRangeAndPosition(startDate,endDate,positionType,include);
     }
 }
