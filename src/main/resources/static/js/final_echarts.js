@@ -181,8 +181,11 @@ $(function () {
 
 
     $("#keyWordButton").click(function () {
-        var postionTypeName = $('#keyWord option:selected').text();
-        //昨日
+        var postionTypeName = $('#keyWord option:selected').text().trim();
+        if(postionTypeName == "C"){
+            postionTypeName = "C++";
+        }
+        //上月
         $.post("/rest/query/v1/queryLastMonthPositionKeyWord?positionType="+postionTypeName,function (data) {
             var keyWordtboday = $("#keyWordtboday");
             if(data.length > 0 ){

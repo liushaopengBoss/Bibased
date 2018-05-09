@@ -246,7 +246,7 @@ public class DateUtils {
         return sdf.format(cal.getTime());
     }
     /**
-     * 获取指定年月的 最后一天
+     * 获取指定年月的 第一天
      * @param date yyyyMM
      * @return
      */
@@ -259,7 +259,7 @@ public class DateUtils {
         //设置月份
         cal.set(Calendar.MONTH,month-1);
         //设置日历中月份的最大天数
-        cal.set(Calendar.DAY_OF_MONTH, 0);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
         //格式化日期
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         return sdf.format(cal.getTime());

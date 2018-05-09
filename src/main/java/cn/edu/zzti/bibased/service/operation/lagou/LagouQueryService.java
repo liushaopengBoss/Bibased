@@ -124,7 +124,7 @@ public class LagouQueryService {
         return mapResult;
     }
 
-    public List<PositionDetail> queryPositionDetailWithBaseQuery(String[] province,String websine,String workYear,String salary ,String companySize,String positionType,String finance,int pageNum,int pageSize){
+    public List<PositionDetail> queryPositionDetailWithBaseQuery(String city,String websine,String workYear,String salary ,String companySize,String positionType,String finance,int pageNum,int pageSize){
         PositionDetailQuery query = new PositionDetailQuery();
         if(StringUtils.isNotEmpty(websine)){
             query.setInclude(websine);
@@ -162,6 +162,9 @@ public class LagouQueryService {
         }
         if(StringUtils.isNotEmpty(finance)){
             query.setFinanceStage(finance);
+        }
+        if(StringUtils.isNotEmpty(city)){
+            query.setCity(city);
         }
         query.setPageRow((pageNum-1)*pageSize);
         query.setPageSize(pageSize);

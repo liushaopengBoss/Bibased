@@ -56,13 +56,13 @@ public class DataQueryController {
      */
     @RequestMapping("/v1/queryPostionDetail")
     @ResponseBody
-    public Object queryPostionDetail(String[] province,String websine,String workYear,String salary ,String companySize,String positionType,String finance,Integer pageNum,Integer pageSize){
+    public Object queryPostionDetail(String city,String websine,String workYear,String salary ,String companySize,String positionType,String finance,Integer pageNum,Integer pageSize){
         PageResult pageResult = new PageResult();
         if(pageNum == null || pageNum <1){
             pageNum = 1;
         }
         pageSize = 20;
-        List<PositionDetail> positionDetails = queryService.queryPositionDetailWithBaseQuery(province, websine, workYear, salary, companySize, positionType, finance, pageNum, pageSize);
+        List<PositionDetail> positionDetails = queryService.queryPositionDetailWithBaseQuery(city, websine, workYear, salary, companySize, positionType, finance, pageNum, pageSize);
         pageResult.setPageNum(pageNum);
         pageResult.setPositionDetailList(positionDetails);
         return pageResult;
@@ -110,17 +110,23 @@ public class DataQueryController {
     @RequestMapping("/v1/queryDateRangPositionNumDay")
     @ResponseBody
     public List<PositionNumDay> queryDateRangPositionNumDay(String positionType){
-        return positionNumDayService.queryDateRangPositionNumDay(positionType);
+        return positionNumDayService.queryDateRangPositionNumDay(positionType.trim());
     }
     @RequestMapping("/v1/queryDateRangPositionNumDaySum")
     @ResponseBody
     public List<PositionNumDay> queryDateRangPositionNumDaySum(String positionType){
-        return positionNumDayService.queryDateRangPositionNumDaySum(positionType);
+        if(positionType.trim().equals("C")){
+            positionType = "C++";
+        }
+        return positionNumDayService.queryDateRangPositionNumDaySum(positionType.trim());
     }
 
     @RequestMapping("/v1/queryLastMonthPositionKeyWord")
     @ResponseBody
     public List<PositionKeyword> queryLastMonthPositionKeyWordByPositionType(String positionType){
-        return positionKeyWordSevice.queryLastMonthPositionKeyWordByPositionType(positionType);
+        if(positionType.trim().equals("C")){
+            positionType = "C++";
+        }
+        return positionKeyWordSevice.queryLastMonthPositionKeyWordByPositionType(positionType.trim());
     }
 }

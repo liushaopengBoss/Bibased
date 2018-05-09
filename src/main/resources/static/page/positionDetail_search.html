@@ -57,15 +57,15 @@
                                         <option value="" hassubinfo="true">无要求</option>
                                         <option value="lagou" hassubinfo="true">拉勾网</option>
                                         <option value="boss" hassubinfo="true">BOSS直聘</option>
-                                        <!--<option value="job" hassubinfo="true">前程无忧</option>-->
+                                        <option value="zhilian" hassubinfo="true">智联招聘</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">城市：</label>
                                 <div  class="col-sm-5">
-                                    <select data-placeholder="选择城市" class="chosen-select " id = "citySelect" multiple style="width:400px;" tabindex="4" name="province">
-                                        <option value="">请选择网站</option>
+                                    <select data-placeholder="选择城市" class="form-control m-b" id = "citySelect"  style="width:400px;" tabindex="4" name="city">
+
                                     </select>
                                 </div>
                             </div>
@@ -253,13 +253,18 @@
         $(".webSite").change(function () {
             var value = $(".webSite").val();
             $.post("/rest/query/v1/queryCity?code="+value,function (result) {
+                if(result.length >0){
                     var select = $("#citySelect");
-                     select.html("");
-                        select.prepend("<option value=''>请选择城市</option>");
-//                    for(var i=0;result.length;i++){
-//                        var option = $("<option value='"+result[i]+"'>"+result[i]+"</option>");
-//                        select.append(option);
-//                    }
+                    select.html("");
+                    for(var i=0;i<result.length;i++){
+                        if(result[i] == "全部城市"){
+                            continue;
+                        }
+                        var option = $("<option value='"+result[i]+"' >"+result[i]+"</option>");
+                        select.append(option);
+                    }
+                }
+
             });
         });
         <!--点击搜索按钮首次请求-->
@@ -315,14 +320,6 @@
             //ajax请求并且，渲染界面
             sendAjax();
         }
-
-
-
-
-
-
-
-
 
     });
 
