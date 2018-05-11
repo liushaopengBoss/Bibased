@@ -71,16 +71,13 @@ public class DataQueryController {
     @RequestMapping("/v1/queryCity")
     @ResponseBody
     public  List<String> queryCity(String code){
-        List<String> cities = new ArrayList<>();
+        List<String> citys = new ArrayList<>();
         for (WebsiteEnum websiteEnum:WebsiteEnum.values()){
             if(websiteEnum.getWebCode().equals(code)) {
-                List<City> citys = acquisitionService.queryCitys(websiteEnum.getWebCode());
-                if(!CollectionUtils.isEmpty(citys)){
-                    cities = citys.stream().map(City::getCityName).collect(Collectors.toList());
-                }
+                citys = acquisitionService.queryCityList(websiteEnum.getWebCode());
             }
         }
-        return cities;
+        return citys;
     }
 
 

@@ -54,6 +54,10 @@ public class AcquisitionDao {
         return cityMapper.queryCity(include);
     }
 
+    public List<String> queryCityList(String include){
+        return positionDetailMapper.queryCity(include);
+    }
+
     public void batchInsertPositionDetails(List<PositionDetail> positionDetails){
         positionDetailMapper.batchInsert(positionDetails);
     }

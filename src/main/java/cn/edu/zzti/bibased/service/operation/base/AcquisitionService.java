@@ -92,4 +92,8 @@ public class AcquisitionService {
         return acquisitionDao.queryCitys(include);
     }
 
+    public List<String> queryCityList(String include){
+        return acquisitionDao.queryCityList(include);
+    }
+
 }

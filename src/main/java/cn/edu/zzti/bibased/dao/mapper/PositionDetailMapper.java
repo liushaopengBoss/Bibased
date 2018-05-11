@@ -169,4 +169,7 @@ public interface PositionDetailMapper {
 
     @Select("SELECT position_id from position_detail where include = 'zhilian' and third_type = #{thirdTpe}")
     List<Integer> queryPositionDetailByZhiLian(@Param("thirdTpe")String thirdTpe);
+
+    @Select("SELECT city from position_detail  where include = #{include} group by city")
+    List<String> queryCity(@Param("include")String include);
 }
