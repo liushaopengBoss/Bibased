@@ -53,13 +53,13 @@ http:
         defaultMaxPerRoute: 100  #设置每个地址的并发数 cn.edu.zzti.bibased.dao.mapper
 logging:
   config: classpath:biased-logback.xml
-  level:
-        cn:
-           edu:
-              zzti:
-                   bibased:
-                            dao:
-                               mapper: debug
+#  level:
+#        cn:
+#           edu:
+#              zzti:
+#                   bibased:
+#                            dao:
+#                               mapper: debug
 
 
 

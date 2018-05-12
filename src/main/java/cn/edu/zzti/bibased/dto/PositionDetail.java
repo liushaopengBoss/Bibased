@@ -2,6 +2,7 @@ package cn.edu.zzti.bibased.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
  * Created by huaidou on  2018/1/15
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PositionDetail {
+public class PositionDetail implements Serializable {
 
     private Integer id;
 
@@ -97,11 +98,11 @@ public class PositionDetail {
      */
     private Integer num;
 
-    public int getNum() {
+    public Integer getNum() {
         return num;
     }
 
-    public void setNum(int num) {
+    public void setNum(Integer num) {
         this.num = num;
     }
 
