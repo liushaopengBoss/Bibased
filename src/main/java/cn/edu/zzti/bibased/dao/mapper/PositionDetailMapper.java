@@ -91,12 +91,12 @@ public interface PositionDetailMapper {
      * @param include
      * @return
      */
-  @Select("SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and  company_min_size = 0 and company_max_size = 0  UNION\n" +
+  @Select("SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and  company_min_size = 0  UNION\n" +
           "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and  company_min_size >= 10 and company_max_size <= 50  UNION\n" +
-          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and company_min_size = 50 and company_max_size = 150  UNION\n" +
-          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and company_min_size = 150 and company_max_size = 500  UNION\n" +
-          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and company_min_size = 500 and company_max_size = 2000  UNION\n" +
-          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and company_min_size = 2000 and company_max_size = 2000  \n")
+          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and company_min_size >= 50 and company_max_size <= 150  UNION\n" +
+          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and company_min_size >= 150 and company_max_size <= 500  UNION\n" +
+          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and company_min_size >= 500 and company_max_size <= 2000  UNION\n" +
+          "SELECT company_min_size as companyMinSize ,company_max_size as companyMaxSize ,COUNT(id) as num from position_detail where  include = #{include} and company_min_size >= 2000   \n")
    List<PositionDetail>   queryCompanySize(@Param("include")String include );
 
     /**
@@ -120,7 +120,7 @@ public interface PositionDetailMapper {
      * 不同行业的职位数量
      * @return
      */
-  @Select("SELECT industry_field as industryField ,count(id) as num  from position_detail where include = #{include}  and industry_field IS not null  GROUP BY industry_field")
+  @Select("SELECT industry_field as industryField ,count(id) as num  from position_detail where include = #{include}  and industry_field IS not null  GROUP BY industry_field order by num desc limit 30")
   List<PositionDetail> queryIndustryFieldNums(@Param("include")String include);
 
     /**

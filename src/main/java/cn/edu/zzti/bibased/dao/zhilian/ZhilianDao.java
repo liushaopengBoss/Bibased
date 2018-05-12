@@ -17,4 +17,16 @@ public class ZhilianDao {
     public List<PositionDetail> queryPositionDetailsByFirstTye(String firstType){
         return positionDetailMapper.queryPositionDetailsByFirstTye(WebsiteEnum.ZHILIAN.getWebCode(),firstType);
     }
+    public List<PositionDetail> queryWorkYearNums(){
+        return positionDetailMapper.queryWorkYearNums(WebsiteEnum.ZHILIAN.getWebCode());
+    }
+
+    public List<PositionDetail>   queryEducationNums(){
+        return positionDetailMapper.queryEducationNums(WebsiteEnum.ZHILIAN.getWebCode());
+    }
+
+    public List<PositionDetail>  queryJobNatureNums(){
+        return positionDetailMapper.queryJobNatureNums(WebsiteEnum.ZHILIAN.getWebCode());
+    }
+
 }

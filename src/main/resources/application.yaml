@@ -50,14 +50,19 @@ http:
             staleConnectionCheckEnabled: true #提交请求前测试连接是否可用
     pool:
         maxTotal: 200     #设置连接总数
-        defaultMaxPerRoute: 100  #设置每个地址的并发数
+        defaultMaxPerRoute: 100  #设置每个地址的并发数 cn.edu.zzti.bibased.dao.mapper
 logging:
   config: classpath:biased-logback.xml
-log:
-    dir: opt/logs
-    leavel: info
-    immediate:
-          flush: true
+  level:
+        cn:
+           edu:
+              zzti:
+                   bibased:
+                            dao:
+                               mapper: debug
+
+
+
 
 
 

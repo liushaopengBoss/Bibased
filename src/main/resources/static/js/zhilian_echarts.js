@@ -22,7 +22,7 @@ $(function () {
     /**
      *  1.各城市公司数量信息
      */
-    $.post("/rest/v1/queryIndustryFieldNums/boss",function(resultData){
+    $.post("/rest/v1/queryIndustryFieldNums/zhilian",function(resultData){
         /**
          * 柱状图
          */
@@ -151,7 +151,7 @@ $(function () {
     workYear.showLoading({
         text: "正在加载中...请稍后"
     });
-    $.post("/rest/v1/queryWorkYearNums/boss",function(resultData){
+    $.post("/rest/v1/queryWorkYearNums/zhilian",function(resultData){
         /**
          * 饼状图
          */
@@ -209,7 +209,7 @@ $(function () {
     educationPieChart.showLoading({
         text: "正在加载中...请稍后"
     });
-    $.post("/rest/v1/queryEducationNums/boss",function(resultData){
+    $.post("/rest/v1/queryEducationNums/zhilian",function(resultData){
         /**
          * 饼状图
          */
@@ -265,7 +265,7 @@ $(function () {
     jobNaturePieChart.showLoading({
         text: "正在加载中...请稍后"
     });
-    $.post("/rest/v1/queryJobNatureNums/boss",function(resultData){
+    $.post("/rest/v1/queryJobNatureNums/zhilian",function(resultData){
         /**
          * 饼状图
          */
@@ -361,6 +361,78 @@ $(function () {
         }
         return arr;
     }
+    function  SalaryNum(result) {
+        var arr = [];
+        for(var i=0;i<result.length;i++){
+            if(result[i].minSalary < 10){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "小于10K";
+                arr.push(obj)
+            }if(result[i].minSalary == 10){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "10K-15K";
+                arr.push(obj)
+            }
+            else if(result[i].minSalary == 15){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "15K-20K";
+                arr.push(obj)
+            }
+            else if(result[i].minSalary == 20){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "20K-35K";
+                arr.push(obj)
+            }else if(result[i].minSalary == 35){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "35K-50K";
+                arr.push(obj)
+            }
+            else if(result[i].minSalary == 50){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "50K-70K";
+                arr.push(obj)
+            }else if(result[i].minSalary >=70){
+                var obj = new Object();
+                obj.value = result[i].num;
+                obj.name = "70K以上";
+                arr.push(obj)
+            }
+
+
+        }
+        return arr;
+    }
+
+    function  SalaryName(result) {
+        var arr = [];
+        for(var i=0;i<result.length;i++){
+            if(result[i].minSalary < 10){
+                arr.push("小于10K")
+            }if(result[i].minSalary == 10){
+                arr.push("10K-15K")
+            }
+            else if(result[i].minSalary == 15){
+                arr.push("15K-20K")
+            }
+            else if(result[i].minSalary == 20){
+                arr.push("20K-35K")
+            }else if(result[i].minSalary == 35){
+                arr.push("35K-50K")
+            }
+            else if(result[i].minSalary == 50){
+                arr.push("50K-70K")
+            }else if(result[i].minSalary >=70){
+                arr.push("70K以上")
+            }
+        }
+        return arr;
+    }
     /**
      *不同公司规模的职位数量图
      */
@@ -368,13 +440,13 @@ $(function () {
     companySize.showLoading({
         text: "正在加载中...请稍后"
     });
-    $.post("/rest/v1/queryCompanySize/boss",function(resultData){
+    $.post("/rest/v1/queryDifferentSalaryNum/zhilian",function(resultData){
         /**
          * 饼状图
          */
-        var companySizeOperation = {
+        var PositionType = {
             title : {
-                text: '不同公司规模的职位数量图',
+                text: '不同薪资水平职位数量',
                 x:'center'
             },
             tooltip : {
@@ -384,20 +456,20 @@ $(function () {
             legend: {
                 orient : 'vertical',
                 x : 'right',
-                data:companySizeNames(resultData)
+                data:SalaryName(resultData)
             },
             calculable : true,
             series : [
                 {
-                    name:'公司规模的职位数量',
+                    name:'职位情况图',
                     type:'pie',
                     radius : '55%',
-                    data:companySizeValueNames(resultData)
+                    data:SalaryNum(resultData)
                 }
             ]
         };
         companySize.hideLoading();
-        companySize.setOption(companySizeOperation);
+        companySize.setOption(PositionType);
         $(window).resize(companySize.resize);
     });
 

@@ -171,7 +171,7 @@ public class LagouQueryService {
         return lagouDao.queryPositionDetailWithBaseQuery(query);
     }
 
-    public List<PositionDetail> queryDifferentSalaryNum(){
-      return  lagouDao.queryDifferentSalaryNum();
+    public List<PositionDetail> queryDifferentSalaryNum(String include){
+      return  lagouDao.queryDifferentSalaryNum(include);
     }
 }

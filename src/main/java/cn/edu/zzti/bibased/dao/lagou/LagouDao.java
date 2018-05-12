@@ -157,7 +157,9 @@ public class LagouDao  {
     private String prefix(){
         return DateUtils.formatStr(new Date(),DateUtils.YYMMDD)+WebsiteEnum.LAGOU.getWebCode();
     }
-
+    private String prefix(String include){
+        return DateUtils.formatStr(new Date(),DateUtils.YYMMDD)+include;
+    }
     /**
      * 通用查询
      *
@@ -167,12 +169,12 @@ public class LagouDao  {
     public List<PositionDetail> queryPositionDetailWithBaseQuery(PositionDetailQuery query){
         return positionDetailMapper.queryPositionDetailWithBaseQuery(query);
     }
-    public List<PositionDetail> queryDifferentSalaryNum(){
-        if(cache.containsKey(prefix()+"queryDifferentSalaryNum")){
-            return (List<PositionDetail>)cache.getValue(prefix()+"queryDifferentSalaryNum");
+    public List<PositionDetail> queryDifferentSalaryNum(String include){
+        if(cache.containsKey(prefix(include)+"queryDifferentSalaryNum")){
+            return (List<PositionDetail>)cache.getValue(prefix(include)+"queryDifferentSalaryNum");
         }else{
-            List<PositionDetail> positionDetails = positionDetailMapper.queryDifferentSalaryNum(WebsiteEnum.LAGOU.getWebCode());
-            cache.add(prefix()+"queryDifferentSalaryNum",positionDetails);
+            List<PositionDetail> positionDetails = positionDetailMapper.queryDifferentSalaryNum(include);
+            cache.add(prefix(include)+"queryDifferentSalaryNum",positionDetails);
             return positionDetails;
         }
 

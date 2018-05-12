@@ -96,11 +96,17 @@ public class DataQueryController {
     @RequestMapping("/v1/queryYestodayPositionKeyWord")
     @ResponseBody
     public List<PositionKeyword> queryYestodayPositionKeyWord(String positionType){
+        if(positionType.trim().equals("C")){
+            positionType = "C++";
+        }
         return positionKeyWordSevice.queryPositionKeyWordByCurrrDate(positionType.trim());
     }
     @RequestMapping("/v1/queryDataRangePositionKeyWordNums")
     @ResponseBody
     public List<PositionKeyword>  queryDataRangePositionKeyWordNums(String positionType){
+        if(positionType.trim().equals("C")){
+            positionType = "C++";
+        }
         return positionKeyWordSevice.queryPositionKeyWordNumsByDateRangeAndPosition(positionType.trim(),null);
     }
 

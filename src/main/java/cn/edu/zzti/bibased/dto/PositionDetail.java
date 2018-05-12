@@ -95,7 +95,7 @@ public class PositionDetail {
     /**
      * 数据分析使用
      */
-    private int num;
+    private Integer num;
 
     public int getNum() {
         return num;

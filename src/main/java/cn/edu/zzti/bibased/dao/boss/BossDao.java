@@ -35,8 +35,8 @@ public class BossDao {
         return positionsMapper.queryLeafPositions(WebsiteEnum.BOSS.getWebCode());
     }
 
-    public List<PositionDetail> queryIndustryFieldNums(){
-        return positionDetailMapper.queryIndustryFieldNums(WebsiteEnum.BOSS.getWebCode());
+    public List<PositionDetail> queryIndustryFieldNums(String include){
+        return positionDetailMapper.queryIndustryFieldNums(include);
     }
 
 

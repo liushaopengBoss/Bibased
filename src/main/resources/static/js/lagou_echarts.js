@@ -286,7 +286,7 @@ $(function () {
     //     PositionTypeNumsPieChart.setOption(PositionType);
     //     $(window).resize(PositionTypeNumsPieChart.resize);
     // });
-    $.post("/rest/v1/queryDifferentSalaryNum",function(resultData){
+    $.post("/rest/v1/queryDifferentSalaryNum/lagou",function(resultData){
         /**
          * 饼状图
          */

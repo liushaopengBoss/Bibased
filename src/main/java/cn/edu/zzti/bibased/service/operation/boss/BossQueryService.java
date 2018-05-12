@@ -23,8 +23,8 @@ public class BossQueryService {
     }
 
 
-    public List<PositionDetail> queryIndustryFieldNums(){
-        return bossDao.queryIndustryFieldNums();
+    public List<PositionDetail> queryIndustryFieldNums(String include){
+        return bossDao.queryIndustryFieldNums(include);
     }
 
 

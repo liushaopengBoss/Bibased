@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 数据分析服务
@@ -110,6 +111,9 @@ public class DataAnalysisController {
                     case BOSS:
                         positionDetails =  bossQueryService.queryWorkYearNums();
                         break;
+                    case ZHILIAN:
+                        positionDetails =  zhilianQueryService.queryWorkYearNums();
+                        break;
                 }
             }
         }
@@ -134,6 +138,9 @@ public class DataAnalysisController {
                     case BOSS:
                         positionDetails =  bossQueryService.queryEducationNums();
                         break;
+                    case ZHILIAN:
+                        positionDetails = zhilianQueryService.queryEducationNums();
+                        break;
                 }
             }
         }
@@ -156,6 +163,9 @@ public class DataAnalysisController {
                         break;
                     case BOSS:
                         positionDetails =  bossQueryService.queryJobNatureNums();
+                        break;
+                    case ZHILIAN:
+                        positionDetails = zhilianQueryService.queryJobNatureNums();
                         break;
                 }
             }
@@ -209,7 +219,9 @@ public class DataAnalysisController {
                 }
             }
         }
-        return positionDetails;
+        return positionDetails.stream().filter(po->{
+            return po.getNum()>0;
+        }).collect(Collectors.toList());
     }
     /**
      * 获取每个招聘网站在各个城市的职位数量
@@ -232,13 +244,7 @@ public class DataAnalysisController {
         List<PositionDetail> positionDetails = new ArrayList<>();
         for (WebsiteEnum websiteEnum:WebsiteEnum.values()){
             if(websiteEnum.getWebCode().equals(code)) {
-                switch (websiteEnum) {
-                    case LAGOU:
-                        break;
-                    case BOSS:
-                        positionDetails =  bossQueryService.queryIndustryFieldNums();
-                      break;
-                }
+                positionDetails =  bossQueryService.queryIndustryFieldNums(websiteEnum.getWebCode());
             }
         }
         return positionDetails;
@@ -249,10 +255,16 @@ public class DataAnalysisController {
      * 不同行业中的职位数量
      * @return
      */
-    @RequestMapping("/v1/queryDifferentSalaryNum")
+    @RequestMapping("/v1/queryDifferentSalaryNum/{webCode}")
     @ResponseBody
-    public List<PositionDetail> queryDifferentSalaryNum(){
-        return lagouQueryService.queryDifferentSalaryNum();
+    public List<PositionDetail> queryDifferentSalaryNum(@PathVariable("webCode") String code ){
+        List<PositionDetail> positionDetails = new ArrayList<>();
+        for (WebsiteEnum websiteEnum:WebsiteEnum.values()){
+            if(websiteEnum.getWebCode().equals(code)) {
+                    positionDetails = lagouQueryService.queryDifferentSalaryNum(websiteEnum.getWebCode());
+            }
+        }
+        return positionDetails;
     }
 
 
