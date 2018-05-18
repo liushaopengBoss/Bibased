@@ -306,7 +306,7 @@ public class HttpTests extends BaseApplicationTests {
     private PositionDescDao positionDescDao;
     @Test
     public void  positionDescTest(){
-        List<Integer> java = positionDetailMapper.queryPositionDetailByZhiLian("PHP");
+        List<Integer> java = positionDetailMapper.queryPositionIdsByTodayWithThirdType("PHP");
         List<PositionDesc>  positionDescsList = new ArrayList<>();
         try{
             int i=0;

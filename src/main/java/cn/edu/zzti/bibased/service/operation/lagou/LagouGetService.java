@@ -19,8 +19,10 @@ import cn.edu.zzti.bibased.thread.*;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import cn.edu.zzti.bibased.utils.RequestHolder;
 import cn.edu.zzti.bibased.utils.SpringContextUtils;
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -271,7 +273,6 @@ public class LagouGetService {
     @Async
     @ActionLog(ProjectItem.POSITIONDETAIL)
     public void getPositionDeailsInfomation(){
-        HttpServletRequest request = RequestHolder.getRequest();
         emailService.sendSimpleMail("信息开始采集！","时间"+DateUtils.formatStr(new Date(),DateUtils.YYMMDD_HHmmSS));
         Future<List<Positions>> positionListFuter = getInfoPool.submit(() -> {
                return acquisitionService.queryLeftPositions();
@@ -281,6 +282,7 @@ public class LagouGetService {
         try{
             positions = positionListFuter.get();
         }catch (Exception e){}
+        int ik=0;
         if(!CollectionUtils.isEmpty(positions) && !CollectionUtils.isEmpty(citys)){
             positions.forEach(position -> {
                 String positionName = position.getPositionName();
@@ -293,6 +295,10 @@ public class LagouGetService {
                     if (city.getCityName().contains("城市")||city.getCityName().contains("全部")) {
                         continue;
                     }
+                    if(positionName.equals("Java")){
+                        break;
+                    }
+
                     String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city=" + city.getCityName() + "&needAddtionalResult=false&isSchoolJob=0";
                     logger.info("---->  " + apiUrl);
                     logger.info("---->  https://www.lagou.com/jobs/list_" + positionName.trim() + "?px=default&city=" + city.getCityName());
@@ -304,7 +310,6 @@ public class LagouGetService {
                     executer.setParams(param);
                     int pageSize = executer.getPageSize();
                     pageSize = pageSize > 20 ? 20 : pageSize;
-                    isSleep(pageSize);
                     Long lastCreateTime = lagouQueryService.queryLastPositionCreateTime(city.getCityName(), positionName);
                     if (pageSize != 0 || pageSize != 1) {
                         logger.info("爬虫开始获取数据：城市："+city.getCityName()+"  职位："+positionName);
@@ -357,18 +362,22 @@ public class LagouGetService {
                                 acquisitionService.batchAddPositionDetails(positionDetails);
                                 i--;
                                 logger.info("数据获取成功-->异步写入数据  ");
-                            } else if (isBreak || positionDetails.size() == 0 || count == 2) {
+                            } else if ( positionDetails.size() == 0 || count == 2) {
+                                break;
+                            }else if(isBreak){
+                                emailService.sendSimpleMail("信息采集异常！","时间"+DateUtils.formatStr(new Date(),DateUtils.YYMMDD_HHmmSS)+"职位："+positionName+"   City:"+city.getCityName());
                                 break;
                             }
 
-                            try{
-                                List<PositionDesc> positionDescs = handlePositionDesc(positionDetails);
-                                if(!CollectionUtils.isEmpty(positionDescs)){
-                                    positionDescDao.batchPositionDesc(positionDescs);
-                                }
-                            }catch (Exception e){
-                                logger.info("职位描述失败",e);
-                            }
+
+//                            try{
+//                                List<PositionDesc> positionDescs = handlePositionDesc(positionDetails);
+//                                if(!CollectionUtils.isEmpty(positionDescs)){
+//                                    positionDescDao.batchPositionDesc(positionDescs);
+//                                }
+//                            }catch (Exception e){
+//                                logger.info("职位描述失败",e);
+//                            }
 
                         }
 
@@ -376,22 +385,14 @@ public class LagouGetService {
                     logger.info("职位："+positionName+"城市："+city.getCityName());
                 }
                 logger.info("职位："+positionName+"抓取完成");
+                logger.info("职位描述："+positionName+"开始采集");
+                getPositionDesc(positionName);
+                logger.info("职位描述："+positionName+"抓取完成");
             });
         }
         emailService.sendSimpleMail("信息采集结束！","时间"+DateUtils.formatStr(new Date(),DateUtils.YYMMDD_HHmmSS));
     }
 
-    /**
-     * 数据页为0 拉钩没有数据  所以选择睡10秒
-     * @param pageSize
-     */
-    private void isSleep(int pageSize){
-        if(pageSize ==0){
-            try {
-                Thread.sleep(10000);
-            }catch (Exception e){}
-        }
-    }
     /**
      * 组装职位详情信息
      * @param positionDetailVos
@@ -504,5 +505,39 @@ public class LagouGetService {
         }
         logger.info("职位描述采集数量： "+positionDescsList.size()+"职位类型："+positionDetails.get(0).getThirdType());
         return  positionDescsList;
+    }
+
+    public void  getPositionDesc(String thirdType){
+        List<Integer> java = lagouQueryService.queryPositionIdsByTodayWithThirdType(thirdType);
+        List<PositionDesc>  positionDescsList = new ArrayList<>();
+        if(java.size()<0){
+            return ;
+        }
+        logger.info("size:"+java.size()+"content:"+JSON.toJSONString(java));
+        try{
+            for(Integer javaStr:java){
+                String apiUrl = "https://www.lagou.com/jobs/"+javaStr+".html";
+                String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);
+                if(StringUtils.isNotEmpty(html)){
+                    PositionDesc positionDesc = LagouHandler.getPositionDesc(html);
+                    positionDesc.setPositionId(javaStr);
+                    positionDesc.setPositionType(thirdType);
+                    positionDesc.setInclude(WebsiteEnum.LAGOU.getWebCode());
+                    positionDesc.setCurrDate(DateUtils.format(new Date(),"yyyyMMdd"));
+                    positionDescsList.add(positionDesc);
+                    positionDescDao.batchPositionDesc(positionDescsList);
+                    positionDescsList.clear();
+                }
+                    try {
+                        logger.info("sleep 2s");
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        logger.info("Exception",e);
+                    }
+            }
+        }catch (Exception e){
+          logger.info("职位描述采集失败！！",e);
+        }
+
     }
 }

@@ -174,4 +174,8 @@ public class LagouQueryService {
     public List<PositionDetail> queryDifferentSalaryNum(String include){
       return  lagouDao.queryDifferentSalaryNum(include);
     }
+
+    public List<Integer> queryPositionIdsByTodayWithThirdType(String thirdTpe){
+        return lagouDao.queryPositionIdsByTodayWithThirdType(thirdTpe);
+    }
 }

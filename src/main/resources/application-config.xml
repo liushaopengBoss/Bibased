@@ -145,7 +145,7 @@
 	<bean name="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="lagouJobDetail" />
 		<!-- 每天的14点执行 -->
-		<property name="cronExpression" value="0 5 14 * * ?" />
+		<property name="cronExpression" value="0 51 12 * * ?" />
 	</bean>
 	<bean name="cronTriggerClearCache" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="clearCache" />
@@ -167,7 +167,7 @@
 	<bean name="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<!--<ref bean="cronTrigger" />-->
+				<ref bean="cronTrigger" />
 				<ref bean="cronTriggerClearCache" />
 				<ref bean="cronTriggerLagouKeyWord" />
 				<ref bean="cronTriggerpositionNumDayJob" />

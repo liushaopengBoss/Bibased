@@ -167,8 +167,8 @@ public interface PositionDetailMapper {
     Integer queryPositionTypeNums(@Param("startTime")long startTime,@Param("endTine")long endTine,@Param("thirdTpe")String thirdTpe);
 
 
-    @Select("SELECT position_id from position_detail where include = 'zhilian' and third_type = #{thirdTpe}")
-    List<Integer> queryPositionDetailByZhiLian(@Param("thirdTpe")String thirdTpe);
+    @Select("SELECT position_id from position_detail where include = 'lagou' and third_type = #{thirdTpe} AND  cr_time > UNIX_TIMESTAMP(DATE_SUB(curdate(),INTERVAL 0 DAY)) ")
+    List<Integer> queryPositionIdsByTodayWithThirdType(@Param("thirdTpe")String thirdTpe);
 
     @Select("SELECT city from position_detail  where include = #{include} group by city")
     List<String> queryCity(@Param("include")String include);

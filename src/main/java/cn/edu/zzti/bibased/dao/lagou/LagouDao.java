@@ -8,6 +8,7 @@ import cn.edu.zzti.bibased.dao.mapper.PositionsMapper;
 import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.dto.query.PositionDetailQuery;
 import cn.edu.zzti.bibased.utils.DateUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -178,5 +179,9 @@ public class LagouDao  {
             return positionDetails;
         }
 
+    }
+
+    public List<Integer> queryPositionIdsByTodayWithThirdType(String thirdTpe){
+        return positionDetailMapper.queryPositionIdsByTodayWithThirdType(thirdTpe);
     }
 }
