@@ -295,10 +295,6 @@ public class LagouGetService {
                     if (city.getCityName().contains("城市")||city.getCityName().contains("全部")) {
                         continue;
                     }
-                    if(positionName.equals("Java")){
-                        break;
-                    }
-
                     String apiUrl = "https://www.lagou.com/jobs/positionAjax.json?px=default&city=" + city.getCityName() + "&needAddtionalResult=false&isSchoolJob=0";
                     logger.info("---->  " + apiUrl);
                     logger.info("---->  https://www.lagou.com/jobs/list_" + positionName.trim() + "?px=default&city=" + city.getCityName());

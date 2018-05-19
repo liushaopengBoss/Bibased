@@ -29,7 +29,7 @@ public class PositionKeyWordSevice {
      */
     public void keyWord(){
 
-        String yestodayDate = DateUtils.format(DateUtils.getAfterDate(new Date(), 0), "yyyyMMdd");
+        String yestodayDate = DateUtils.format(DateUtils.getAfterDate(new Date(), -1), "yyyyMMdd");
         List<String> positionTypes = positionDescDao.queryPositionTypes(yestodayDate);
         if(!CollectionUtils.isEmpty(positionTypes)){
             for(String positionType:positionTypes){
