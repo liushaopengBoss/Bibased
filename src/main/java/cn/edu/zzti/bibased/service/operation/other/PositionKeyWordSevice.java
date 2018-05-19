@@ -76,7 +76,7 @@ public class PositionKeyWordSevice {
             PositionKeyword positionKeyword = new PositionKeyword();
             positionKeywords.add(positionKeyword);
             String keyWord = iterator.next();
-            String yestodayDate = DateUtils.format(DateUtils.getAfterDate(new Date(), 0), "yyyyMMdd");
+            String yestodayDate = DateUtils.format(DateUtils.getAfterDate(new Date(), -1), "yyyyMMdd");
             positionKeyword.setCurrDate(yestodayDate);
             positionKeyword.setInclude(WebsiteEnum.LAGOU.getWebCode());
             positionKeyword.setKeywordName(keyWord);
