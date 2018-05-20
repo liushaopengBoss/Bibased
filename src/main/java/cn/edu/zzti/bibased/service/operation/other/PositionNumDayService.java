@@ -1,5 +1,6 @@
 package cn.edu.zzti.bibased.service.operation.other;
 
+import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
 import cn.edu.zzti.bibased.dao.position.PositionNumDayDao;
 import cn.edu.zzti.bibased.dto.PositionNumDay;
@@ -102,7 +103,7 @@ public class PositionNumDayService {
                         po.setPositionType(positionType);
                         po.setCurrDate(dateSte);
                         po.setPositionNum((Integer) aLong);
-                        po.setInclude("lagou");
+                        po.setInclude(WebsiteEnum.LAGOU.getWebCode());
                         positionNumDayDao.addPositionTypes(po);
 
 
