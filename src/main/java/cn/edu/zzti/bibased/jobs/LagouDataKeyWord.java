@@ -18,7 +18,6 @@ public class LagouDataKeyWord extends QuartzJobBean {
         PositionKeyWordSevice lagouService =(PositionKeyWordSevice) applicationContext.getBean("positionKeyWordSevice");
         lagouService.keyWord();
         logger.info("lagou keyword end!!!");
-        logger.info("lagou keyword !!!");
     }
 
 }
