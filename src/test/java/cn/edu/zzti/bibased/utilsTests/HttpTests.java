@@ -24,6 +24,7 @@ import cn.edu.zzti.bibased.service.operation.other.PositionKeyWordSevice;
 import cn.edu.zzti.bibased.service.operation.other.PositionNumDayService;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import cn.edu.zzti.bibased.utils.IDUtils;
+import com.alibaba.fastjson.JSON;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -309,19 +310,27 @@ public class HttpTests extends BaseApplicationTests {
     private PositionDescDao positionDescDao;
     @Test
     public void  positionDescTest(){
-        List<Integer> java = positionDetailMapper.queryPositionIdsByTodayWithThirdType("PHP");
+        List<Integer> java = positionDetailMapper.queryPositionIdsByTodayWithThirdType("功能测试");
         List<PositionDesc>  positionDescsList = new ArrayList<>();
+        logger.info(JSON.toJSONString(java));
         try{
             int i=0;
             for(Integer javaStr:java){
                 String apiUrl = "https://www.lagou.com/jobs/"+javaStr+".html";
-                String html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);
+                logger.info(apiUrl);
+                String html  = null;
+                try{
+                   html = httpClientService.doGet(apiUrl, null, HttpHeaderConstant.lagouGetHeader);
+                }catch (Exception e){
+                    HttpHeaderConstant.setStatus();
+                }
+
                 if(StringUtils.isNotEmpty(html)){
                     PositionDesc positionDesc = LagouHandler.getPositionDesc(html);
                     positionDesc.setPositionId(javaStr);
-                    positionDesc.setPositionType("PHP");
+                    positionDesc.setPositionType("功能测试");
                     positionDesc.setInclude(WebsiteEnum.LAGOU.getWebCode());
-                    positionDesc.setCurrDate(DateUtils.format(new Date(),"yyyyMMdd"));
+                    positionDesc.setCurrDate(DateUtils.format(new Date() ,"yyyyMMdd"));
                     positionDescsList.add(positionDesc);
                     logger.info(positionDesc.toString());
                     positionDescDao.batchPositionDesc(positionDescsList);
