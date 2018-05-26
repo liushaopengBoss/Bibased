@@ -269,6 +269,7 @@
         });
         <!--点击搜索按钮首次请求-->
         $(".queryButton").click(function () {
+            $("#pageNum").val(1);
             sendAjax();
         })
         //ajax请求并且，渲染界面

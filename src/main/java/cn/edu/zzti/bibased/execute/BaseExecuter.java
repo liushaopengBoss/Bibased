@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 /**
  * 多线程抽象执行器类
+ *
  * create by huaidou on 2018/02/09
  */
 public abstract class BaseExecuter implements AnsyTask.Executer {
