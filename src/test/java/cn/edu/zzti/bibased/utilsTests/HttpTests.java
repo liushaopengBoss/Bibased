@@ -22,6 +22,7 @@ import cn.edu.zzti.bibased.service.operation.lagou.LagouQueryService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouGetService;
 import cn.edu.zzti.bibased.service.operation.other.PositionKeyWordSevice;
 import cn.edu.zzti.bibased.service.operation.other.PositionNumDayService;
+import cn.edu.zzti.bibased.service.operation.zhilian.ZhilianGetService;
 import cn.edu.zzti.bibased.utils.DateUtils;
 import cn.edu.zzti.bibased.utils.IDUtils;
 import com.alibaba.fastjson.JSON;
@@ -59,6 +60,8 @@ public class HttpTests extends BaseApplicationTests {
     private IKAnalzyerService kAnalzyerService;
     @Resource
     private PositionNumDayService positionNumDayService;
+    @Resource
+    private ZhilianGetService zhilianGetService;
     @Test
     public void getService() throws Exception {
         // String url = "http://search.51job.com/list/080200,000000,0000,00,9,99,Java%2B%25E5%25BC%2580%25E5%258F%2591,2,1.html?lang=c&stype=1&postchannel=0000&workyear=99&cotype=99&degreefrom=99&jobterm=99&companysize=99&lonlat=0%2C0&radius=-1&ord_field=0&confirmdate=9&fromType=1&dibiaoid=0&address=&line=&specialarea=00&from=&welfare=";
@@ -363,4 +366,9 @@ public class HttpTests extends BaseApplicationTests {
   }
 
 
+
+  @Test
+    public void zhilianPositionTypes(){
+      zhilianGetService.getPositionType();
+  }
 }

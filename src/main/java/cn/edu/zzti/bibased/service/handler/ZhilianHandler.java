@@ -1,6 +1,7 @@
 package cn.edu.zzti.bibased.service.handler;
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
+import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.Positions;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -34,5 +35,16 @@ public class ZhilianHandler {
         return positions;
     }
 
+    public static List<PositionDetail> handlePositionDetail(String html){
+        List<PositionDetail> positionDetails = new ArrayList<>();
+        if(StringUtils.isNotEmpty(html)) {
+            Document zhilianPositionDetails = Jsoup.parse(html);
+            Element posiotnDetails = zhilianPositionDetails.getElementById("newlist");
+            if(posiotnDetails != null){
+
+            }
+        }
+        return positionDetails;
+    }
 
 }

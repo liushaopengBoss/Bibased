@@ -34,6 +34,7 @@ public class DataAnalysisController {
     @Resource
     private ZhilianQueryService zhilianQueryService;
 
+
     public DataAnalysisController() {
     }
 

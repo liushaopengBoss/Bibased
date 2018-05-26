@@ -5,6 +5,7 @@ import cn.edu.zzti.bibased.dto.ResultMap;
 import cn.edu.zzti.bibased.service.operation.boss.BossGetService;
 import cn.edu.zzti.bibased.service.operation.lagou.LagouGetService;
 import cn.edu.zzti.bibased.service.operation.other.ActionLogService;
+import cn.edu.zzti.bibased.service.operation.zhilian.ZhilianGetService;
 import org.springframework.http.converter.json.MappingJacksonValue;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,8 @@ public class AcquisitionController {
 
     @Resource
     private ActionLogService actionLogService;
+    @Resource
+    private ZhilianGetService zhilianGetService;
 
     @RequestMapping(value = "/v1/company_search/{webCode}")
     public Object companyOperation(@PathVariable("webCode") String code){
@@ -81,6 +84,9 @@ public class AcquisitionController {
                     case BOSS:
                         bossGetService.getBossPositionTypeV2();
                         break;
+                    case ZHILIAN:
+                        zhilianGetService.getPositionType();
+                        break;
                 }
             }
         }
@@ -96,6 +102,9 @@ public class AcquisitionController {
                         break;
                     case BOSS:
                         bossGetService.getPositionDetails();
+                        break;
+                    case ZHILIAN:
+                        zhilianGetService.getPosiotnDetails();
                         break;
                 }
             }
