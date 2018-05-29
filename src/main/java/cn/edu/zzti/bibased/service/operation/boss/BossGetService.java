@@ -70,12 +70,14 @@ public class BossGetService {
         String  sourceJson = httpClientService.doGet(apiUrl,null,HttpHeaderConstant.bossGetHeader);
         return  BossHandler.getHotCity(sourceJson);
     }
+
     public void getCity(){
         String apiUrl = "https://www.zhipin.com/common/data/city.json";
         String  sourceJson = httpClientService.doGet(apiUrl,null,HttpHeaderConstant.bossGetHeader);
         List<City> city = BossHandler.getCity(sourceJson);
         acquisitionService.batchAddCity(city);
     }
+
 
    public void getPositionDetails(){
         //get hot city
