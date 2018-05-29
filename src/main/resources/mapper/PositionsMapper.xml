@@ -15,30 +15,21 @@
         <result column="last_ver" property="lastVer" jdbcType="BIGINT" />
         <result column="date_version" property="dateVersion" jdbcType="VARCHAR" />
     </resultMap>
-    <sql id="fields">
-        <![CDATA[
-            id, position_url, position_name, include, parent_id, root_id, leaf, create_time, op_time,is_valid, last_ver,date_version
-        ]]>
-    </sql>
-    <sql id="valueFields">
-        <![CDATA[
-        (#{position.id},#{position.positionUrl},#{position.positionName},#{position.include},#{position.parentId},#{position.rootId},#{position.leaf},UNIX_TIMESTAMP(now()),UNIX_TIMESTAMP(now()),1,0,#{position.dateVersion})
-          ]]>
-    </sql>
-    <sql id="selectSql">
-         select <include refid="fields" /> FROM  positions
-    </sql>
-    <sql id="insertSql">
-    </sql>
+
     <insert id="batchInsert" parameterType="cn.edu.zzti.bibased.dto.Positions">
-        <include refid="insertSql" />
+        INSERT  INTO positions (id, position_url, position_name, include, parent_id, root_id, leaf, create_time, op_time,is_valid, last_ver,date_version)
+        VALUES
         <foreach collection="list" item="position" index="index" separator="," >
-            <include refid="valueFields" />
+            (#{position.id},#{position.positionUrl},#{position.positionName},#{position.include},
+            #{position.parentId},#{position.rootId},#{position.leaf},UNIX_TIMESTAMP(now()),
+            UNIX_TIMESTAMP(now()),1,0,#{position.dateVersion})
       </foreach>
     </insert>
     <insert id="insert" parameterType="cn.edu.zzti.bibased.dto.Positions">
-        <include refid="insertSql" />
-        <include refid="valueFields" />
+         INSERT  INTO positions (id, position_url, position_name, include, parent_id, root_id, leaf, create_time, op_time,is_valid, last_ver,date_version)
+        VALUES  (#{position.id},#{position.positionUrl},#{position.positionName},#{position.include},
+            #{position.parentId},#{position.rootId},#{position.leaf},UNIX_TIMESTAMP(now()),
+            UNIX_TIMESTAMP(now()),1,0,#{position.dateVersion})
     </insert>
     <select id="queryLeafPositions" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT   position_url, position_name, include from positions

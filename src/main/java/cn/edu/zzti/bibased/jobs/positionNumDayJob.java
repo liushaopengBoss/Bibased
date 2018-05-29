@@ -1,6 +1,5 @@
 package cn.edu.zzti.bibased.jobs;
 
-import cn.edu.zzti.bibased.service.operation.other.PositionKeyWordSevice;
 import cn.edu.zzti.bibased.service.operation.other.PositionNumDayService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

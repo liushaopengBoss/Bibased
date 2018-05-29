@@ -47,7 +47,7 @@ public class ActionLogAspect {
         }
         if(actionLogName != null){
             String start = DateUtils.formatStr(new Date(), DateUtils.YYMMDD_HHmmStr);
-            Object rs = joinPoint.proceed();
+            Object rs = null;
             String end = DateUtils.formatStr(new Date(), DateUtils.YYMMDD_HHmmStr);
             ActionLogDO actionLogDO = new ActionLogDO();
             actionLogDO.setActionName(actionLogName.getName());
@@ -55,7 +55,12 @@ public class ActionLogAspect {
             actionLogDO.setStartTime(start);
             actionLogDO.setStatus(1);
             actionLogDO.setTypeCode(actionLogName.getCode());
-
+            try{
+                rs = joinPoint.proceed();
+            }catch(Exception e){
+                actionLogDO.setStatus(0);
+                logger.error("method error!!! ",e);
+            }
             actionLogDO.setInclude("lagou");
             actionLogService.addLog(actionLogDO);
 //            emailService.sendSimpleMail("","");

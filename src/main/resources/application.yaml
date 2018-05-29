@@ -59,7 +59,7 @@ logging:
               zzti:
                    bibased:
                             dao:
-                               mapper: warn
+                               mapper: debug
 
 
 
