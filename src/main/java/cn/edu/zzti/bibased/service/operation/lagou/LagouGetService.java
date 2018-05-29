@@ -94,8 +94,8 @@ public class LagouGetService {
      * 采集拉勾网的职位分类信息
      *
      */
-    @Async
     @ActionLog(ProjectItem.POSITION)
+    @Async
     public void getJobInformation(){
         String url = "https://www.lagou.com";
         String html = httpClientService.doGet(url, null, HttpHeaderConstant.lagouGetHeader);
