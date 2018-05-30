@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+
+<head>
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="http://localhost:8081/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="http://localhost:8081/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="http://localhost:8081/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="http://localhost:8081/css/animate.css" rel="stylesheet">
+    <link href="http://localhost:8081/css/style.css?v=4.1.0" rel="stylesheet">
+    
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+        <!-- Panel Style -->
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>任务列表</h5>
+                <div class="ibox-tools">
+
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <!-- Example Classes -->
+                        <div class="example-wrap">
+    
+                            <div class="example">
+                                <table data-toggle="table" data-classes="table table-hover table-condensed" data-url="js/demo/table_base.json" data-striped="true" data-height="250" data-mobile-responsive="true">
+                                    <thead>
+                                        <tr>
+                                            <th data-field="Tid">任务名</th>
+                                            <th data-field="First">运行状态</th>
+                                            <th data-field="sex">CRON表达式</th>
+                                            <th data-field="Score">描述</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="job : ${jobs}">
+                                        <td  th:text="${job.jobName}">
+
+                                        </td>
+                                        <td th:switch="${job.jobStatus}">
+                                            <span th:case="1" class="label label-primary"><i class="fa fa-check"></i> 正常</span>
+                                            <span th:case="*" class="label label-danger"><i class="fa fa-check"></i> 失效</span>
+                                        </td>
+                                        <td  th:text="${job.jobCron}">
+
+                                        </td>
+                                        <td  th:text="${job.jobDesc}">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- End Example Classes -->
+                    </div>
+
+    </div>
+
+    <!-- 全局js -->
+    <script src="http://localhost:8081/js/jquery.min.js?v=2.1.4"></script>
+    <script src="http://localhost:8081/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- Bootstrap table -->
+    <script src="http://localhost:8081/js/bootstrap-table.min.js"></script>
+
+
+
+    <!--统计代码，可删除-->
+
+</body>
+
+</html>

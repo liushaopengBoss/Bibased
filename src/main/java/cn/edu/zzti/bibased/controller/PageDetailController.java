@@ -1,6 +1,7 @@
 package cn.edu.zzti.bibased.controller;
 
 import cn.edu.zzti.bibased.constant.ProjectItem;
+import cn.edu.zzti.bibased.service.job.JobService;
 import cn.edu.zzti.bibased.service.operation.other.ActionLogService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +21,13 @@ import javax.annotation.Resource;
 public class PageDetailController {
     @Resource
     private ActionLogService actionLogService;
+
+    @Resource
+    private JobService jobService;
+
     private static final String PAGE_HOME = "page/";
     private static final String PROJECT_DETAIL = PAGE_HOME+"project_detail";
+    private static final String JOBS = PAGE_HOME+"job";
     @RequestMapping(value = "/v1/get_project_detail")
     public String getProjectDetail(String webType,Integer typeCode,Model model){
         model.addAttribute("actionLogs",actionLogService.queryActionLog(webType, typeCode));
@@ -29,5 +35,10 @@ public class PageDetailController {
         return PROJECT_DETAIL;
     }
 
+    @RequestMapping(value = "/v1/jobs")
+    public String getJobs(Model model){
+        model.addAttribute("jobs",jobService.queryAllJobs());
+        return JOBS;
+    }
 
 }
