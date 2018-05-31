@@ -117,7 +117,7 @@ public class PositionKeyWordSevice {
      * @return
      */
     public List<PositionKeyword> queryLastMonthPositionKeyWordByPositionType(String positionType){
-        String month = DateUtils.format(DateUtils.getAfterMonth(new Date(), -1),"yyyyMM");
+        String month = DateUtils.format(DateUtils.getAfterMonth(DateUtils.getAfterDate(new Date(),-1), -1),"yyyyMM");
         String beginDate=  DateUtils.getMonthFirstday(month);
         String endDate = DateUtils.getMonthLastday(month);
         return positionKeywordDao.queryPositionKeyWordNumsByDateRangeAndPosition(beginDate,endDate,positionType,null);

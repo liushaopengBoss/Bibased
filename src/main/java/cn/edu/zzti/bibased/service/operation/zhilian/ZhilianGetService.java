@@ -1,6 +1,5 @@
 package cn.edu.zzti.bibased.service.operation.zhilian;
 
-import cn.edu.zzti.bibased.constant.HttpHeaderConstant;
 import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.Positions;
 import cn.edu.zzti.bibased.service.email.EmailService;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletionService;
 
 @Service
@@ -39,7 +39,6 @@ public class ZhilianGetService {
     public void getPositionType(){
         String apiUrl = "http://sou.zhaopin.com/jobs/searchresult.ashx?in=210500%3B160400&jl=%E5%8C%97%E4%BA%AC&isadv=0&ispts=1&isfilter=1&p=1&bj=160000&sj=2034";
         String html = httpClientService.doGet(apiUrl, null, null);
-        logger.info(html);
         List<Positions> positions = ZhilianHandler.handlerPositionType(html);
         acquisitionService.batchAddJob(positions);
 
@@ -48,8 +47,7 @@ public class ZhilianGetService {
     public void  getPosiotnDetails(){
         String apiUrl = "http://sou.zhaopin.com/jobs/searchresult.ashx?in=210500%3B160400&jl=%E5%8C%97%E4%BA%AC&isadv=0&ispts=1&isfilter=1&p=1&bj=160000&sj=2034";
         String html = httpClientService.doGet(apiUrl, null, null);
-        logger.info(html);
-        List<PositionDetail> positionDetails = ZhilianHandler.handlePositionDetail(html);
-        acquisitionService.batchAddPositionDetails(positionDetails);
+        Map<String, Object> stringObjectMap = ZhilianHandler.handlePositionDetail(html);
+        acquisitionService.batchAddPositionDetails((List<PositionDetail>)stringObjectMap.get("positionDetail"));
     }
 }

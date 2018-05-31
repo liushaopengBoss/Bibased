@@ -14,7 +14,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  * Created by huaidou on  2018/3/26
  */
 public class ClearCache extends QuartzJobBean {
-    private Logger logger = LoggerFactory.getLogger(LagouJob.class);
+    private Logger logger = LoggerFactory.getLogger(ClearCache.class);
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         ApplicationContext applicationContext = (ApplicationContext) context.getJobDetail().getJobDataMap()
