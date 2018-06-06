@@ -1,4 +1,4 @@
-package cn.edu.zzti.bibased.dao.mapper;
+package cn.edu.zzti.bibased.dao.mapper.master;
 
 import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.query.PositionDetailQuery;

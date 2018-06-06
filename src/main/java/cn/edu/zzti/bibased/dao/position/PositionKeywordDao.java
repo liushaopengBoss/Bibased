@@ -1,6 +1,6 @@
 package cn.edu.zzti.bibased.dao.position;
 
-import cn.edu.zzti.bibased.dao.mapper.PositionKeywordMapper;
+import cn.edu.zzti.bibased.dao.mapper.master.PositionKeywordMapper;
 import cn.edu.zzti.bibased.dto.PositionKeyword;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

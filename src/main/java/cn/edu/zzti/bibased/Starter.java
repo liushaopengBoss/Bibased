@@ -33,7 +33,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ImportResource("classpath:application-config.xml")//导入配置文件
 @SpringBootApplication()//springboot
 @EnableTransactionManagement//事务
-@MapperScan("cn.edu.zzti.bibased.dao.mapper")//mapper扫描
 public class Starter {
     private static ConfigurableApplicationContext applicationContext;
     public static void main(String[] args) {

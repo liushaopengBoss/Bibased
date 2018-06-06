@@ -1,9 +1,9 @@
 package cn.edu.zzti.bibased.dao.boss;
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
-import cn.edu.zzti.bibased.dao.mapper.CityMapper;
-import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
-import cn.edu.zzti.bibased.dao.mapper.PositionsMapper;
+import cn.edu.zzti.bibased.dao.mapper.master.CityMapper;
+import cn.edu.zzti.bibased.dao.mapper.master.PositionDetailMapper;
+import cn.edu.zzti.bibased.dao.mapper.master.PositionsMapper;
 import cn.edu.zzti.bibased.dto.City;
 import cn.edu.zzti.bibased.dto.PositionDetail;
 import cn.edu.zzti.bibased.dto.Positions;

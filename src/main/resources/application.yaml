@@ -1,18 +1,5 @@
 #spring
 spring:
-#数据库连接
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://47.93.99.237:3306/crawler?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&autoReconnect=true
-    username: huaidou
-    password: lsp763498085
-    hikari:
-      maximum-pool-size: 15  #推荐的公式：((core_count * 2) + effective_spindle_count) -->
-      max-lifetime: 1765000  #一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired）
-      connection-timeout: 6000
-      idle-timeout: 600000  #一个连接idle状态的最大时长（毫秒），超时则被释放（retired）
-      read-only: false
-      connection-test-query: SELECT 1
 #mvc
   thymeleaf:
     prefix: classpath:/static/
@@ -23,34 +10,11 @@ spring:
     check-template: true
     mode: LEGACYHTML5
 
-##热部署
-#  devtools:
-#    restart:
-#      additional-paths:
-#      enabled: true
-
 #server
 server:
   port: 8081
   address:
 
-#mybatis
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
-  check-config-location: true
-  type-aliases-package: cn.edu.zzti.bibased.dto
-
-
-#http
-http:
-    request:
-            connectionRequestTimeout: 500  #从连接池中获取到连接的最长时间
-            connectTimeout: 5000
-            socketTimeout: 30000  #数据传输的最长时间
-            staleConnectionCheckEnabled: true #提交请求前测试连接是否可用
-    pool:
-        maxTotal: 200     #设置连接总数
-        defaultMaxPerRoute: 100  #设置每个地址的并发数
 logging:
   config: classpath:biased-logback.xml
   level:

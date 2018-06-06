@@ -1,7 +1,7 @@
 package cn.edu.zzti.bibased.service.operation.other;
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
-import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
+import cn.edu.zzti.bibased.dao.mapper.master.PositionDetailMapper;
 import cn.edu.zzti.bibased.dao.position.PositionNumDayDao;
 import cn.edu.zzti.bibased.dto.PositionNumDay;
 import cn.edu.zzti.bibased.utils.DateUtils;

@@ -1,4 +1,4 @@
-package cn.edu.zzti.bibased.dao.mapper;
+package cn.edu.zzti.bibased.dao.mapper.cluster;
 
 import cn.edu.zzti.bibased.dto.ActionLogDO;
 import org.apache.ibatis.annotations.Param;

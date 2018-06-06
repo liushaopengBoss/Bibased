@@ -1,8 +1,7 @@
 package cn.edu.zzti.bibased.dao.position;
 
-import cn.edu.zzti.bibased.dao.mapper.PositionDescMapper;
+import cn.edu.zzti.bibased.dao.mapper.master.PositionDescMapper;
 import cn.edu.zzti.bibased.dto.PositionDesc;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;

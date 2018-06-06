@@ -1,6 +1,6 @@
 package cn.edu.zzti.bibased.dao.job;
 
-import cn.edu.zzti.bibased.dao.mapper.JobMapper;
+import cn.edu.zzti.bibased.dao.mapper.master.JobMapper;
 import cn.edu.zzti.bibased.dto.Job;
 import org.springframework.stereotype.Repository;
 

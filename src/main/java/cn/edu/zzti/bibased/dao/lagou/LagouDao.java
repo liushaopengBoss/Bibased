@@ -2,13 +2,12 @@ package cn.edu.zzti.bibased.dao.lagou;
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dao.cache.Cache;
-import cn.edu.zzti.bibased.dao.mapper.CompanyMapper;
-import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
-import cn.edu.zzti.bibased.dao.mapper.PositionsMapper;
+import cn.edu.zzti.bibased.dao.mapper.master.CompanyMapper;
+import cn.edu.zzti.bibased.dao.mapper.master.PositionDetailMapper;
+import cn.edu.zzti.bibased.dao.mapper.master.PositionsMapper;
 import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.dto.query.PositionDetailQuery;
 import cn.edu.zzti.bibased.utils.DateUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;

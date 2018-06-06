@@ -1,7 +1,7 @@
 package cn.edu.zzti.bibased.dao.zhilian;
 
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
-import cn.edu.zzti.bibased.dao.mapper.PositionDetailMapper;
+import cn.edu.zzti.bibased.dao.mapper.master.PositionDetailMapper;
 import cn.edu.zzti.bibased.dto.PositionDetail;
 import org.springframework.stereotype.Repository;
 
