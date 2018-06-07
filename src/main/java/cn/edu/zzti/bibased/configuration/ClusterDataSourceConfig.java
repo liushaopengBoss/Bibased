@@ -15,7 +15,6 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-// 扫描 Mapper 接口并容器管理
 @MapperScan(basePackages = ClusterDataSourceConfig.PACKAGE, sqlSessionFactoryRef = "clusterSqlSessionFactory")
 @PropertySource("classpath:datasource.properties")
 public class ClusterDataSourceConfig {
