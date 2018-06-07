@@ -41,9 +41,9 @@ public class MasterDataSourceConfig {
     public DataSource masterDataSource() {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setDriverClassName(driverClass);
-        dataSource.setJdbcUrl(url);
         dataSource.setUsername(user);
         dataSource.setPassword(password);
+        dataSource.setJdbcUrl(url);
         return dataSource;
     }
 
