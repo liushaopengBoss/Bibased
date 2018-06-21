@@ -2,6 +2,7 @@ package cn.edu.zzti.bibased.controller;
 
 
 
+import cn.edu.zzti.bibased.aspect.ServiceLimit;
 import cn.edu.zzti.bibased.constant.WebsiteEnum;
 import cn.edu.zzti.bibased.dto.*;
 import cn.edu.zzti.bibased.dto.page.PageResult;
@@ -126,6 +127,7 @@ public class DataQueryController {
 
     @RequestMapping("/v1/queryLastMonthPositionKeyWord")
     @ResponseBody
+    @ServiceLimit
     public List<PositionKeyword> queryLastMonthPositionKeyWordByPositionType(String positionType){
         if(positionType.trim().equals("C")){
             positionType = "C++";
