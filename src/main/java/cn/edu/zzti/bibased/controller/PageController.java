@@ -1,5 +1,6 @@
 package cn.edu.zzti.bibased.controller;
 
+import cn.edu.zzti.bibased.aspect.ServiceLimit;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -41,6 +42,7 @@ public class PageController {
      *
      * @return
      */
+    @ServiceLimit
     @RequestMapping(value = "/index")
     public String homepageIndex() {
         return INDEX;
