@@ -46,8 +46,8 @@ public class ClusterDataSourceConfig {
     }
 
     @Bean(name = "clusterTransactionManager")
-    public DataSourceTransactionManager clusterTransactionManager() {
-        return new DataSourceTransactionManager(clusterDataSource());
+    public DataSourceTransactionManager clusterTransactionManager(@Qualifier("clusterDataSource") DataSource clusterDataSource) {
+        return new DataSourceTransactionManager(clusterDataSource);
     }
 
     @Bean(name = "clusterSqlSessionFactory")
@@ -59,4 +59,6 @@ public class ClusterDataSourceConfig {
                 .getResources(ClusterDataSourceConfig.MAPPER_LOCATION));
         return sessionFactory.getObject();
     }
+
+
 }

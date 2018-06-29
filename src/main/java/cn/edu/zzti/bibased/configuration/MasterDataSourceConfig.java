@@ -49,8 +49,8 @@ public class MasterDataSourceConfig {
 
     @Bean(name = "masterTransactionManager")
     @Primary
-    public DataSourceTransactionManager masterTransactionManager() {
-        return new DataSourceTransactionManager(masterDataSource());
+    public DataSourceTransactionManager masterTransactionManager(@Qualifier("masterDataSource") DataSource masterDataSource) {
+        return new DataSourceTransactionManager(masterDataSource);
     }
 
     @Bean(name = "masterSqlSessionFactory")
